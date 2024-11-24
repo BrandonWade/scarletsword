@@ -1,4 +1,4 @@
-export enum BulkDataType {
+export enum BulkDataEnum {
   OracleCards = 'oracle_cards',
   UniqueArtwork = 'unique_artwork',
   DefaultCards = 'default_cards',
@@ -6,9 +6,9 @@ export enum BulkDataType {
   Rulings = 'rulings',
 }
 
-export type BulkData = {
+export type BulkDataType = {
   id: string;
-  type: BulkDataType;
+  type: BulkDataEnum;
   updated_at: string;
   name: string;
   description: string;
@@ -17,5 +17,5 @@ export type BulkData = {
 };
 
 export type ListBulkDataResponse = {
-  data: BulkData[];
+  data: BulkDataType[];
 };

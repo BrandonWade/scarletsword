@@ -7,6 +7,8 @@ import {
 } from './schema';
 
 export async function resetDB() {
+  console.log('Resetting DB');
+
   const db = await connectToDatabase();
 
   await db.executeSql('DROP TABLE cards;');

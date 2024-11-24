@@ -4,6 +4,8 @@ import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import styles from './styles';
 import { BulkDataItemProps } from './types';
+import importFile from '../../../helpers/importFile';
+import { resetDB } from '../../../../db/utils';
 
 export default function BulkDataItem({
   name,
@@ -12,8 +14,15 @@ export default function BulkDataItem({
   updatedAt,
   downloadUri,
 }: BulkDataItemProps) {
+  const downloadFile = async () => {
+    // TODO: Remove
+    await resetDB();
+
+    await importFile(downloadUri);
+  };
+
   return (
-    <TouchableOpacity onPress={() => console.log(downloadUri)}>
+    <TouchableOpacity onPress={downloadFile}>
       <View style={styles.bulkDataItem}>
         <View style={styles.titleRow}>
           <Text style={styles.title}>{name}</Text>

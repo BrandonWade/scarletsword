@@ -1,18 +1,18 @@
 import React from 'react';
 import { SafeAreaView, ScrollView, View } from 'react-native';
 import { useListBulkDataQuery } from '../../../api/bulkdata';
-import { BulkDataType, BulkData } from '../../../api/bulkdata/types';
+import { BulkDataEnum, BulkDataType } from '../../../api/bulkdata/types';
 import BulkDataItem from './BulkDataItem';
 import styles from './styles';
 
 const cardDataTypes = new Set([
-  BulkDataType.OracleCards,
-  BulkDataType.UniqueArtwork,
-  BulkDataType.DefaultCards,
-  BulkDataType.AllCards,
+  BulkDataEnum.OracleCards,
+  BulkDataEnum.UniqueArtwork,
+  BulkDataEnum.DefaultCards,
+  BulkDataEnum.AllCards,
 ]);
 
-export default function Foo(): React.JSX.Element {
+export default function BulkData(): React.JSX.Element {
   const { data } = useListBulkDataQuery({});
 
   return (
@@ -21,7 +21,7 @@ export default function Foo(): React.JSX.Element {
         style={styles.scrollContainer}
         contentInsetAdjustmentBehavior="automatic">
         <View style={styles.bulkDataList}>
-          {(data?.data || []).map((bulkData: BulkData) => {
+          {(data?.data || []).map((bulkData: BulkDataType) => {
             if (!cardDataTypes.has(bulkData.type)) {
               return null;
             }
