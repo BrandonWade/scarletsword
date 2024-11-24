@@ -5,7 +5,7 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import styles from './styles';
 import { BulkDataItemProps } from './types';
 import importFile from '../../../helpers/importFile';
-import { resetDB } from '../../../../db/utils';
+// import { resetDB } from '../../../../db/utils';
 
 export default function BulkDataItem({
   name,
@@ -16,7 +16,7 @@ export default function BulkDataItem({
 }: BulkDataItemProps) {
   const downloadFile = async () => {
     // TODO: Remove
-    await resetDB();
+    // await resetDB();
 
     await importFile(downloadUri);
   };

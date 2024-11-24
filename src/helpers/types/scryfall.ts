@@ -31,6 +31,7 @@ export type Card = {
   released_at: string;
   layout: string;
   mana_cost: string;
+  name: string;
   cmc: number;
   type_line: string;
   rarity: string;
@@ -42,5 +43,5 @@ export type Card = {
   tcgplayer_uri: string;
   cardmarket_uri: string;
   cardhoarder_uri: string;
-  card_faces?: CardFace;
+  card_faces?: CardFace[];
 };

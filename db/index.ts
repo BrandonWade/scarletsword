@@ -15,7 +15,7 @@ enablePromise(true);
 export async function connectToDatabase() {
   return openDatabase(
     { name: 'scarletsword.db', location: 'default' },
-    () => console.log('Successfully connected to database'),
+    () => {},
     error => {
       console.error(error);
       throw Error('Could not connect to database');

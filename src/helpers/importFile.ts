@@ -1,4 +1,6 @@
 import RNFetchBlob from 'rn-fetch-blob';
+import { insertCards, numberOfCards } from '../../db/cards';
+import { Card } from './types/scryfall';
 
 async function downloadFile(downloadUri: string) {
   console.log('Downloading data file');
@@ -19,11 +21,10 @@ async function readAndImportFile(filePath: string) {
   const fileStream = await RNFetchBlob.fs.readStream(filePath, 'utf8', 2048000);
   console.log('Importing data');
 
-  let total = 0;
   let fragment = '';
 
   // Read each chunk and process it
-  fileStream.onData(chunk => {
+  fileStream.onData(async chunk => {
     if (typeof chunk !== 'string') {
       return;
     }
@@ -33,7 +34,7 @@ async function readAndImportFile(filePath: string) {
     fragment = '';
 
     // Loop through each element and decide how to process it
-    const cards: string[] = [];
+    const cards: Card[] = [];
     lines.forEach(line => {
       if (line === '[' || line === ']') {
         // The file is formatted as one giant JSON array, so we need to exclude the brackets at the top level that wrap the actual content
@@ -50,21 +51,22 @@ async function readAndImportFile(filePath: string) {
       }
     });
 
-    // TODO: Save the cards from this chunk to the DB
-
-    total += cards.length;
+    // Save the cards from this chunk to the DB
+    await insertCards(cards);
   });
 
   // Clean up once we reach the end of the file
-  fileStream.onEnd(() => {
+  fileStream.onEnd(async () => {
     if (fragment.length) {
       try {
-        JSON.parse(fragment);
-        // cards.push(result); // TODO: Handle this
-        total++;
+        // Check and see if the final fragment is a card, and save it if so
+        const card = JSON.parse(fragment);
+        await insertCards([card]);
       } catch {}
     }
-    console.log(`Data import complete - ${total} cards imported`);
+
+    const totalCards = await numberOfCards();
+    console.log(`Data import complete - ${totalCards} cards in database`);
   });
 
   // Handle any errors that occur
