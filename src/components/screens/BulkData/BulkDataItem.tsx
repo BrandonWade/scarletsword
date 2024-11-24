@@ -1,3 +1,5 @@
+import byteSize from 'byte-size';
+import dayjs from 'dayjs';
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import styles from './styles';
@@ -13,10 +15,12 @@ export default function BulkDataItem({
   return (
     <TouchableOpacity onPress={() => console.log(downloadUri)}>
       <View style={styles.bulkDataItem}>
-        <Text>{name}</Text>
-        <Text>{size}</Text>
+        <View style={styles.titleRow}>
+          <Text style={styles.title}>{name}</Text>
+          <Text>{byteSize(size).toString()}</Text>
+        </View>
         <Text>{description}</Text>
-        <Text>{updatedAt}</Text>
+        <Text>Updated on {dayjs(updatedAt).format('YYYY-MM-DD')}</Text>
       </View>
     </TouchableOpacity>
   );
