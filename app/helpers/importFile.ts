@@ -1,12 +1,12 @@
-import { Directory, File, Paths } from "expo-file-system/next";
-import { insertCards, numberOfCards } from "../db/cards";
-import { Card } from "./types/scryfall";
+import { Directory, File, Paths } from 'expo-file-system/next';
+import { insertCards, numberOfCards } from '../db/cards';
+import { Card } from './types/scryfall';
 
 // Download the bulk data file from scryfall and return the saved file handle
 async function downloadFile(downloadUri: string) {
-  console.log("Retrieving data file");
-  const fileName = downloadUri.slice(downloadUri.lastIndexOf("/") + 1);
-  const directory = new Directory(Paths.cache, "bulkdata");
+  console.log('Retrieving data file');
+  const fileName = downloadUri.slice(downloadUri.lastIndexOf('/') + 1);
+  const directory = new Directory(Paths.cache, 'bulkdata');
   if (!directory.exists) {
     directory.create();
   }
@@ -17,12 +17,12 @@ async function downloadFile(downloadUri: string) {
     // Either download the file from the server or use the cached one instead if it exists
     if (!file.exists) {
       await File.downloadFileAsync(downloadUri, file);
-      console.log("Data file downloaded");
+      console.log('Data file downloaded');
     } else {
-      console.log("Using cached data file");
+      console.log('Using cached data file');
     }
   } catch (err) {
-    console.error("Error downloading file", err);
+    console.error('Error downloading file', err);
     throw err;
   }
 
@@ -31,10 +31,10 @@ async function downloadFile(downloadUri: string) {
 
 // Read the data file in chunks and import it into the database
 async function importFile(file: File) {
-  console.log("Importing data");
+  console.log('Importing data');
   const decoder = new TextDecoder();
   let cards: Card[] = [];
-  let fragment = "";
+  let fragment = '';
   let total = 0;
 
   try {
@@ -44,12 +44,12 @@ async function importFile(file: File) {
 
       // If there is a fragment from a previous chunk, it's partial card data so combine it with the current chunk
       const lines = (fragment + chunk).split(/\n/);
-      fragment = "";
+      fragment = '';
 
       // Loop through each element and decide how to process it
 
       lines.forEach((line) => {
-        if (line === "[" || line === "]") {
+        if (line === '[' || line === ']') {
           // The file is formatted as one giant JSON array, so we need to exclude the brackets at the top level that wrap the actual content
           return;
         }
@@ -72,7 +72,7 @@ async function importFile(file: File) {
       }
     }
   } catch (err) {
-    console.error("Error importing bulk data file", err);
+    console.error('Error importing bulk data file', err);
   }
 
   // Check and see if the final fragment is a card

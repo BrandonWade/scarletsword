@@ -1,8 +1,8 @@
-import * as SQLite from "expo-sqlite";
-import { Card } from "../helpers/types/scryfall";
+import * as SQLite from 'expo-sqlite';
+import { Card } from '../helpers/types/scryfall';
 
 export async function insertCards(cards: Card[] = []) {
-  const db = await SQLite.openDatabaseAsync("scarletsword.db");
+  const db = await SQLite.openDatabaseAsync('scarletsword.db');
 
   await db.withExclusiveTransactionAsync(async (tx) => {
     const cardStatement = await tx.prepareAsync(`
@@ -163,11 +163,11 @@ export async function insertCards(cards: Card[] = []) {
             $defense: cardFace?.defense ?? null,
             $flavor_text: cardFace?.flavor_text ?? null,
             $image_uris: cardFace?.image_uris?.normal ?? null,
-            $is_white: cardFace?.colors?.includes("W") ?? null,
-            $is_blue: cardFace?.colors?.includes("U") ?? null,
-            $is_black: cardFace?.colors?.includes("B") ?? null,
-            $is_red: cardFace?.colors?.includes("R") ?? null,
-            $is_green: cardFace?.colors?.includes("G") ?? null,
+            $is_white: cardFace?.colors?.includes('W') ?? null,
+            $is_blue: cardFace?.colors?.includes('U') ?? null,
+            $is_black: cardFace?.colors?.includes('B') ?? null,
+            $is_red: cardFace?.colors?.includes('R') ?? null,
+            $is_green: cardFace?.colors?.includes('G') ?? null,
             $layout: cardFace?.layout ?? null,
             $loyalty: cardFace?.loyalty ?? null,
             $mana_cost: cardFace?.mana_cost ?? null,
@@ -179,14 +179,14 @@ export async function insertCards(cards: Card[] = []) {
           });
         });
       } catch (err) {
-        console.error("Error inserting card data", err);
+        console.error('Error inserting card data', err);
       }
     });
   });
 }
 
 export async function numberOfCards() {
-  const db = await SQLite.openDatabaseAsync("scarletsword.db", {
+  const db = await SQLite.openDatabaseAsync('scarletsword.db', {
     useNewConnection: true,
   });
 
@@ -199,7 +199,7 @@ export async function numberOfCards() {
 
     return result?.count;
   } catch (err) {
-    console.error("Error fetching number of cards", err);
+    console.error('Error fetching number of cards', err);
   }
 
   return 0;
