@@ -10,7 +10,7 @@ export default StyleSheet.create({
     display: 'flex',
     rowGap: 15,
   },
-  bulkDataItem: {
+  bulkDataListItem: {
     display: 'flex',
     rowGap: 10,
     borderColor: '#33333322',
@@ -34,5 +34,6 @@ export default StyleSheet.create({
   },
   title: {
     fontSize: 18,
+    fontWeight: 500,
   },
 });

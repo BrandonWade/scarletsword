@@ -1,6 +1,6 @@
 import { Directory, File, Paths } from 'expo-file-system/next';
 import { insertCards, numberOfCards } from '../db/cards';
-import { Card } from './types/scryfall';
+import { Card } from './scryfall/types';
 
 // Download the bulk data file from scryfall and return the saved file handle
 async function downloadFile(downloadUri: string) {

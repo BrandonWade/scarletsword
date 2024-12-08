@@ -1,11 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 
-import {
-  cardsTable,
-  cardFacesTable,
-  decksTable,
-  deckCardsTable,
-} from './schema';
+import { cardsTable, cardFacesTable, decksTable, deckCardsTable } from './schema';
 
 async function createTables() {
   const db = await SQLite.openDatabaseAsync('scarletsword.db');

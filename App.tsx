@@ -1,11 +1,14 @@
 import React from 'react';
-import BulkData from './src/components/screens/BulkData';
+import { NavigationContainer } from '@react-navigation/native';
+import { RootStack } from './src/helpers/navigation';
 import ReduxProvider from './src/providers/redux';
 
 export default function App(): React.JSX.Element {
   return (
     <ReduxProvider>
-      <BulkData />
+      <NavigationContainer>
+        <RootStack />
+      </NavigationContainer>
     </ReduxProvider>
   );
 }

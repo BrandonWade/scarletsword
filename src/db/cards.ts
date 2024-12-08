@@ -1,5 +1,5 @@
 import * as SQLite from 'expo-sqlite';
-import { Card } from '../helpers/types/scryfall';
+import { Card } from '../helpers/scryfall/types';
 
 export async function insertCards(cards: Card[] = []) {
   const db = await SQLite.openDatabaseAsync('scarletsword.db');
@@ -145,8 +145,7 @@ export async function insertCards(cards: Card[] = []) {
           $set_id: card.set_id,
           $scryfall_uri: card.scryfall_uri,
           $gatherer_uri: card?.gatherer_uri ?? null,
-          $tcgplayer_infinite_decks_uri:
-            card?.tcgplayer_infinite_decks_uri ?? null,
+          $tcgplayer_infinite_decks_uri: card?.tcgplayer_infinite_decks_uri ?? null,
           $edhrec_uri: card?.edhrec_uri ?? null,
           $tcgplayer_uri: card?.tcgplayer_uri ?? null,
           $cardmarket_uri: card?.cardmarket_uri ?? null,

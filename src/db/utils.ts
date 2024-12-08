@@ -1,10 +1,5 @@
 import * as SQLite from 'expo-sqlite';
-import {
-  cardsTable,
-  cardFacesTable,
-  decksTable,
-  deckCardsTable,
-} from './schema';
+import { cardsTable, cardFacesTable, decksTable, deckCardsTable } from './schema';
 
 export async function resetDB() {
   console.log('Resetting DB');
