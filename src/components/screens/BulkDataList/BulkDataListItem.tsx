@@ -5,8 +5,8 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styles from './styles';
 import { BulkDataItemProps } from './types';
-import { ScreenNames } from '../../../helpers/enums';
-import { StackNavigation } from '../../../helpers/navigation';
+import { ScreenNames } from '../../../utils/enums';
+import { StackNavigation } from '../../../utils/navigation';
 
 export default function BulkDataListItem({
   name,

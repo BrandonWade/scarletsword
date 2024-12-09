@@ -3,7 +3,7 @@ import { insertCards, numberOfCards } from '../db/cards';
 import { Card } from './scryfall/types';
 
 // Download the bulk data file from scryfall and return the saved file handle
-async function downloadFile(downloadUri: string) {
+export async function downloadFile(downloadUri: string, onDownloadUpdate: (string) => void) {
   console.log('Retrieving data file');
   const fileName = downloadUri.slice(downloadUri.lastIndexOf('/') + 1);
   const directory = new Directory(Paths.cache, 'bulkdata');
@@ -16,9 +16,11 @@ async function downloadFile(downloadUri: string) {
   try {
     // Either download the file from the server or use the cached one instead if it exists
     if (!file.exists) {
+      onDownloadUpdate('Downloading data file');
       await File.downloadFileAsync(downloadUri, file);
       console.log('Data file downloaded');
     } else {
+      onDownloadUpdate('Using data file downloaded previously');
       console.log('Using cached data file');
     }
   } catch (err) {
@@ -30,7 +32,7 @@ async function downloadFile(downloadUri: string) {
 }
 
 // Read the data file in chunks and import it into the database
-async function importFile(file: File) {
+export async function importFile(file: File, onImportProgress: (number) => void) {
   console.log('Importing data');
   const decoder = new TextDecoder();
   let cards: Card[] = [];
@@ -67,7 +69,7 @@ async function importFile(file: File) {
       if (cards.length >= 1000) {
         await insertCards(cards);
         total += cards.length;
-        console.log(`${total} cards processed`);
+        onImportProgress(`${total} cards imported`);
         cards = [];
       }
     }
@@ -89,10 +91,6 @@ async function importFile(file: File) {
   }
 
   const totalCards = await numberOfCards();
-  console.log(`Data import complete - ${totalCards} cards in database`);
-}
-
-export default async function loadBulkDataFile(downloadUri: string) {
-  const downloadedFile = await downloadFile(downloadUri);
-  await importFile(downloadedFile);
+  onImportProgress(`Data import complete\n${totalCards} cards in database`);
+  console.log('Import complete');
 }

@@ -1,8 +1,8 @@
 import React from 'react';
 import { SafeAreaView, ScrollView, View } from 'react-native';
 import { useListBulkDataQuery } from '../../../api/bulkdata';
-import { BulkDataEnum } from '../../../helpers/enums';
-import { BulkDataType } from '../../../helpers/types';
+import { BulkDataEnum } from '../../../utils/enums';
+import { BulkDataType } from '../../../utils/types';
 import BulkDataListItem from './BulkDataListItem';
 import styles from './styles';
 

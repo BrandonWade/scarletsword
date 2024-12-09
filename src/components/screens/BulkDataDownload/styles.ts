@@ -19,7 +19,12 @@ export default StyleSheet.create({
   description: {
     fontSize: 16,
   },
-  downloadContainer: {
+  footer: {
     marginTop: 15,
+  },
+  details: {
+    textAlign: 'center',
+    fontSize: 16,
+    marginTop: 30,
   },
 });

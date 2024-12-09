@@ -1,5 +1,5 @@
 import * as SQLite from 'expo-sqlite';
-import { Card } from '../helpers/scryfall/types';
+import { Card } from '../utils/scryfall/types';
 
 export async function insertCards(cards: Card[] = []) {
   const db = await SQLite.openDatabaseAsync('scarletsword.db');
