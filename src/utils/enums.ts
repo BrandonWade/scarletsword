@@ -6,7 +6,18 @@ export enum BulkDataEnum {
   Rulings = 'rulings',
 }
 
+export enum Navigators {
+  RootDrawer = 'RootDrawer',
+  RootStack = 'RootStack',
+}
+
 export enum ScreenNames {
   BulkDataList = 'BulkDataList',
   BulkDataDownload = 'BulkDataDownload',
+}
+
+export enum ScreenTitles {
+  Back = 'Back',
+  BulkDataList = 'Data Files',
+  BulkDataDownload = 'Download',
 }
