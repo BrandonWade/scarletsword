@@ -14,10 +14,14 @@ export enum Navigators {
 export enum ScreenNames {
   BulkDataList = 'BulkDataList',
   BulkDataDownload = 'BulkDataDownload',
+  DeckList = 'DeckList',
+  DeckDetailsEditor = 'DeckDetailsEditor',
 }
 
 export enum ScreenTitles {
   Back = 'Back',
   BulkDataList = 'Data Files',
   BulkDataDownload = 'Download',
+  DeckList = 'My Decks',
+  DeckDetailsEditor = 'Deck Details',
 }

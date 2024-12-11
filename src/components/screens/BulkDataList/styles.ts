@@ -27,13 +27,9 @@ export default StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
-  titleRow: {
+  nameRow: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 500,
   },
 });

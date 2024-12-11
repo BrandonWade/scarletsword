@@ -3,10 +3,11 @@ import dayjs from 'dayjs';
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import styles from './styles';
 import { BulkDataItemProps } from './types';
 import { ScreenNames } from '../../../utils/enums';
 import { StackNavigation } from '../../../utils/navigation';
+import commonStyles from '../../../utils/styles';
+import styles from './styles';
 
 export default function BulkDataListItem({
   name,
@@ -32,8 +33,8 @@ export default function BulkDataListItem({
   return (
     <TouchableOpacity onPress={onPressItem}>
       <View style={styles.bulkDataListItem}>
-        <View style={styles.titleRow}>
-          <Text style={styles.title}>{name}</Text>
+        <View style={styles.nameRow}>
+          <Text style={commonStyles.titleMd}>{name}</Text>
           <Text>{formattedSize}</Text>
         </View>
         <Text>{description}</Text>

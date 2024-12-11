@@ -13,7 +13,7 @@ const cardDataTypes = new Set([
   BulkDataEnum.AllCards,
 ]);
 
-export default function BulkDataList(): React.JSX.Element {
+export default function BulkDataList() {
   const { data } = useListBulkDataQuery({});
 
   return (

@@ -1,5 +1,5 @@
 import { Directory, File, Paths } from 'expo-file-system/next';
-import { insertCards, numberOfCards } from '../db/cards';
+import { upsertCards, numberOfCards } from '../db/cards';
 import { Card } from './scryfall/types';
 
 // Download the bulk data file from scryfall and return the saved file handle
@@ -67,7 +67,7 @@ export async function importFile(file: File, onImportProgress: (number) => void)
       });
 
       if (cards.length >= 1000) {
-        await insertCards(cards);
+        await upsertCards(cards);
         total += cards.length;
         onImportProgress(`${total} cards imported`);
         cards = [];
@@ -87,7 +87,7 @@ export async function importFile(file: File, onImportProgress: (number) => void)
 
   // Save any remaining cards
   if (cards.length) {
-    await insertCards(cards);
+    await upsertCards(cards);
   }
 
   const totalCards = await numberOfCards();
