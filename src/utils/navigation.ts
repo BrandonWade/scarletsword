@@ -19,6 +19,7 @@ export type StackParamsList = {
     colors?: string;
     size?: number;
   };
+  [ScreenNames.Home]: undefined;
 };
 
 export type StackNavigation = NavigationProp<StackParamsList>;

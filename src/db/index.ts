@@ -17,7 +17,7 @@ async function createTables() {
   }
 }
 
-async function init() {
+export async function initDB() {
   try {
     await createTables();
     console.log('Database initialized successfully');
@@ -25,5 +25,3 @@ async function init() {
     console.error(error);
   }
 }
-
-init();

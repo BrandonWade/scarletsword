@@ -16,7 +16,7 @@ export default function Navigator() {
         options={({ route }) => ({
           headerShown: false,
           // Display the name of the previous screen on the back button, otherwise fallback to the first screen visible after the app launches
-          title: getFocusedRouteNameFromRoute(route) ?? ScreenNames.BulkDataList,
+          title: getFocusedRouteNameFromRoute(route) ?? ScreenNames.Home,
         })}
         component={Drawer}
       />

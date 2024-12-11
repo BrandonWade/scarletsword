@@ -4,9 +4,10 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { useNavigation } from '@react-navigation/native';
 import BulkDataList from '../../screens/BulkDataList';
 import DeckList from '../../screens/DeckList';
-import commonStyles from '../../../utils/styles';
+import Home from '../../screens/Home';
 import { Navigators, ScreenNames } from '../../../utils/enums';
 import { StackNavigation, StackParamsList } from '../../../utils/navigation';
+import commonStyles from '../../../utils/styles';
 
 const DrawerStack = createDrawerNavigator<StackParamsList, Navigators.DrawerStack>();
 
@@ -18,7 +19,8 @@ export default function Drawer() {
   };
 
   return (
-    <DrawerStack.Navigator id={Navigators.DrawerStack} initialRouteName={ScreenNames.BulkDataList}>
+    <DrawerStack.Navigator id={Navigators.DrawerStack} initialRouteName={ScreenNames.Home}>
+      <DrawerStack.Screen name={ScreenNames.Home} component={Home} />
       <DrawerStack.Screen
         name={ScreenNames.DeckList}
         options={{

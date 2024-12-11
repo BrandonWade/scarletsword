@@ -16,4 +16,5 @@ export enum ScreenNames {
   BulkDataDownload = 'Download',
   DeckList = 'My Decks',
   DeckDetailsEditor = 'Deck Details',
+  Home = 'Home',
 }
