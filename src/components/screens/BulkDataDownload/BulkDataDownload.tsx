@@ -5,6 +5,7 @@ import { resetDB } from '../../../db/utils';
 import { ScreenNames } from '../../../utils/enums';
 import { downloadFile, importFile } from '../../../utils/helpers';
 import { StackParamsList } from '../../../utils/navigation';
+import commonStyles from '../../../utils/styles';
 import styles from './styles';
 
 export default function BulkDataDownload() {
@@ -36,13 +37,13 @@ export default function BulkDataDownload() {
     <SafeAreaView>
       <View style={styles.container}>
         <View style={styles.content}>
-          <Text style={styles.title}>{name}</Text>
-          <Text style={styles.updatedAt}>Updated on {updatedAt}</Text>
-          <Text style={styles.description}>{description}</Text>
-          <View style={styles.footer}>
-            <Button title={`Download (${size})`} disabled={loading} onPress={onPressDownload} />
-            {details ? <Text style={styles.details}>{details}</Text> : null}
+          <View>
+            <Text style={[commonStyles.titleLg, styles.title]}>{name}</Text>
+            <Text style={styles.updatedAt}>Updated on {updatedAt}</Text>
           </View>
+          <Text style={styles.description}>{description}</Text>
+          <Button title={`Download (${size})`} disabled={loading} onPress={onPressDownload} />
+          {details ? <Text style={styles.details}>{details}</Text> : null}
         </View>
       </View>
     </SafeAreaView>

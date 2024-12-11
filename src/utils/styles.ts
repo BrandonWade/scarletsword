@@ -8,4 +8,8 @@ export default StyleSheet.create({
     fontSize: 18,
     fontWeight: 500,
   },
+  titleLg: {
+    fontSize: 22,
+    fontWeight: 600,
+  },
 });

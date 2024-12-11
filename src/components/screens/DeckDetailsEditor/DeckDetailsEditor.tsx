@@ -1,5 +1,9 @@
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, Text } from 'react-native';
 
 export default function DeckDetailsEditor() {
-  return <SafeAreaView />;
+  return (
+    <SafeAreaView>
+      <Text>Deck Details Editor</Text>
+    </SafeAreaView>
+  );
 }

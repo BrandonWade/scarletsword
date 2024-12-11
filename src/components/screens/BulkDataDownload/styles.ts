@@ -5,22 +5,18 @@ export default StyleSheet.create({
     padding: 15,
   },
   content: {
-    gap: 15,
+    gap: 25,
   },
   title: {
-    fontSize: 24,
-    fontWeight: 600,
     textAlign: 'center',
   },
   updatedAt: {
+    marginTop: 5,
     fontWeight: 500,
     textAlign: 'center',
   },
   description: {
     fontSize: 16,
-  },
-  footer: {
-    marginTop: 15,
   },
   details: {
     textAlign: 'center',

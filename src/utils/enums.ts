@@ -7,19 +7,11 @@ export enum BulkDataEnum {
 }
 
 export enum Navigators {
-  RootDrawer = 'RootDrawer',
+  DrawerStack = 'DrawerStack',
   RootStack = 'RootStack',
 }
 
 export enum ScreenNames {
-  BulkDataList = 'BulkDataList',
-  BulkDataDownload = 'BulkDataDownload',
-  DeckList = 'DeckList',
-  DeckDetailsEditor = 'DeckDetailsEditor',
-}
-
-export enum ScreenTitles {
-  Back = 'Back',
   BulkDataList = 'Data Files',
   BulkDataDownload = 'Download',
   DeckList = 'My Decks',
