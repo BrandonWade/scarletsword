@@ -12,13 +12,13 @@ export type StackParamsList = {
   };
   [ScreenNames.BulkDataList]: undefined;
   [ScreenNames.DeckList]: undefined;
-  [ScreenNames.DeckDetailsEditor]: {
-    id?: string;
-    name?: string;
-    notes?: string;
-    colors?: string;
-    size?: number;
-  };
+  [ScreenNames.DeckDetailsEditor]: Partial<{
+    id: string;
+    name: string;
+    notes: string;
+    colors: string;
+    size: number;
+  }>;
   [ScreenNames.Home]: undefined;
 };
 

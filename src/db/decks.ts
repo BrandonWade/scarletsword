@@ -33,7 +33,7 @@ export async function upsertDeck(deck: Deck) {
   }
 }
 
-async function insertDeck(deck: Deck) {
+async function insertDeck(deck: Partial<Deck>) {
   const db = await SQLite.openDatabaseAsync('scarletsword.db');
   const statement = await db.prepareAsync(`
     INSERT INTO decks (
@@ -89,5 +89,7 @@ async function updateDeck(deck: Deck) {
     });
   } catch (err) {
     console.error('Error creating deck', err);
+  } finally {
+    await statement.finalizeAsync();
   }
 }

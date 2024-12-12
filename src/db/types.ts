@@ -3,11 +3,11 @@ export type Count = {
 };
 
 export type Deck = {
-  id?: string;
+  id: string;
   name: string;
   notes: string;
-  colors?: string;
-  size?: number;
-  created_at?: string;
-  updated_at?: string;
+  colors: string;
+  size: number;
+  created_at: string;
+  updated_at: string;
 };
