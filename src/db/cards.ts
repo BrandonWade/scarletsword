@@ -180,6 +180,9 @@ export async function upsertCards(cards: Card[] = []) {
         });
       } catch (err) {
         console.error('Error inserting card data', err);
+      } finally {
+        await cardStatement.finalizeAsync();
+        await cardFaceStatement.finalizeAsync();
       }
     });
   });

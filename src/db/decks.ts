@@ -14,6 +14,7 @@ export async function listDecks() {
       colors,
       size
       FROM decks
+      ORDER BY updated_at DESC, created_at DESC
       ;`);
 
     return result;
@@ -25,8 +26,38 @@ export async function listDecks() {
 }
 
 export async function upsertDeck(deck: Deck) {
-  const db = await SQLite.openDatabaseAsync('scarletsword.db');
+  if (deck.id) {
+    await insertDeck(deck);
+  } else {
+    await updateDeck(deck);
+  }
+}
 
+async function insertDeck(deck: Deck) {
+  const db = await SQLite.openDatabaseAsync('scarletsword.db');
+  const statement = await db.prepareAsync(`
+    INSERT INTO decks (
+      name,
+      notes
+    ) VALUES (
+      $name,
+      $notes
+    );`);
+
+  try {
+    await statement.executeAsync({
+      $name: deck.name,
+      $notes: deck.notes,
+    });
+  } catch (err) {
+    console.error('Error creating deck', err);
+  } finally {
+    await statement.finalizeAsync();
+  }
+}
+
+async function updateDeck(deck: Deck) {
+  const db = await SQLite.openDatabaseAsync('scarletsword.db');
   const statement = await db.prepareAsync(`
     INSERT INTO decks (
       id,
@@ -50,11 +81,11 @@ export async function upsertDeck(deck: Deck) {
 
   try {
     await statement.executeAsync({
-      $id: deck?.id ?? Crypto.randomUUID(),
+      $id: deck.id ?? Crypto.randomUUID(),
       $name: deck.name,
-      $notes: deck.notes,
-      $colors: deck.colors,
-      $size: deck.size,
+      $notes: deck.notes ?? null,
+      $colors: deck.colors ?? null,
+      $size: deck.size ?? 0,
     });
   } catch (err) {
     console.error('Error creating deck', err);
