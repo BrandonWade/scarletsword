@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, SafeAreaView, Text, View } from 'react-native';
 import { RouteProp, useRoute } from '@react-navigation/native';
-import { resetDB } from '../../../db/utils';
+import { resetTables } from '../../../db';
 import { ScreenNames } from '../../../utils/enums';
 import { downloadFile, importFile } from '../../../utils/helpers';
 import { StackParamsList } from '../../../utils/navigation';
@@ -23,7 +23,7 @@ export default function BulkDataDownload() {
     setDetails('');
 
     // TODO: Remove
-    await resetDB();
+    await resetTables();
 
     setDetails('Downloading file');
     const downloadedFile = await downloadFile(downloadUri, onUpdateDetails);

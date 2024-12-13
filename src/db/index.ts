@@ -1,8 +1,7 @@
 import * as SQLite from 'expo-sqlite';
-
 import { cardsTable, cardFacesTable, decksTable, deckCardsTable } from './schema';
 
-async function createTables() {
+export async function createTables() {
   const db = await SQLite.openDatabaseAsync('scarletsword.db');
 
   try {
@@ -11,17 +10,26 @@ async function createTables() {
     await db.execAsync(decksTable);
     await db.execAsync(deckCardsTable);
     console.log('Successfully created tables');
-  } catch (error) {
-    console.error(error);
-    throw Error('Failed to create tables');
+  } catch (err) {
+    console.error('Error creating tables', err);
   }
 }
 
-export async function initDB() {
+export async function resetTables() {
+  console.log('Resetting tables');
+  const db = await SQLite.openDatabaseAsync('scarletsword.db');
+
   try {
-    await createTables();
-    console.log('Database initialized successfully');
-  } catch (error) {
-    console.error(error);
+    await db.execAsync('DROP TABLE IF EXISTS cards;');
+    await db.execAsync('DROP TABLE IF EXISTS card_faces;');
+    await db.execAsync('DROP TABLE IF EXISTS decks;');
+    await db.execAsync('DROP TABLE IF EXISTS deck_cards;');
+
+    await db.execAsync(cardsTable);
+    await db.execAsync(cardFacesTable);
+    await db.execAsync(decksTable);
+    await db.execAsync(deckCardsTable);
+  } catch (err) {
+    console.log('Error resetting tables', err);
   }
 }

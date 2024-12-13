@@ -194,7 +194,7 @@ export async function numberOfCards() {
   });
 
   try {
-    const result: Count | null = await db.getFirstAsync(`
+    const result: Count = await db.getFirstAsync(`
       SELECT
       COUNT(id) count
       FROM cards

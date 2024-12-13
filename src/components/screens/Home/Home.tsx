@@ -1,15 +1,14 @@
 import React, { useLayoutEffect } from 'react';
 import { SafeAreaView, Text } from 'react-native';
-import { initDB } from '../../../db';
-import styles from './styles';
+import { createTables } from '../../../db';
 
 export default function Home() {
   useLayoutEffect(() => {
-    const init = async () => {
-      await initDB();
+    const initDB = async () => {
+      await createTables();
     };
 
-    init();
+    initDB();
   }, []);
 
   return (
