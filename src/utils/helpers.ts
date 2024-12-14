@@ -4,7 +4,6 @@ import { Card } from './scryfall/types';
 
 // Download the bulk data file from scryfall and return the saved file handle
 export async function downloadFile(downloadUri: string, onDownloadUpdate: (string) => void) {
-  console.log('Retrieving data file');
   const fileName = downloadUri.slice(downloadUri.lastIndexOf('/') + 1);
   const directory = new Directory(Paths.cache, 'bulkdata');
   if (!directory.exists) {
@@ -18,10 +17,8 @@ export async function downloadFile(downloadUri: string, onDownloadUpdate: (strin
     if (!file.exists) {
       onDownloadUpdate('Downloading data file');
       await File.downloadFileAsync(downloadUri, file);
-      console.log('Data file downloaded');
     } else {
       onDownloadUpdate('Using data file downloaded previously');
-      console.log('Using cached data file');
     }
   } catch (err) {
     console.error('Error downloading file', err);
@@ -33,7 +30,6 @@ export async function downloadFile(downloadUri: string, onDownloadUpdate: (strin
 
 // Read the data file in chunks and import it into the database
 export async function importFile(file: File, onImportProgress: (number) => void) {
-  console.log('Importing data');
   const decoder = new TextDecoder();
   let cards: Card[] = [];
   let fragment = '';
@@ -92,5 +88,4 @@ export async function importFile(file: File, onImportProgress: (number) => void)
 
   const totalCards = await numberOfCards();
   onImportProgress(`Data import complete\n${totalCards} cards in database`);
-  console.log('Import complete');
 }

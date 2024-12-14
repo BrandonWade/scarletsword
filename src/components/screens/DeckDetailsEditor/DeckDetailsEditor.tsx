@@ -2,11 +2,13 @@ import { useFormik } from 'formik';
 import React from 'react';
 import { Button, SafeAreaView, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import styles from './styles';
 import TextAreaField from '../../common/TextAreaField';
 import TextInputField from '../../common/TextInputField';
 import { upsertDeck } from '../../../db/decks';
+import { Deck } from '../../../db/types';
+import commonStyles from '../../../utils/styles';
 import { StackNavigation } from '../../../utils/navigation';
-import styles from './styles';
 
 export default function DeckDetailsEditor() {
   const navigation = useNavigation<StackNavigation>();
@@ -17,7 +19,7 @@ export default function DeckDetailsEditor() {
     },
     enableReinitialize: true,
     onSubmit: async () => {
-      await upsertDeck(values);
+      await upsertDeck(values as Deck);
 
       // TODO: Navigate to DeckBuilder instead of going back to the DeckList
       navigation.goBack();
@@ -26,7 +28,7 @@ export default function DeckDetailsEditor() {
 
   return (
     <SafeAreaView>
-      <View style={styles.container}>
+      <View style={[commonStyles.screenContainer, styles.form]}>
         <TextInputField
           label='Name'
           value={values.name}

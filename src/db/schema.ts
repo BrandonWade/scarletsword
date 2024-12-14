@@ -79,3 +79,11 @@ CREATE TABLE IF NOT EXISTS deck_cards (
   FOREIGN KEY (card_id) REFERENCES cards(id) ON DELETE CASCADE
 );
 `;
+
+export const dataImportsTable = `
+CREATE TABLE IF NOT EXISTS data_imports (
+  type TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT DEFAULT NULL
+);
+`;

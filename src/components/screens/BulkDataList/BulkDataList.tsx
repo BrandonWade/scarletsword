@@ -4,6 +4,7 @@ import { useListBulkDataQuery } from '../../../api/bulkdata';
 import { BulkDataEnum } from '../../../utils/enums';
 import { BulkDataType } from '../../../utils/types';
 import BulkDataListItem from './BulkDataListItem';
+import commonStyles from '../../../utils/styles';
 import styles from './styles';
 
 const cardDataTypes = new Set([
@@ -18,8 +19,11 @@ export default function BulkDataList() {
 
   return (
     <SafeAreaView>
-      <ScrollView style={styles.scrollContainer} contentInsetAdjustmentBehavior='automatic'>
-        <View style={styles.bulkDataList}>
+      <ScrollView
+        style={[commonStyles.screenContainer, styles.scrollContainer]}
+        contentInsetAdjustmentBehavior='automatic'
+      >
+        <View style={styles.list}>
           {(data?.data || []).map((bulkData: BulkDataType) => {
             if (!cardDataTypes.has(bulkData.type)) {
               return null;
@@ -28,6 +32,7 @@ export default function BulkDataList() {
             return (
               <BulkDataListItem
                 key={bulkData?.id}
+                type={bulkData?.type}
                 name={bulkData?.name}
                 size={bulkData?.size}
                 description={bulkData?.description}

@@ -3,13 +3,15 @@ import dayjs from 'dayjs';
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import styles from './styles';
 import { BulkDataItemProps } from './types';
+import Box from '../../common/Box';
 import { ScreenNames } from '../../../utils/enums';
 import { StackNavigation } from '../../../utils/navigation';
 import commonStyles from '../../../utils/styles';
-import styles from './styles';
 
 export default function BulkDataListItem({
+  type,
   name,
   size,
   description,
@@ -22,6 +24,7 @@ export default function BulkDataListItem({
 
   const onPressItem = () => {
     navigation.navigate(ScreenNames.BulkDataDownload, {
+      type,
       name,
       size: formattedSize,
       description,
@@ -32,14 +35,14 @@ export default function BulkDataListItem({
 
   return (
     <TouchableOpacity onPress={onPressItem}>
-      <View style={styles.bulkDataListItem}>
+      <Box style={styles.listItem}>
         <View style={styles.nameRow}>
           <Text style={commonStyles.titleMd}>{name}</Text>
           <Text>{formattedSize}</Text>
         </View>
         <Text>{description}</Text>
         <Text>Updated on {formattedUpdatedAt}</Text>
-      </View>
+      </Box>
     </TouchableOpacity>
   );
 }

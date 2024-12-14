@@ -1,3 +1,11 @@
+import { BulkDataEnum } from '../utils/enums';
+
+export type DataImport = {
+  type: BulkDataEnum;
+  created_at: string;
+  updated_at: string;
+};
+
 export type Count = {
   count: number;
 };

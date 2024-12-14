@@ -1,9 +1,10 @@
 import { NavigationProp } from '@react-navigation/native';
-import { Navigators, ScreenNames } from './enums';
+import { BulkDataEnum, Navigators, ScreenNames } from './enums';
 
 export type StackParamsList = {
   [Navigators.DrawerStack]: undefined;
   [ScreenNames.BulkDataDownload]: {
+    type: BulkDataEnum;
     name: string;
     size: string;
     description: string;

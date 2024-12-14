@@ -1,6 +1,9 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
+  screenContainer: {
+    padding: 15,
+  },
   headerButton: {
     paddingHorizontal: 15,
   },
