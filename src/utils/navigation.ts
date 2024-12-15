@@ -1,4 +1,4 @@
-import { NavigationProp } from '@react-navigation/native';
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { BulkDataEnum, Navigators, ScreenNames } from './enums';
 
 export type StackParamsList = {
@@ -13,6 +13,9 @@ export type StackParamsList = {
   };
   [ScreenNames.BulkDataList]: undefined;
   [ScreenNames.DeckList]: undefined;
+  [ScreenNames.DeckBuilder]: {
+    name: string;
+  };
   [ScreenNames.DeckDetailsEditor]: Partial<{
     id: string;
     name: string;
@@ -23,4 +26,4 @@ export type StackParamsList = {
   [ScreenNames.Home]: undefined;
 };
 
-export type StackNavigation = NavigationProp<StackParamsList>;
+export type StackNavigation = NavigationProp<StackParamsList | ParamListBase>;

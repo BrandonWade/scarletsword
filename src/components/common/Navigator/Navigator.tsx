@@ -3,7 +3,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Navigators, ScreenNames } from '../../../utils/enums';
 import { StackParamsList } from '../../../utils/navigation';
 import BulkDataDownload from '../../screens/BulkDataDownload';
-import DeckDetails from '../../screens/DeckDetailsEditor';
+import DeckBuilder from '../../screens/DeckBuilder';
+import DeckDetailsEditor from '../../screens/DeckDetailsEditor';
 import Drawer from './Drawer';
 
 const RootStack = createNativeStackNavigator<StackParamsList, Navigators.RootStack>();
@@ -21,7 +22,8 @@ export default function Navigator() {
         component={Drawer}
       />
       <RootStack.Screen name={ScreenNames.BulkDataDownload} component={BulkDataDownload} />
-      <RootStack.Screen name={ScreenNames.DeckDetailsEditor} component={DeckDetails} />
+      <RootStack.Screen name={ScreenNames.DeckDetailsEditor} component={DeckDetailsEditor} />
+      <RootStack.Screen name={ScreenNames.DeckBuilder} component={DeckBuilder} />
     </RootStack.Navigator>
   );
 }
