@@ -1,7 +1,8 @@
+import * as Crypto from 'expo-crypto';
 import { useFormik } from 'formik';
 import React from 'react';
 import { Button, SafeAreaView, View } from 'react-native';
-import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { ParamListBase, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import styles from './styles';
 import TextAreaField from '../../common/TextAreaField';
@@ -9,19 +10,23 @@ import TextInputField from '../../common/TextInputField';
 import { upsertDeck } from '../../../db/decks';
 import { Deck } from '../../../db/types';
 import { ScreenNames } from '../../../utils/enums';
+import { StackParamsList } from '../../../utils/navigation';
 import commonStyles from '../../../utils/styles';
 
 export default function DeckDetailsEditor() {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+  const route = useRoute<RouteProp<StackParamsList, ScreenNames.DeckBuilder>>();
+  const { id, name, notes } = route.params || {};
+
   const { values, setFieldValue, handleSubmit } = useFormik({
     initialValues: {
-      name: '',
-      notes: '',
+      id: id || Crypto.randomUUID(),
+      name: name || '',
+      notes: notes || '',
     },
-    enableReinitialize: true,
     onSubmit: async () => {
       await upsertDeck(values as Deck);
-      navigation.replace(ScreenNames.DeckBuilder, { name: values.name });
+      navigation.replace(ScreenNames.DeckBuilder, { ...values });
     },
   });
 
@@ -38,7 +43,7 @@ export default function DeckDetailsEditor() {
           value={values.notes}
           onChangeText={(value) => setFieldValue('notes', value)}
         />
-        <Button title='Create' onPress={() => handleSubmit()} />
+        <Button title={id ? 'Update' : 'Create'} onPress={() => handleSubmit()} />
       </View>
     </SafeAreaView>
   );

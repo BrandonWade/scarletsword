@@ -6,11 +6,11 @@ import { StackNavigation } from '../../../utils/navigation';
 import commonStyles from '../../../utils/styles';
 import styles from './styles';
 
-export default function DeckListItem({ name, colors, size }: DeckListItemProps) {
+export default function DeckListItem({ id, name, notes, colors, size }: DeckListItemProps) {
   const navigation = useNavigation<StackNavigation>();
 
   const onPress = () => {
-    navigation.navigate(ScreenNames.DeckBuilder, { name });
+    navigation.navigate(ScreenNames.DeckBuilder, { id, name, notes });
   };
 
   return (

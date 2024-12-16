@@ -1,11 +1,11 @@
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Drawer from './Drawer';
 import { Navigators, ScreenNames } from '../../../utils/enums';
 import { StackParamsList } from '../../../utils/navigation';
 import BulkDataDownload from '../../screens/BulkDataDownload';
 import DeckBuilder from '../../screens/DeckBuilder';
 import DeckDetailsEditor from '../../screens/DeckDetailsEditor';
-import Drawer from './Drawer';
 
 const RootStack = createNativeStackNavigator<StackParamsList, Navigators.RootStack>();
 

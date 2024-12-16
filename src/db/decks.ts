@@ -1,4 +1,3 @@
-import * as Crypto from 'expo-crypto';
 import * as SQLite from 'expo-sqlite';
 import { Deck } from './types';
 
@@ -26,10 +25,10 @@ export async function listDecks() {
 }
 
 export async function upsertDeck(deck: Deck) {
-  if (deck.id) {
-    await insertDeck(deck);
-  } else {
+  if (deck?.id) {
     await updateDeck(deck);
+  } else {
+    await insertDeck(deck);
   }
 }
 
@@ -37,15 +36,18 @@ async function insertDeck(deck: Partial<Deck>) {
   const db = await SQLite.openDatabaseAsync('scarletsword.db');
   const statement = await db.prepareAsync(`
     INSERT INTO decks (
+      id,
       name,
       notes
     ) VALUES (
+      $id,
       $name,
       $notes
     );`);
 
   try {
     await statement.executeAsync({
+      $id: deck.id,
       $name: deck.name,
       $notes: deck.notes,
     });
@@ -81,7 +83,7 @@ async function updateDeck(deck: Deck) {
 
   try {
     await statement.executeAsync({
-      $id: deck.id ?? Crypto.randomUUID(),
+      $id: deck.id,
       $name: deck.name,
       $notes: deck.notes ?? null,
       $colors: deck.colors ?? null,

@@ -14,14 +14,14 @@ export type StackParamsList = {
   [ScreenNames.BulkDataList]: undefined;
   [ScreenNames.DeckList]: undefined;
   [ScreenNames.DeckBuilder]: {
+    id: string;
     name: string;
+    notes: string;
   };
   [ScreenNames.DeckDetailsEditor]: Partial<{
     id: string;
     name: string;
     notes: string;
-    colors: string;
-    size: number;
   }>;
   [ScreenNames.Home]: undefined;
 };

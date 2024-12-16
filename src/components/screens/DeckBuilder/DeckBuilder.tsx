@@ -1,14 +1,31 @@
-import { SafeAreaView, Text } from 'react-native';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { Entypo } from '@expo/vector-icons';
+import { SafeAreaView, Text, TouchableOpacity } from 'react-native';
+import { ParamListBase, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ScreenNames } from '../../../utils/enums';
 import { StackParamsList } from '../../../utils/navigation';
 
 export default function DeckBuilder() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const route = useRoute<RouteProp<StackParamsList, ScreenNames.DeckBuilder>>();
-  const { name } = route.params || {};
+  const { id, name, notes } = route.params || {};
 
-  navigation.setOptions({ title: name || ScreenNames.DeckBuilder });
+  const onPressEditDeckDetails = () => {
+    navigation.navigate(ScreenNames.DeckDetailsEditor, {
+      id,
+      name,
+      notes,
+    });
+  };
+
+  navigation.setOptions({
+    title: name || ScreenNames.DeckBuilder,
+    headerRight: () => (
+      <TouchableOpacity onPress={onPressEditDeckDetails}>
+        <Entypo name='edit' size={20} />
+      </TouchableOpacity>
+    ),
+  });
 
   return (
     <SafeAreaView>

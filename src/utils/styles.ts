@@ -4,9 +4,6 @@ export default StyleSheet.create({
   screenContainer: {
     padding: 15,
   },
-  headerButton: {
-    paddingHorizontal: 15,
-  },
   titleMd: {
     fontSize: 18,
     fontWeight: 500,
