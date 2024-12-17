@@ -17,7 +17,26 @@ export default function DeckDetailsEditor() {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const route = useRoute<RouteProp<StackParamsList, ScreenNames.DeckBuilder>>();
   const { id, name, notes } = route.params || {};
+  const { values, setFieldValue, handleSubmit } = useFormik({
+    initialValues: {
+      id: id || Crypto.randomUUID(),
+      name: name || '',
+      notes: notes || '',
+    },
+    onSubmit: async () => {
+      await upsertDeck(values as Deck);
+      navigation.replace(ScreenNames.DeckBuilder, { ...values });
+    },
+  });
   const isEditing = id !== undefined;
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Button title={isEditing ? 'Save' : 'Create'} onPress={() => handleSubmit()} />
+      ),
+    });
+  }, []);
 
   useLayoutEffect(() => {
     if (!isEditing) {
@@ -35,18 +54,6 @@ export default function DeckDetailsEditor() {
     });
   }, [isEditing]);
 
-  const { values, setFieldValue, handleSubmit } = useFormik({
-    initialValues: {
-      id: id || Crypto.randomUUID(),
-      name: name || '',
-      notes: notes || '',
-    },
-    onSubmit: async () => {
-      await upsertDeck(values as Deck);
-      navigation.replace(ScreenNames.DeckBuilder, { ...values });
-    },
-  });
-
   return (
     <SafeAreaView>
       <View style={[commonStyles.screenContainer, styles.form]}>
@@ -60,7 +67,6 @@ export default function DeckDetailsEditor() {
           value={values.notes}
           onChangeText={(value) => setFieldValue('notes', value)}
         />
-        <Button title={isEditing ? 'Update' : 'Create'} onPress={() => handleSubmit()} />
       </View>
     </SafeAreaView>
   );
