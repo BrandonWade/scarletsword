@@ -24,6 +24,8 @@ export type StackParamsList = {
     notes: string;
   }>;
   [ScreenNames.Home]: undefined;
+  [ScreenNames.Preview]: undefined;
+  [ScreenNames.Search]: undefined;
 };
 
 export type StackNavigation = NavigationProp<StackParamsList | ParamListBase>;

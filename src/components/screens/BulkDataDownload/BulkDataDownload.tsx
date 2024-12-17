@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Button, SafeAreaView, Text, View } from 'react-native';
 import { RouteProp, useRoute } from '@react-navigation/native';
+import styles from './styles';
 import { recordDataImport } from '../../../db/dataImports';
 import { ScreenNames } from '../../../utils/enums';
 import { downloadFile, importFile } from '../../../utils/helpers';
 import { StackParamsList } from '../../../utils/navigation';
 import commonStyles from '../../../utils/styles';
-import styles from './styles';
 
 export default function BulkDataDownload() {
   const [loading, setLoading] = useState(false);

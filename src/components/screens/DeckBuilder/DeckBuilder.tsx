@@ -1,8 +1,9 @@
 import { Entypo } from '@expo/vector-icons';
 import { useLayoutEffect } from 'react';
-import { SafeAreaView, Text, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { ParamListBase, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import Tabs from './components/Tabs';
 import { ScreenNames } from '../../../utils/enums';
 import { StackParamsList } from '../../../utils/navigation';
 
@@ -30,9 +31,5 @@ export default function DeckBuilder() {
     });
   }, [route.params]);
 
-  return (
-    <SafeAreaView>
-      <Text>Deck Builder</Text>
-    </SafeAreaView>
-  );
+  return <Tabs />;
 }

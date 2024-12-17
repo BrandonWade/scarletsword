@@ -9,6 +9,7 @@ export enum BulkDataEnum {
 export enum Navigators {
   DrawerStack = 'DrawerStack',
   RootStack = 'RootStack',
+  TabStack = 'TabStack',
 }
 
 export enum ScreenNames {
@@ -18,4 +19,6 @@ export enum ScreenNames {
   DeckList = 'My Decks',
   DeckDetailsEditor = 'Deck Details',
   Home = 'Home',
+  Preview = 'Preview',
+  Search = 'Search',
 }
