@@ -1,6 +1,6 @@
 import * as Crypto from 'expo-crypto';
 import { useFormik } from 'formik';
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
 import { Button, SafeAreaView, View } from 'react-native';
 import { ParamListBase, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -18,6 +18,22 @@ export default function DeckDetailsEditor() {
   const route = useRoute<RouteProp<StackParamsList, ScreenNames.DeckBuilder>>();
   const { id, name, notes } = route.params || {};
   const isEditing = id !== undefined;
+
+  useLayoutEffect(() => {
+    if (!isEditing) {
+      return;
+    }
+
+    navigation.setOptions({
+      animationTypeForReplace: 'pop',
+      headerLeft: () => (
+        <Button
+          title='Cancel'
+          onPress={() => navigation.replace(ScreenNames.DeckBuilder, route.params)}
+        />
+      ),
+    });
+  }, [isEditing]);
 
   const { values, setFieldValue, handleSubmit } = useFormik({
     initialValues: {
