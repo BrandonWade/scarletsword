@@ -1,4 +1,5 @@
 import { Entypo } from '@expo/vector-icons';
+import { useLayoutEffect } from 'react';
 import { SafeAreaView, Text, TouchableOpacity } from 'react-native';
 import { ParamListBase, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -11,21 +12,23 @@ export default function DeckBuilder() {
   const { id, name, notes } = route.params || {};
 
   const onPressEditDeckDetails = () => {
-    navigation.navigate(ScreenNames.DeckDetailsEditor, {
+    navigation.replace(ScreenNames.DeckDetailsEditor, {
       id,
       name,
       notes,
     });
   };
 
-  navigation.setOptions({
-    title: name || ScreenNames.DeckBuilder,
-    headerRight: () => (
-      <TouchableOpacity onPress={onPressEditDeckDetails}>
-        <Entypo name='edit' size={20} />
-      </TouchableOpacity>
-    ),
-  });
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: name || ScreenNames.DeckBuilder,
+      headerRight: () => (
+        <TouchableOpacity onPress={onPressEditDeckDetails}>
+          <Entypo name='edit' size={20} />
+        </TouchableOpacity>
+      ),
+    });
+  }, [route.params]);
 
   return (
     <SafeAreaView>

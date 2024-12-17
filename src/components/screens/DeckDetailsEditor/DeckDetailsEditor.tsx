@@ -17,6 +17,7 @@ export default function DeckDetailsEditor() {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const route = useRoute<RouteProp<StackParamsList, ScreenNames.DeckBuilder>>();
   const { id, name, notes } = route.params || {};
+  const isEditing = id !== undefined;
 
   const { values, setFieldValue, handleSubmit } = useFormik({
     initialValues: {
@@ -43,7 +44,7 @@ export default function DeckDetailsEditor() {
           value={values.notes}
           onChangeText={(value) => setFieldValue('notes', value)}
         />
-        <Button title={id ? 'Update' : 'Create'} onPress={() => handleSubmit()} />
+        <Button title={isEditing ? 'Update' : 'Create'} onPress={() => handleSubmit()} />
       </View>
     </SafeAreaView>
   );
