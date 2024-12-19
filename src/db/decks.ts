@@ -95,3 +95,22 @@ async function updateDeck(deck: Deck) {
     await statement.finalizeAsync();
   }
 }
+
+export async function deleteDeck(deckID: string) {
+  const db = await SQLite.openDatabaseAsync('scarletsword.db');
+
+  try {
+    await db.runAsync(
+      `
+      DELETE
+      FROM decks
+      WHERE id = $id
+      ;`,
+      {
+        $id: deckID,
+      }
+    );
+  } catch (err) {
+    console.error('Error deleting deck', err);
+  }
+}

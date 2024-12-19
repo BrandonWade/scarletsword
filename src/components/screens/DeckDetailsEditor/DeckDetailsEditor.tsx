@@ -7,9 +7,9 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import styles from './styles';
 import TextAreaField from '../../common/TextAreaField';
 import TextInputField from '../../common/TextInputField';
-import { upsertDeck } from '../../../db/decks';
+import { upsertDeck, deleteDeck } from '../../../db/decks';
 import { Deck } from '../../../db/types';
-import { ScreenNames } from '../../../utils/enums';
+import { Navigators, ScreenNames } from '../../../utils/enums';
 import { StackParamsList } from '../../../utils/navigation';
 import commonStyles from '../../../utils/styles';
 
@@ -54,6 +54,12 @@ export default function DeckDetailsEditor() {
     });
   }, [isEditing]);
 
+  const onPressDelete = async () => {
+    // TODO: Display confirmation prompt
+    await deleteDeck(values.id);
+    navigation.replace(Navigators.DrawerStack, { screen: ScreenNames.DeckList });
+  };
+
   return (
     <SafeAreaView>
       <View style={[commonStyles.screenContainer, styles.form]}>
@@ -68,6 +74,7 @@ export default function DeckDetailsEditor() {
           onChangeText={(value) => setFieldValue('notes', value)}
         />
       </View>
+      {isEditing ? <Button title='Delete' onPress={onPressDelete} /> : null}
     </SafeAreaView>
   );
 }
