@@ -31,7 +31,8 @@
     "react-native-reanimated": "^3.16.3",
     "react-native-safe-area-context": "^5.0.0",
     "react-native-screens": "^4.3.0",
-    "react-redux": "^9.1.2"
+    "react-redux": "^9.1.2",
+    "yup": "^1.6.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

@@ -4,6 +4,7 @@ import React, { useLayoutEffect } from 'react';
 import { Button, SafeAreaView, View } from 'react-native';
 import { ParamListBase, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { validationSchema } from './validation';
 import styles from './styles';
 import TextAreaField from '../../common/TextAreaField';
 import TextInputField from '../../common/TextInputField';
@@ -17,12 +18,13 @@ export default function DeckDetailsEditor() {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const route = useRoute<RouteProp<StackParamsList, ScreenNames.DeckBuilder>>();
   const { id, name, notes } = route.params || {};
-  const { values, setFieldValue, handleSubmit } = useFormik({
+  const { values, errors, setFieldValue, handleSubmit, isValid } = useFormik({
     initialValues: {
       id: id || Crypto.randomUUID(),
-      name: name || '',
+      name: name || 'Untitled Deck',
       notes: notes || '',
     },
+    validationSchema,
     onSubmit: async () => {
       await upsertDeck(values as Deck);
       navigation.replace(ScreenNames.DeckBuilder, { ...values });
@@ -33,10 +35,14 @@ export default function DeckDetailsEditor() {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <Button title={isEditing ? 'Save' : 'Create'} onPress={() => handleSubmit()} />
+        <Button
+          title={isEditing ? 'Save' : 'Create'}
+          disabled={!isValid}
+          onPress={() => handleSubmit()}
+        />
       ),
     });
-  }, []);
+  }, [isValid]);
 
   useLayoutEffect(() => {
     if (!isEditing) {
@@ -66,11 +72,13 @@ export default function DeckDetailsEditor() {
         <TextInputField
           label='Name'
           value={values.name}
+          description={errors.name}
           onChangeText={(value) => setFieldValue('name', value)}
         />
         <TextAreaField
           label='Notes'
           value={values.notes}
+          description={errors.notes}
           onChangeText={(value) => setFieldValue('notes', value)}
         />
       </View>
