@@ -27,7 +27,7 @@ export default function DeckDetailsEditor() {
     validationSchema,
     onSubmit: async () => {
       await upsertDeck(values as Deck);
-      navigation.replace(ScreenNames.DeckBuilder, { ...values });
+      navigation.goBack();
     },
   });
   const isEditing = id !== undefined;
@@ -43,22 +43,6 @@ export default function DeckDetailsEditor() {
       ),
     });
   }, [isValid]);
-
-  useLayoutEffect(() => {
-    if (!isEditing) {
-      return;
-    }
-
-    navigation.setOptions({
-      animationTypeForReplace: 'pop',
-      headerLeft: () => (
-        <Button
-          title='Cancel'
-          onPress={() => navigation.replace(ScreenNames.DeckBuilder, route.params)}
-        />
-      ),
-    });
-  }, [isEditing]);
 
   const onPressDelete = async () => {
     // TODO: Display confirmation prompt

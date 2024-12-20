@@ -5,6 +5,9 @@ export default StyleSheet.create({
     height: '100%',
   },
   deckListItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     padding: 15,
     borderBottomColor: '#797e7f44',
     borderBottomWidth: 1,
