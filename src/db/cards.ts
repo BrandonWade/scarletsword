@@ -232,3 +232,25 @@ function getCardFaces(card: Card) {
     },
   ];
 }
+
+export async function searchCards(name: string) {
+  const db = await SQLite.openDatabaseAsync('scarletsword.db');
+
+  try {
+    const result = await db.getAllAsync(
+      `
+      SELECT
+      *
+      FROM cards
+      WHERE name LIKE $name
+      ;`,
+      {
+        $name: `%${name}%`,
+      }
+    );
+
+    return result;
+  } catch (err) {
+    console.error('Error searching cards', err);
+  }
+}
