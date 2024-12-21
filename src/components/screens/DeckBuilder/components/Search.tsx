@@ -1,22 +1,40 @@
 import { useFormik } from 'formik';
+import { useLayoutEffect } from 'react';
 import { Button, ScrollView, View } from 'react-native';
-import TextInputField from '../../../common/TextInputField';
-import commonStyles from '../../../../utils/styles';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import styles from '../styles';
+import TextInputField from '../../../common/TextInputField';
 import { searchCards } from '../../../../db/cards';
+import { ScreenNames } from '../../../../utils/enums';
+import { StackNavigation } from '../../../../utils/navigation';
+import commonStyles from '../../../../utils/styles';
 
 export default function Search() {
+  const navigation = useNavigation<StackNavigation>();
+  const isFocused = useIsFocused();
   const { values, setFieldValue, handleSubmit } = useFormik({
     initialValues: {
       name: '',
     },
     onSubmit: async () => {
-      const result = await searchCards(values.name);
-
-      // TODO: Display results
-      console.log('Results: ', JSON.stringify(result, null, 2));
+      const results = await searchCards(values.name);
+      navigation.navigate(ScreenNames.Results, {
+        results,
+      });
     },
   });
+
+  useLayoutEffect(() => {
+    navigation.getParent().setOptions({
+      headerRight: () => {
+        if (!isFocused) {
+          return null;
+        }
+
+        return <Button title='Search' onPress={() => handleSubmit()} />;
+      },
+    });
+  }, [isFocused]);
 
   return (
     <View style={commonStyles.screenContainer}>
@@ -28,7 +46,6 @@ export default function Search() {
             description='Any words that appear in the name of the card.'
             onChangeText={(value) => setFieldValue('name', value)}
           />
-          <Button title='Search' onPress={() => handleSubmit()} />
         </View>
       </ScrollView>
     </View>

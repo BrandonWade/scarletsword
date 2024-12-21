@@ -1,5 +1,6 @@
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { BulkDataEnum, Navigators, ScreenNames } from './enums';
+import { Card } from './scryfall/types';
 
 export type StackParamsList = {
   [Navigators.DrawerStack]: undefined;
@@ -25,6 +26,9 @@ export type StackParamsList = {
   }>;
   [ScreenNames.Home]: undefined;
   [ScreenNames.Preview]: undefined;
+  [ScreenNames.Results]: {
+    results: Card[];
+  };
   [ScreenNames.Search]: undefined;
 };
 
