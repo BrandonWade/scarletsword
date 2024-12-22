@@ -5,6 +5,7 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
 import styles from '../styles';
 import TextInputField from '../../../common/TextInputField';
 import { searchCards } from '../../../../db/cards';
+import { Card } from '../../../../db/types';
 import { ScreenNames } from '../../../../utils/enums';
 import { StackNavigation } from '../../../../utils/navigation';
 import commonStyles from '../../../../utils/styles';
@@ -17,7 +18,7 @@ export default function Search() {
       name: '',
     },
     onSubmit: async () => {
-      const results = await searchCards(values.name);
+      const results: Card[] = await searchCards(values.name);
       navigation.navigate(ScreenNames.Results, {
         results,
       });

@@ -1,8 +1,8 @@
 import * as SQLite from 'expo-sqlite';
-import { Card } from '../utils/scryfall/types';
-import { Count } from './types';
+import { Card as ScryfallCard } from '../utils/scryfall/types';
+import { Card, Count } from './types';
 
-export async function upsertCards(cards: Card[] = []) {
+export async function upsertCards(cards: ScryfallCard[] = []) {
   const db = await SQLite.openDatabaseAsync('scarletsword.db');
 
   await db.withExclusiveTransactionAsync(async (tx) => {
@@ -208,7 +208,7 @@ export async function numberOfCards() {
   return 0;
 }
 
-function getCardFaces(card: Card) {
+function getCardFaces(card: ScryfallCard) {
   if (card?.card_faces && card.card_faces.length > 0) {
     return card.card_faces;
   }
@@ -233,23 +233,43 @@ function getCardFaces(card: Card) {
   ];
 }
 
-export async function searchCards(name: string) {
+export async function searchCards(name: string): Promise<Card[]> {
   const db = await SQLite.openDatabaseAsync('scarletsword.db');
 
   try {
-    const result = await db.getAllAsync(
+    return db.getAllAsync(
       `
       SELECT
-      *
-      FROM cards
-      WHERE name LIKE $name
+      JSON_GROUP_ARRAY(
+        JSON_OBJECT(
+          'card_id', f.card_id,
+          'face_index', f.face_index,
+          'name', f.name,
+          'mana_cost', f.mana_cost,
+          'is_white', f.is_white,
+          'is_blue', f.is_blue,
+          'is_black', f.is_black,
+          'is_red', f.is_red,
+          'is_green', f.is_green,
+          'type_line', f.type_line,
+          'oracle_text', f.oracle_text,
+          'flavor_text', f.flavor_text,
+          'image_uri', f.image_uri,
+          'power', f.power,
+          'toughness', f.toughness,
+          'loyalty', f.loyalty
+        )
+      ) faces,
+      c.*
+      FROM cards c
+      INNER JOIN card_faces f ON f.card_id = c.id
+      WHERE c.name LIKE $name
+      GROUP BY c.id
       ;`,
       {
         $name: `%${name}%`,
       }
     );
-
-    return result;
   } catch (err) {
     console.error('Error searching cards', err);
   }

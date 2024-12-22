@@ -1,6 +1,6 @@
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { BulkDataEnum, Navigators, ScreenNames } from './enums';
-import { Card } from './scryfall/types';
+import { Card } from '../db/types';
 
 export type StackParamsList = {
   [Navigators.DrawerStack]: undefined;
