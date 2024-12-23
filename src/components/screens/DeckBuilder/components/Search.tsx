@@ -43,6 +43,9 @@ export default function Search() {
         <View style={styles.searchContainer}>
           <TextInputField
             label='Name'
+            autoCapitalize='none'
+            autoComplete='off'
+            autoCorrect={false}
             value={values.name}
             description='Any words that appear in the name of the card.'
             onChangeText={(value) => setFieldValue('name', value)}
