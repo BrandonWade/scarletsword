@@ -17,7 +17,6 @@ export type StackParamsList = {
   [ScreenNames.DeckBuilder]: {
     id: string;
     name: string;
-    notes: string;
   };
   [ScreenNames.DeckDetailsEditor]: Partial<{
     id: string;
@@ -25,11 +24,16 @@ export type StackParamsList = {
     notes: string;
   }>;
   [ScreenNames.Home]: undefined;
-  [ScreenNames.Preview]: undefined;
+  [ScreenNames.Preview]: {
+    deckID: string;
+  };
   [ScreenNames.Results]: {
+    deckID: string;
     results: Card[];
   };
-  [ScreenNames.Search]: undefined;
+  [ScreenNames.Search]: {
+    deckID: string;
+  };
 };
 
 export type StackNavigation = NavigationProp<StackParamsList | ParamListBase>;

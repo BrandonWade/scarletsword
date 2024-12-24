@@ -8,7 +8,7 @@ import { StackParamsList } from '../../../utils/navigation';
 export default function DeckBuilder() {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const route = useRoute<RouteProp<StackParamsList, ScreenNames.DeckBuilder>>();
-  const { name } = route.params || {};
+  const { id, name } = route.params || {};
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -16,5 +16,5 @@ export default function DeckBuilder() {
     });
   }, [name]);
 
-  return <Tabs />;
+  return <Tabs deckID={id} />;
 }

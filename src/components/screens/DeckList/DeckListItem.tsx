@@ -14,7 +14,7 @@ export default function DeckListItem({ id, name, notes, colors, size }: DeckList
   };
 
   const onPress = () => {
-    navigation.navigate(ScreenNames.DeckBuilder, { id, name, notes });
+    navigation.navigate(ScreenNames.DeckBuilder, { id, name });
   };
 
   return (

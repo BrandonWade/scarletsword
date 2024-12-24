@@ -114,3 +114,32 @@ export async function deleteDeck(deckID: string) {
     console.error('Error deleting deck', err);
   }
 }
+
+export async function upsertDeckCards(deckID: string, cardID: string) {
+  const db = await SQLite.openDatabaseAsync('scarletsword.db');
+  const statement = await db.prepareAsync(`
+    INSERT INTO deck_cards (
+      deck_id,
+      card_id,
+      count
+    ) VALUES (
+      $deck_id,
+      $card_id,
+      $count
+    ) ON CONFLICT (deck_id, card_id) DO UPDATE SET
+      count = count + 1,
+      updated_at = DATETIME('NOW')
+    ;`);
+
+  try {
+    await statement.executeAsync({
+      $deck_id: deckID,
+      $card_id: cardID,
+      $count: 1,
+    });
+  } catch (err) {
+    console.error('Error upserting deck cards', err);
+  } finally {
+    await statement.finalizeAsync();
+  }
+}

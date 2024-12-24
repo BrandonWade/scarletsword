@@ -7,12 +7,12 @@ import { StackParamsList } from '../../../../utils/navigation';
 
 const TabStack = createBottomTabNavigator<StackParamsList, Navigators.TabStack>();
 
-export default function Tabs() {
+export default function Tabs({ deckID }) {
   return (
     <TabStack.Navigator id={Navigators.TabStack} screenOptions={{ headerShown: false }}>
-      <TabStack.Screen name={ScreenNames.Search} component={Search} />
-      <TabStack.Screen name={ScreenNames.Results} component={Results} />
-      <TabStack.Screen name={ScreenNames.Preview} component={Preview} />
+      <TabStack.Screen name={ScreenNames.Search} initialParams={{ deckID }} component={Search} />
+      <TabStack.Screen name={ScreenNames.Results} initialParams={{ deckID }} component={Results} />
+      <TabStack.Screen name={ScreenNames.Preview} initialParams={{ deckID }} component={Preview} />
     </TabStack.Navigator>
   );
 }

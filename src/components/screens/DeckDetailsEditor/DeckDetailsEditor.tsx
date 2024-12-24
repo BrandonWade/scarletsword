@@ -16,7 +16,7 @@ import commonStyles from '../../../utils/styles';
 
 export default function DeckDetailsEditor() {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
-  const route = useRoute<RouteProp<StackParamsList, ScreenNames.DeckBuilder>>();
+  const route = useRoute<RouteProp<StackParamsList, ScreenNames.DeckDetailsEditor>>();
   const { id, name, notes } = route.params || {};
   const { values, errors, setFieldValue, handleSubmit, isValid } = useFormik({
     initialValues: {

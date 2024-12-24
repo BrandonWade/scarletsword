@@ -68,13 +68,12 @@ CREATE TABLE IF NOT EXISTS decks (
 
 export const deckCardsTable = `
 CREATE TABLE IF NOT EXISTS deck_cards (
-  id TEXT NOT NULL,
   deck_id TEXT NOT NULL,
   card_id TEXT NOT NULL,
   count TEXT NOT NULL DEFAULT 0,
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TEXT DEFAULT NULL,
-  PRIMARY KEY (id),
+  UNIQUE (deck_id, card_id),
   FOREIGN KEY (deck_id) REFERENCES decks(id) ON DELETE CASCADE,
   FOREIGN KEY (card_id) REFERENCES cards(id) ON DELETE CASCADE
 );
