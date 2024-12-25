@@ -1,5 +1,5 @@
 import * as SQLite from 'expo-sqlite';
-import { Deck } from './types';
+import { Card, Deck } from './types';
 
 export async function listDecks() {
   const db = await SQLite.openDatabaseAsync('scarletsword.db');
@@ -7,13 +7,19 @@ export async function listDecks() {
   try {
     const result: Deck[] = await db.getAllAsync(`
       SELECT
-      id,
-      name,
-      notes,
-      colors,
-      size
-      FROM decks
-      ORDER BY updated_at DESC, created_at DESC
+      d.id,
+      d.name,
+      d.colors,
+      COALESCE(c.size, 0) size
+      FROM decks d
+      LEFT JOIN (
+        SELECT
+        c.deck_id,
+        SUM(c.count) size
+        FROM deck_cards c
+        GROUP BY c.deck_id
+      ) c ON d.id = c.deck_id
+      ORDER BY d.updated_at DESC, d.created_at DESC
       ;`);
 
     return result;
@@ -32,7 +38,7 @@ export async function upsertDeck(deck: Deck) {
   }
 }
 
-async function insertDeck(deck: Partial<Deck>) {
+async function insertDeck(deck: Deck) {
   const db = await SQLite.openDatabaseAsync('scarletsword.db');
   const statement = await db.prepareAsync(`
     INSERT INTO decks (
@@ -65,19 +71,16 @@ async function updateDeck(deck: Deck) {
       id,
       name,
       notes,
-      colors,
-      size
+      colors
     ) VALUES (
       $id,
       $name,
       $notes,
-      $colors,
-      $size
+      $colors
     ) ON CONFLICT (id) DO UPDATE SET
       name = EXCLUDED.name,
       notes = EXCLUDED.notes,
       colors = EXCLUDED.colors,
-      size = EXCLUDED.size,
       updated_at = DATETIME('NOW')
     ;`);
 
@@ -87,7 +90,6 @@ async function updateDeck(deck: Deck) {
       $name: deck.name,
       $notes: deck.notes ?? null,
       $colors: deck.colors ?? null,
-      $size: deck.size ?? 0,
     });
   } catch (err) {
     console.error('Error creating deck', err);
@@ -142,4 +144,32 @@ export async function upsertDeckCards(deckID: string, cardID: string) {
   } finally {
     await statement.finalizeAsync();
   }
+}
+
+export async function getDeckCards(deckID: string) {
+  const db = await SQLite.openDatabaseAsync('scarletsword.db');
+
+  try {
+    const result: Card[] = await db.getAllAsync(
+      `
+      SELECT
+      d.*,
+      c.name,
+      c.mana_cost,
+      c.cmc
+      FROM deck_cards d
+      INNER JOIN cards c ON c.id = d.card_id
+      WHERE d.deck_id = $deck_id
+      ;`,
+      {
+        $deck_id: deckID,
+      }
+    );
+
+    return result;
+  } catch (err) {
+    console.error('Error getting deck cards', err);
+  }
+
+  return [];
 }

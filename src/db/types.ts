@@ -20,6 +20,20 @@ export type Deck = {
   updated_at: string;
 };
 
+export type DeckCard = {
+  deck_id: string;
+  card_id: string;
+  count: number;
+  created_at: string;
+  updated_at: string;
+};
+
+export type DeckListItem = DeckCard & {
+  name: string;
+  mana_cost: string;
+  cmc: number;
+};
+
 export type CardFace = {
   card_id: string;
   face_index: number;

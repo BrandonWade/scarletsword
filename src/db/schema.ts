@@ -59,7 +59,6 @@ CREATE TABLE IF NOT EXISTS decks (
   name TEXT NOT NULL,
   notes TEXT DEFAULT NULL,
   colors TEXT DEFAULT NULL,
-  size INTEGER NOT NULL DEFAULT 0,
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TEXT DEFAULT NULL,
   PRIMARY KEY (id)
@@ -70,7 +69,7 @@ export const deckCardsTable = `
 CREATE TABLE IF NOT EXISTS deck_cards (
   deck_id TEXT NOT NULL,
   card_id TEXT NOT NULL,
-  count TEXT NOT NULL DEFAULT 0,
+  count INTEGER NOT NULL DEFAULT 0,
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TEXT DEFAULT NULL,
   UNIQUE (deck_id, card_id),

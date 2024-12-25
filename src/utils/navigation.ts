@@ -18,11 +18,11 @@ export type StackParamsList = {
     id: string;
     name: string;
   };
-  [ScreenNames.DeckDetailsEditor]: Partial<{
+  [ScreenNames.DeckDetailsEditor]: {
     id: string;
     name: string;
     notes: string;
-  }>;
+  };
   [ScreenNames.Home]: undefined;
   [ScreenNames.Preview]: {
     deckID: string;
