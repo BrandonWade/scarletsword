@@ -10,8 +10,8 @@ export default StyleSheet.create({
     marginBottom: 15,
   },
   image: {
-    width: 300,
-    height: 400,
+    width: 322,
+    height: 449,
     borderRadius: 10,
   },
   sectionContainer: {
