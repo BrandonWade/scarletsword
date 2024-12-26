@@ -28,6 +28,6 @@ export async function resetTables() {
 
     await createTables();
   } catch (err) {
-    console.log('Error resetting tables', err);
+    console.error('Error resetting tables', err);
   }
 }

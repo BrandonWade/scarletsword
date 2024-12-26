@@ -15,6 +15,7 @@ export enum Navigators {
 export enum ScreenNames {
   BulkDataList = 'Data Files',
   BulkDataDownload = 'Download',
+  Card = 'Card',
   DeckBuilder = 'Deck Builder',
   DeckList = 'My Decks',
   DeckDetailsEditor = 'Deck Details',

@@ -274,3 +274,45 @@ export async function searchCards(name: string): Promise<Card[]> {
     console.error('Error searching cards', err);
   }
 }
+
+export async function getCard(cardID: string): Promise<Card> {
+  const db = await SQLite.openDatabaseAsync('scarletsword.db');
+
+  try {
+    return db.getFirstAsync(
+      `
+      SELECT
+      JSON_GROUP_ARRAY(
+        JSON_OBJECT(
+          'card_id', f.card_id,
+          'face_index', f.face_index,
+          'name', f.name,
+          'mana_cost', f.mana_cost,
+          'is_white', f.is_white,
+          'is_blue', f.is_blue,
+          'is_black', f.is_black,
+          'is_red', f.is_red,
+          'is_green', f.is_green,
+          'type_line', f.type_line,
+          'oracle_text', f.oracle_text,
+          'flavor_text', f.flavor_text,
+          'image_uri', f.image_uri,
+          'power', f.power,
+          'toughness', f.toughness,
+          'loyalty', f.loyalty
+        )
+      ) faces,
+      c.*
+      FROM cards c
+      INNER JOIN card_faces f ON f.card_id = c.id
+      WHERE c.id = $id
+      GROUP BY c.id
+      ;`,
+      {
+        $id: cardID,
+      }
+    );
+  } catch (err) {
+    console.error('Error getting card', err);
+  }
+}

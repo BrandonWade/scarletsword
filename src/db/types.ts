@@ -54,7 +54,7 @@ export type CardFace = {
 };
 
 export type Card = {
-  faces: CardFace[];
+  faces: string;
   id: string;
   oracle_id: string;
   lang: string;

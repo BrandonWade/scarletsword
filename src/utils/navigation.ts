@@ -13,6 +13,9 @@ export type StackParamsList = {
     downloadUri: string;
   };
   [ScreenNames.BulkDataList]: undefined;
+  [ScreenNames.Card]: {
+    cardID: string;
+  };
   [ScreenNames.DeckList]: undefined;
   [ScreenNames.DeckBuilder]: {
     id: string;
