@@ -9,6 +9,7 @@ export default StyleSheet.create({
   image: {
     width: cardWidth - padding * 2,
     height: 255,
-    borderRadius: 12,
+    borderRadius: 8,
+    overflow: 'hidden',
   },
 });
