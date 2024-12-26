@@ -1,9 +1,10 @@
 import { useLayoutEffect, useState } from 'react';
-import { ScrollView, Text } from 'react-native';
+import { FlatList } from 'react-native';
 import { RouteProp, useIsFocused, useRoute } from '@react-navigation/native';
-import { getDeckCards } from '../../../../db/decks';
-import { ScreenNames } from '../../../../utils/enums';
-import { StackParamsList } from '../../../../utils/navigation';
+import { getDeckCards } from '../../../../../db/decks';
+import { ScreenNames } from '../../../../../utils/enums';
+import { StackParamsList } from '../../../../../utils/navigation';
+import CardRow from './CardRow';
 
 export default function Preview() {
   const route = useRoute<RouteProp<StackParamsList, ScreenNames.Preview>>();
@@ -21,8 +22,17 @@ export default function Preview() {
   }, [isFocused]);
 
   return (
-    <ScrollView>
-      <Text>{JSON.stringify(deckCards, null, 2)}</Text>
-    </ScrollView>
+    <FlatList
+      data={deckCards}
+      renderItem={({ item }) => (
+        <CardRow
+          key={item.card_id}
+          cardID={item.card_id}
+          count={item.count}
+          name={item.name}
+          manaCost={item.mana_cost}
+        />
+      )}
+    />
   );
 }

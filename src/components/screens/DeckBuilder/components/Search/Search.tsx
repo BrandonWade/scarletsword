@@ -2,13 +2,13 @@ import { useFormik } from 'formik';
 import { useLayoutEffect } from 'react';
 import { Button, ScrollView, View } from 'react-native';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
-import styles from '../styles';
-import TextInputField from '../../../common/TextInputField';
-import { searchCards } from '../../../../db/cards';
-import { Card } from '../../../../db/types';
-import { ScreenNames } from '../../../../utils/enums';
-import { StackNavigation } from '../../../../utils/navigation';
-import commonStyles from '../../../../utils/styles';
+import styles from '../../styles';
+import TextInputField from '../../../../common/TextInputField';
+import { searchCards } from '../../../../../db/cards';
+import { Card } from '../../../../../db/types';
+import { ScreenNames } from '../../../../../utils/enums';
+import { StackNavigation } from '../../../../../utils/navigation';
+import commonStyles from '../../../../../utils/styles';
 
 export default function Search() {
   const navigation = useNavigation<StackNavigation>();
