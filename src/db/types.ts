@@ -29,9 +29,7 @@ export type DeckCard = {
 };
 
 export type DeckListItem = DeckCard & {
-  name: string;
-  mana_cost: string;
-  cmc: number;
+  faces: string;
 };
 
 export type CardFace = {

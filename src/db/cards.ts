@@ -265,6 +265,7 @@ export async function searchCards(name: string): Promise<Card[]> {
       INNER JOIN card_faces f ON f.card_id = c.id
       WHERE c.name LIKE $name
       GROUP BY c.id
+      ORDER BY c.name
       ;`,
       {
         $name: `%${name}%`,

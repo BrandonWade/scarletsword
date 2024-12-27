@@ -154,11 +154,21 @@ export async function getDeckCards(deckID: string) {
       `
       SELECT
       d.*,
-      c.name,
-      c.mana_cost,
-      c.cmc
+      f.faces
       FROM deck_cards d
       INNER JOIN cards c ON c.id = d.card_id
+      INNER JOIN (
+        SELECT
+        f.card_id,
+        JSON_GROUP_ARRAY(
+          JSON_OBJECT(
+            'name', name,
+            'mana_cost', mana_cost
+          )
+        ) faces
+        FROM card_faces f
+        GROUP BY f.card_id
+      ) f ON c.id = f.card_id
       WHERE d.deck_id = $deck_id
       ;`,
       {
@@ -172,4 +182,26 @@ export async function getDeckCards(deckID: string) {
   }
 
   return [];
+}
+
+export async function deleteCard(deckID: string, cardID: string) {
+  const db = await SQLite.openDatabaseAsync('scarletsword.db');
+
+  try {
+    await db.runAsync(
+      `
+      DELETE
+      FROM deck_cards
+      WHERE deck_id = $deck_id
+      AND card_id = $card_id
+      ;
+      ;`,
+      {
+        $deck_id: deckID,
+        $card_id: cardID,
+      }
+    );
+  } catch (err) {
+    console.error('Error getting deck cards', err);
+  }
 }

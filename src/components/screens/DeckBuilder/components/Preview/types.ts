@@ -1,6 +1,6 @@
-export type CardRowProps = {
-  cardID: string;
-  count: number;
-  name: string;
-  manaCost: string;
+import { DeckListItem } from '../../../../../db/types';
+
+export type DeckCardListItemProps = {
+  card: DeckListItem;
+  onRemoveCard: (string) => void;
 };
