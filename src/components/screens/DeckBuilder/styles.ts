@@ -12,5 +12,6 @@ export default StyleSheet.create({
     flexWrap: 'wrap',
     width: '100%',
     columnGap: 5,
+    rowGap: 5,
   },
 });

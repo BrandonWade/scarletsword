@@ -162,7 +162,7 @@ export async function upsertCards(cards: ScryfallCard[] = []) {
             $cmc: cardFace?.cmc ?? null,
             $defense: cardFace?.defense ?? null,
             $flavor_text: cardFace?.flavor_text ?? null,
-            $image_uri: cardFace?.image_uris?.normal ?? null,
+            $image_uri: cardFace?.image_uris?.normal ?? card?.image_uris?.normal ?? null,
             $is_white: cardFace?.colors?.includes('W') ?? null,
             $is_blue: cardFace?.colors?.includes('U') ?? null,
             $is_black: cardFace?.colors?.includes('B') ?? null,
