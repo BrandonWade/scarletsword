@@ -1,7 +1,7 @@
 import * as Crypto from 'expo-crypto';
 import { useFormik } from 'formik';
 import React, { useLayoutEffect } from 'react';
-import { Button, SafeAreaView, View } from 'react-native';
+import { Alert, Button, SafeAreaView, View } from 'react-native';
 import { ParamListBase, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { validationSchema } from './validation';
@@ -45,9 +45,20 @@ export default function DeckDetailsEditor() {
   }, [isValid]);
 
   const onPressDelete = async () => {
-    // TODO: Display confirmation prompt
-    await deleteDeck(values.id);
-    navigation.replace(Navigators.DrawerStack, { screen: ScreenNames.DeckList });
+    Alert.alert('Delete Deck', 'Are you sure you want to delete this deck?', [
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+      {
+        text: 'Delete',
+        onPress: async () => {
+          await deleteDeck(values.id);
+          navigation.replace(Navigators.DrawerStack, { screen: ScreenNames.DeckList });
+        },
+        style: 'destructive',
+      },
+    ]);
   };
 
   return (
