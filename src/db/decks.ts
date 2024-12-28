@@ -162,6 +162,7 @@ export async function getDeckCards(deckID: string) {
         f.card_id,
         JSON_GROUP_ARRAY(
           JSON_OBJECT(
+            'face_index', face_index,
             'name', name,
             'mana_cost', mana_cost
           )

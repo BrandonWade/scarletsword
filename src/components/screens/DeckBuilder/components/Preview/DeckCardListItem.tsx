@@ -32,7 +32,7 @@ export default function DeckCardListItem({ card, onRemoveCard }: DeckCardListIte
         <View style={styles.faceInfoList}>
           {faces.map((face) => {
             return (
-              <View style={styles.faceInfo}>
+              <View key={face.face_index} style={styles.faceInfo}>
                 <Text style={styles.manaCost}>{face.mana_cost}</Text>
                 <Text style={styles.name}>{face.name}</Text>
               </View>

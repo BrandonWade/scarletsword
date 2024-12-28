@@ -37,7 +37,7 @@ export default function Card() {
   }, [isFocused]);
 
   const renderText = (text) => {
-    return text.split('\n').map((line) => <Text>{line}</Text>);
+    return text.split('\n').map((line, i) => <Text key={i}>{line}</Text>);
   };
 
   return (
