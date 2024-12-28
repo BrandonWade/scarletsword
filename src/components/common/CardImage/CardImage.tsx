@@ -13,15 +13,25 @@ export default function CardImage({ style, card, onPress, onLongPress }: CardIma
     onLongPress?.(card.id);
   };
 
-  return (
-    <TouchableOpacity onPress={onPressImage} onLongPress={onLongPressImage}>
-      <View style={[styles.image, style]}>
-        <Image
-          style={[styles.image, style]}
-          source={{ uri: front?.image_uri }}
-          resizeMode='stretch'
-        />
-      </View>
-    </TouchableOpacity>
+  const withPressHandler = (children) => {
+    if (!onPress && !onLongPress) {
+      return children;
+    }
+
+    return (
+      <TouchableOpacity onPress={onPressImage} onLongPress={onLongPressImage}>
+        {children}
+      </TouchableOpacity>
+    );
+  };
+
+  return withPressHandler(
+    <View style={[styles.image, style]}>
+      <Image
+        style={[styles.image, style]}
+        source={{ uri: front?.image_uri }}
+        resizeMode='stretch'
+      />
+    </View>
   );
 }
