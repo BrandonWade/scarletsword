@@ -36,6 +36,10 @@ export default function Card() {
     loadCardInfo();
   }, [isFocused]);
 
+  const renderText = (text) => {
+    return text.split('\n').map((line) => <Text>{line}</Text>);
+  };
+
   return (
     <ScrollView>
       <View style={[commonStyles.screenContainer, styles.modalContent]}>
@@ -51,7 +55,9 @@ export default function Card() {
                   <Text style={[styles.sectionItem, styles.type]}>{face.type_line}</Text>
                 ) : null}
                 {face?.oracle_text ? (
-                  <Text style={styles.sectionItem}>{face.oracle_text}</Text>
+                  <View style={[styles.sectionItem, styles.text]}>
+                    {renderText(face.oracle_text)}
+                  </View>
                 ) : null}
                 {face?.flavor_text ? (
                   <Text style={styles.sectionItem}>{face.flavor_text}</Text>

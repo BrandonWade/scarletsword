@@ -37,6 +37,9 @@ export default StyleSheet.create({
   type: {
     fontSize: 14,
   },
+  text: {
+    rowGap: 15,
+  },
   statLine: {
     fontWeight: 600,
   },
