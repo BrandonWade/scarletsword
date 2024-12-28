@@ -29,9 +29,8 @@ export default function Preview() {
   return (
     <FlatList
       data={deckCards}
-      renderItem={({ item }) => (
-        <DeckCardListItem key={item.card_id} card={item} onRemoveCard={onRemoveCard} />
-      )}
+      keyExtractor={(row) => row.card_id}
+      renderItem={({ item }) => <DeckCardListItem card={item} onRemoveCard={onRemoveCard} />}
     />
   );
 }
