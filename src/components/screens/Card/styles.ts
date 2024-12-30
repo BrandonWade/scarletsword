@@ -5,8 +5,8 @@ export default StyleSheet.create({
     marginBottom: 40,
   },
   imageContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+    alignItems: 'center',
+    rowGap: 15,
     marginBottom: 15,
   },
   image: {

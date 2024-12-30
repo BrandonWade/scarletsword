@@ -16,7 +16,7 @@ export default function Results() {
   };
 
   const onLongPressResult = (cardID) => {
-    navigation.navigate(ScreenNames.Card, { cardID });
+    navigation.navigate(ScreenNames.Card, { cardID, deckID });
   };
 
   return (

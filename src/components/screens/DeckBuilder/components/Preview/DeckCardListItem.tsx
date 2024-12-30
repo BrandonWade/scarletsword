@@ -5,7 +5,7 @@ import { DeckCardListItemProps } from './types';
 import { ScreenNames } from '../../../../../utils/enums';
 import { StackNavigation } from '../../../../../utils/navigation';
 
-export default function DeckCardListItem({ card, onRemoveCard }: DeckCardListItemProps) {
+export default function DeckCardListItem({ deckID, card, onRemoveCard }: DeckCardListItemProps) {
   const navigation = useNavigation<StackNavigation>();
   const faces = card?.faces ? JSON.parse(card.faces) : [];
 
@@ -25,7 +25,7 @@ export default function DeckCardListItem({ card, onRemoveCard }: DeckCardListIte
 
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate(ScreenNames.Card, { cardID: card.card_id })}
+      onPress={() => navigation.navigate(ScreenNames.Card, { cardID: card.card_id, deckID })}
     >
       <View style={styles.contentContainer}>
         <Text style={styles.count}>{card.count}</Text>

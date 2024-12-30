@@ -15,6 +15,7 @@ export type StackParamsList = {
   [ScreenNames.BulkDataList]: undefined;
   [ScreenNames.Card]: {
     cardID: string;
+    deckID: string;
   };
   [ScreenNames.DeckList]: undefined;
   [ScreenNames.DeckBuilder]: {

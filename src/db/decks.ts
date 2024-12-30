@@ -1,5 +1,5 @@
 import * as SQLite from 'expo-sqlite';
-import { Card, Deck } from './types';
+import { Card, Deck, DeckCard } from './types';
 
 export async function listDecks() {
   const db = await SQLite.openDatabaseAsync('scarletsword.db');
@@ -185,7 +185,60 @@ export async function getDeckCards(deckID: string) {
   return [];
 }
 
-export async function deleteCard(deckID: string, cardID: string) {
+export async function getDeckCard(deckID: string, cardID: string) {
+  const db = await SQLite.openDatabaseAsync('scarletsword.db');
+
+  try {
+    const result: DeckCard = await db.getFirstAsync(
+      `
+      SELECT
+      d.*
+      FROM deck_cards d
+      WHERE d.deck_id = $deck_id
+      AND d.card_id = $card_id
+      ;`,
+      {
+        $deck_id: deckID,
+        $card_id: cardID,
+      }
+    );
+
+    return result;
+  } catch (err) {
+    console.error('Error getting deck card', err);
+  }
+}
+
+export async function upsertDeckCardCount(deckID: string, cardID: string, count: number) {
+  const db = await SQLite.openDatabaseAsync('scarletsword.db');
+  const statement = await db.prepareAsync(`
+    INSERT INTO deck_cards (
+      deck_id,
+      card_id,
+      count
+    ) VALUES (
+      $deck_id,
+      $card_id,
+      $count
+    ) ON CONFLICT (deck_id, card_id) DO UPDATE SET
+      count = $count,
+      updated_at = DATETIME('NOW')
+    ;`);
+
+  try {
+    await statement.executeAsync({
+      $deck_id: deckID,
+      $card_id: cardID,
+      $count: count,
+    });
+  } catch (err) {
+    console.error('Error upserting deck card counts', err);
+  } finally {
+    await statement.finalizeAsync();
+  }
+}
+
+export async function deleteDeckCard(deckID: string, cardID: string) {
   const db = await SQLite.openDatabaseAsync('scarletsword.db');
 
   try {

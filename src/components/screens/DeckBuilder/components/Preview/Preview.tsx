@@ -1,7 +1,7 @@
 import { useLayoutEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 import { RouteProp, useIsFocused, useRoute } from '@react-navigation/native';
-import { deleteCard, getDeckCards } from '../../../../../db/decks';
+import { deleteDeckCard, getDeckCards } from '../../../../../db/decks';
 import { ScreenNames } from '../../../../../utils/enums';
 import { StackParamsList } from '../../../../../utils/navigation';
 import DeckCardListItem from './DeckCardListItem';
@@ -22,7 +22,7 @@ export default function Preview() {
   }, [isFocused]);
 
   const onRemoveCard = async (cardID) => {
-    await deleteCard(deckID, cardID);
+    await deleteDeckCard(deckID, cardID);
     await getCards();
   };
 
@@ -30,7 +30,9 @@ export default function Preview() {
     <FlatList
       data={deckCards}
       keyExtractor={(row) => row.card_id}
-      renderItem={({ item }) => <DeckCardListItem card={item} onRemoveCard={onRemoveCard} />}
+      renderItem={({ item }) => (
+        <DeckCardListItem deckID={deckID} card={item} onRemoveCard={onRemoveCard} />
+      )}
     />
   );
 }
