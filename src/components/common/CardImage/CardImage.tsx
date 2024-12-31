@@ -1,9 +1,31 @@
-import { Image, TouchableOpacity, View } from 'react-native';
+import { Entypo } from '@expo/vector-icons';
+import { useEffect, useState } from 'react';
+import { Animated, Text, TouchableOpacity, View } from 'react-native';
+import {
+  forwardTransform,
+  reverseTransform,
+  forwardTransformAnimation,
+  reverseTransformAnimation,
+} from './animations/transform';
 import styles from './styles';
 import { CardImageProps } from './types';
 
 export default function CardImage({ style, card, onPress, onLongPress }: CardImageProps) {
-  const [front] = card?.faces ? JSON.parse(card.faces) : []; // TODO: Add support for back
+  const [isTransformed, setIsTransformed] = useState(false);
+  const [front, back] = card?.faces ? JSON.parse(card.faces) : [];
+  const canTransform = ['transform', 'double_faced_token', 'modal_dfc'].includes(card?.layout);
+
+  useEffect(() => {
+    if (isTransformed) {
+      forwardTransformAnimation.start();
+    } else {
+      reverseTransformAnimation.start();
+    }
+  }, [isTransformed]);
+
+  const onPressTransform = () => {
+    setIsTransformed(!isTransformed);
+  };
 
   const onPressImage = () => {
     onPress?.(card.id);
@@ -25,13 +47,53 @@ export default function CardImage({ style, card, onPress, onLongPress }: CardIma
     );
   };
 
-  return withPressHandler(
-    <View style={[styles.image, style]}>
-      <Image
-        style={[styles.image, style]}
-        source={{ uri: front?.image_uri }}
-        resizeMode='stretch'
-      />
+  return (
+    <View style={styles.container}>
+      {withPressHandler(
+        <Animated.View style={[styles.image, style]}>
+          <Animated.Image
+            style={[
+              styles.image,
+              canTransform
+                ? {
+                    transform: [{ rotateY: forwardTransform }],
+                    backfaceVisibility: 'hidden',
+                  }
+                : null,
+              style,
+            ]}
+            source={{ uri: front?.image_uri }}
+            resizeMode='stretch'
+          />
+          {back ? (
+            <Animated.Image
+              style={[
+                styles.image,
+                canTransform
+                  ? {
+                      position: 'absolute',
+                      transform: [{ rotateY: reverseTransform }],
+                      backfaceVisibility: 'hidden',
+                    }
+                  : null,
+                style,
+              ]}
+              source={{ uri: back?.image_uri }}
+              resizeMode='stretch'
+            />
+          ) : null}
+        </Animated.View>
+      )}
+      <View style={styles.actions}>
+        {canTransform && (
+          <TouchableOpacity onPress={onPressTransform}>
+            <View style={styles.actionButton}>
+              <Entypo name='cycle' size={16} />
+              <Text>Transform</Text>
+            </View>
+          </TouchableOpacity>
+        )}
+      </View>
     </View>
   );
 }
