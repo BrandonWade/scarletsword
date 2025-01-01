@@ -1,6 +1,7 @@
 import { Entypo } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
 import { Animated, Text, TouchableOpacity, View } from 'react-native';
+import { forwardFlip, forwardFlipAnimation, reverseFlipAnimation } from './animations/flip';
 import {
   forwardTransform,
   reverseTransform,
@@ -11,9 +12,19 @@ import styles from './styles';
 import { CardImageProps } from './types';
 
 export default function CardImage({ style, card, onPress, onLongPress }: CardImageProps) {
+  const [isFlipped, setIsFlipped] = useState(false);
   const [isTransformed, setIsTransformed] = useState(false);
   const [front, back] = card?.faces ? JSON.parse(card.faces) : [];
+  const canFlip = ['flip'].includes(card?.layout);
   const canTransform = ['transform', 'double_faced_token', 'modal_dfc'].includes(card?.layout);
+
+  useEffect(() => {
+    if (isFlipped) {
+      forwardFlipAnimation.start();
+    } else {
+      reverseFlipAnimation.start();
+    }
+  }, [isFlipped]);
 
   useEffect(() => {
     if (isTransformed) {
@@ -22,6 +33,10 @@ export default function CardImage({ style, card, onPress, onLongPress }: CardIma
       reverseTransformAnimation.start();
     }
   }, [isTransformed]);
+
+  const onPressFlip = () => {
+    setIsFlipped(!isFlipped);
+  };
 
   const onPressTransform = () => {
     setIsTransformed(!isTransformed);
@@ -50,10 +65,15 @@ export default function CardImage({ style, card, onPress, onLongPress }: CardIma
   return (
     <View style={styles.container}>
       {withPressHandler(
-        <Animated.View style={[styles.image, style]}>
+        <Animated.View>
           <Animated.Image
             style={[
               styles.image,
+              canFlip
+                ? {
+                    transform: [{ rotateZ: forwardFlip }],
+                  }
+                : null,
               canTransform
                 ? {
                     transform: [{ rotateY: forwardTransform }],
@@ -65,7 +85,7 @@ export default function CardImage({ style, card, onPress, onLongPress }: CardIma
             source={{ uri: front?.image_uri }}
             resizeMode='stretch'
           />
-          {back ? (
+          {canTransform && back ? (
             <Animated.Image
               style={[
                 styles.image,
@@ -85,10 +105,18 @@ export default function CardImage({ style, card, onPress, onLongPress }: CardIma
         </Animated.View>
       )}
       <View style={styles.actions}>
+        {canFlip && (
+          <TouchableOpacity onPress={onPressFlip}>
+            <View style={styles.actionButton}>
+              <Entypo name='cycle' size={16} />
+              <Text>Flip</Text>
+            </View>
+          </TouchableOpacity>
+        )}
         {canTransform && (
           <TouchableOpacity onPress={onPressTransform}>
             <View style={styles.actionButton}>
-              <Entypo name='cycle' size={16} />
+              <Entypo name='retweet' size={16} />
               <Text>Transform</Text>
             </View>
           </TouchableOpacity>
