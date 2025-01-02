@@ -3,6 +3,12 @@ import { useEffect, useState } from 'react';
 import { Animated, Text, TouchableOpacity, View } from 'react-native';
 import { forwardFlip, forwardFlipAnimation, reverseFlipAnimation } from './animations/flip';
 import {
+  forwardRotateCWRotate,
+  forwardRotateCWScale,
+  forwardRotateCWAnimation,
+  reverseRotateCWAnimation,
+} from './animations/rotateCW';
+import {
   forwardTransform,
   reverseTransform,
   forwardTransformAnimation,
@@ -13,9 +19,11 @@ import { CardImageProps } from './types';
 
 export default function CardImage({ style, card, onPress, onLongPress }: CardImageProps) {
   const [isFlipped, setIsFlipped] = useState(false);
+  const [isRotatedCW, setIsRotatedCW] = useState(false);
   const [isTransformed, setIsTransformed] = useState(false);
   const [front, back] = card?.faces ? JSON.parse(card.faces) : [];
   const canFlip = ['flip'].includes(card?.layout);
+  const canRotateCW = ['split'].includes(card?.layout);
   const canTransform = ['transform', 'double_faced_token', 'modal_dfc'].includes(card?.layout);
 
   useEffect(() => {
@@ -27,6 +35,14 @@ export default function CardImage({ style, card, onPress, onLongPress }: CardIma
   }, [isFlipped]);
 
   useEffect(() => {
+    if (isRotatedCW) {
+      forwardRotateCWAnimation.start();
+    } else {
+      reverseRotateCWAnimation.start();
+    }
+  }, [isRotatedCW]);
+
+  useEffect(() => {
     if (isTransformed) {
       forwardTransformAnimation.start();
     } else {
@@ -36,6 +52,10 @@ export default function CardImage({ style, card, onPress, onLongPress }: CardIma
 
   const onPressFlip = () => {
     setIsFlipped(!isFlipped);
+  };
+
+  const onPressRotateCW = () => {
+    setIsRotatedCW(!isRotatedCW);
   };
 
   const onPressTransform = () => {
@@ -74,6 +94,14 @@ export default function CardImage({ style, card, onPress, onLongPress }: CardIma
                     transform: [{ rotateZ: forwardFlip }],
                   }
                 : null,
+              canRotateCW
+                ? {
+                    transform: [
+                      { rotateZ: forwardRotateCWRotate },
+                      { scale: forwardRotateCWScale },
+                    ],
+                  }
+                : null,
               canTransform
                 ? {
                     transform: [{ rotateY: forwardTransform }],
@@ -89,13 +117,11 @@ export default function CardImage({ style, card, onPress, onLongPress }: CardIma
             <Animated.Image
               style={[
                 styles.image,
-                canTransform
-                  ? {
-                      position: 'absolute',
-                      transform: [{ rotateY: reverseTransform }],
-                      backfaceVisibility: 'hidden',
-                    }
-                  : null,
+                {
+                  position: 'absolute',
+                  transform: [{ rotateY: reverseTransform }],
+                  backfaceVisibility: 'hidden',
+                },
                 style,
               ]}
               source={{ uri: back?.image_uri }}
@@ -110,6 +136,14 @@ export default function CardImage({ style, card, onPress, onLongPress }: CardIma
             <View style={styles.actionButton}>
               <Entypo name='cycle' size={16} />
               <Text>Flip</Text>
+            </View>
+          </TouchableOpacity>
+        )}
+        {canRotateCW && (
+          <TouchableOpacity onPress={onPressRotateCW}>
+            <View style={styles.actionButton}>
+              <Entypo name='cw' size={16} />
+              <Text>Rotate</Text>
             </View>
           </TouchableOpacity>
         )}
