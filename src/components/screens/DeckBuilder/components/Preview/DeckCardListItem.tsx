@@ -4,6 +4,7 @@ import styles from './styles';
 import { DeckCardListItemProps } from './types';
 import { ScreenNames } from '../../../../../utils/enums';
 import { StackNavigation } from '../../../../../utils/navigation';
+import { getSymbols } from '../../../../../utils/symbols';
 
 export default function DeckCardListItem({ deckID, card, onRemoveCard }: DeckCardListItemProps) {
   const navigation = useNavigation<StackNavigation>();
@@ -33,7 +34,7 @@ export default function DeckCardListItem({ deckID, card, onRemoveCard }: DeckCar
           {faces.map((face) => {
             return (
               <View key={face.face_index} style={styles.faceInfo}>
-                <Text style={styles.manaCost}>{face.mana_cost}</Text>
+                <View style={styles.manaCost}>{getSymbols(face.mana_cost)}</View>
                 <Text style={styles.name}>{face.name}</Text>
               </View>
             );

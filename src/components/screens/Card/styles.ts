@@ -29,16 +29,27 @@ export default StyleSheet.create({
     borderTopWidth: 1,
     padding: 10,
   },
+  nameRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    rowGap: 5,
+    padding: 10,
+  },
   name: {
     fontSize: 16,
     fontWeight: 600,
-    padding: 10,
+    marginRight: 10,
   },
   type: {
     fontSize: 14,
   },
-  text: {
+  textBlock: {
     rowGap: 15,
+  },
+  text: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   statLine: {
     fontWeight: 600,

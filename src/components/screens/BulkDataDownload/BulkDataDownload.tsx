@@ -4,7 +4,7 @@ import { RouteProp, useRoute } from '@react-navigation/native';
 import styles from './styles';
 import { recordDataImport } from '../../../db/dataImports';
 import { ScreenNames } from '../../../utils/enums';
-import { downloadFile, importFile } from '../../../utils/helpers';
+import { downloadFile, importFile } from '../../../utils/files';
 import { StackParamsList } from '../../../utils/navigation';
 import commonStyles from '../../../utils/styles';
 

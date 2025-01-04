@@ -10,6 +10,7 @@ import { CardFace, Card as DBCard, DeckCard } from '../../../db/types';
 import { ScreenNames } from '../../../utils/enums';
 import { StackNavigation, StackParamsList } from '../../../utils/navigation';
 import commonStyles from '../../../utils/styles';
+import { getSymbols } from '../../../utils/symbols';
 
 export default function Card() {
   const navigation = useNavigation<StackNavigation>();
@@ -51,7 +52,14 @@ export default function Card() {
   };
 
   const renderText = (text) => {
-    return text.split('\n').map((line, i) => <Text key={i}>{line}</Text>);
+    return text
+      .split('\n')
+      .map((line, i) => (
+        <Text key={i} style={styles.text}>
+          {getSymbols(line)}
+        </Text>
+      ))
+      .flat();
   };
 
   return (
@@ -65,12 +73,15 @@ export default function Card() {
           {faces?.map((face) => {
             return (
               <View key={face.face_index} style={styles.section}>
-                <Text style={styles.name}>{`${face?.name} ${face?.mana_cost}`}</Text>
+                <View style={styles.nameRow}>
+                  <Text style={styles.name}>{face?.name}</Text>
+                  {getSymbols(face?.mana_cost)}
+                </View>
                 {face?.type_line ? (
                   <Text style={[styles.sectionItem, styles.type]}>{face.type_line}</Text>
                 ) : null}
                 {face?.oracle_text ? (
-                  <View style={[styles.sectionItem, styles.text]}>
+                  <View style={[styles.sectionItem, styles.textBlock]}>
                     {renderText(face.oracle_text)}
                   </View>
                 ) : null}

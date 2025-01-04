@@ -23,7 +23,9 @@ export default StyleSheet.create({
   },
   manaCost: {
     flexBasis: '25%',
-    textAlign: 'right',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    flexWrap: 'wrap',
   },
   name: {
     flex: 1,
