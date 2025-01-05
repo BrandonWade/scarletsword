@@ -1,6 +1,5 @@
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { BulkDataEnum, Navigators, ScreenNames } from './enums';
-import { Card } from '../db/types';
 
 export type StackParamsList = {
   [Navigators.DrawerStack]: undefined;
@@ -30,10 +29,6 @@ export type StackParamsList = {
   [ScreenNames.Home]: undefined;
   [ScreenNames.Preview]: {
     deckID: string;
-  };
-  [ScreenNames.Results]: {
-    deckID: string;
-    results: Card[];
   };
   [ScreenNames.Search]: {
     deckID: string;

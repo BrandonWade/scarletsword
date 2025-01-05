@@ -1,6 +1,5 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Preview from './Preview';
-import Results from './Results';
 import Search from './Search';
 import { Navigators, ScreenNames } from '../../../../utils/enums';
 import { StackParamsList } from '../../../../utils/navigation';
@@ -11,7 +10,6 @@ export default function Tabs({ deckID }) {
   return (
     <TabStack.Navigator id={Navigators.TabStack} screenOptions={{ headerShown: false }}>
       <TabStack.Screen name={ScreenNames.Search} initialParams={{ deckID }} component={Search} />
-      <TabStack.Screen name={ScreenNames.Results} initialParams={{ deckID }} component={Results} />
       <TabStack.Screen name={ScreenNames.Preview} initialParams={{ deckID }} component={Preview} />
     </TabStack.Navigator>
   );

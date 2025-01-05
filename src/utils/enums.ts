@@ -21,6 +21,5 @@ export enum ScreenNames {
   DeckDetailsEditor = 'Deck Details',
   Home = 'Home',
   Preview = 'Preview',
-  Results = 'Results',
   Search = 'Search',
 }

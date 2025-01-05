@@ -13,9 +13,5 @@ export const forwardFlip = forwardFlipValue.interpolate({
   outputRange: ['0deg', '180deg'],
 });
 
-export const forwardFlipAnimation = Animated.parallel([
-  Animated.timing(forwardFlipValue, getAnimationConfig(1)),
-]);
-export const reverseFlipAnimation = Animated.parallel([
-  Animated.timing(forwardFlipValue, getAnimationConfig(0)),
-]);
+export const forwardFlipAnimation = Animated.timing(forwardFlipValue, getAnimationConfig(1));
+export const reverseFlipAnimation = Animated.timing(forwardFlipValue, getAnimationConfig(0));
