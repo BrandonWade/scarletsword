@@ -15,7 +15,7 @@ export const getRotateCWRotateAmount = (rotateValue) =>
 export const getRotateCWScaleAmount = (scaleValue) =>
   scaleValue.interpolate({
     inputRange: [0, 1],
-    outputRange: [1.0, 0.8],
+    outputRange: [1.0, 0.75],
   });
 
 export const getForwardRotateCWAnimation = (rotateValue, scaleValue) =>
