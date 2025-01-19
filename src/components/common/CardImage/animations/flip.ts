@@ -1,6 +1,5 @@
 import { Animated, Easing } from 'react-native';
 
-const forwardFlipValue = new Animated.Value(0);
 const getAnimationConfig = (toValue) => ({
   toValue,
   duration: 1000,
@@ -8,10 +7,13 @@ const getAnimationConfig = (toValue) => ({
   useNativeDriver: true,
 });
 
-export const forwardFlip = forwardFlipValue.interpolate({
-  inputRange: [0, 1],
-  outputRange: ['0deg', '180deg'],
-});
+export const getFlipAmount = (flipValue) =>
+  flipValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '180deg'],
+  });
 
-export const forwardFlipAnimation = Animated.timing(forwardFlipValue, getAnimationConfig(1));
-export const reverseFlipAnimation = Animated.timing(forwardFlipValue, getAnimationConfig(0));
+export const getForwardFlipAnimation = (flipValue) =>
+  Animated.timing(flipValue, getAnimationConfig(1));
+export const getReverseFlipAnimation = (flipValue) =>
+  Animated.timing(flipValue, getAnimationConfig(0));

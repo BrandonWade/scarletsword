@@ -1,7 +1,5 @@
 import { Animated, Easing } from 'react-native';
 
-const forwardTransformValue = new Animated.Value(0);
-const reverseTransformValue = new Animated.Value(0);
 const getAnimationConfig = (toValue) => ({
   toValue,
   duration: 1000,
@@ -9,20 +7,24 @@ const getAnimationConfig = (toValue) => ({
   useNativeDriver: true,
 });
 
-export const forwardTransform = forwardTransformValue.interpolate({
-  inputRange: [0, 1],
-  outputRange: ['0deg', '-180deg'],
-});
-export const reverseTransform = reverseTransformValue.interpolate({
-  inputRange: [0, 1],
-  outputRange: ['180deg', '0deg'],
-});
+export const getFrontTransformAmount = (frontTransformValue) =>
+  frontTransformValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '-180deg'],
+  });
+export const getBackTransformAmount = (backTransformValue) =>
+  backTransformValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['180deg', '0deg'],
+  });
 
-export const forwardTransformAnimation = Animated.parallel([
-  Animated.timing(forwardTransformValue, getAnimationConfig(1)),
-  Animated.timing(reverseTransformValue, getAnimationConfig(1)),
-]);
-export const reverseTransformAnimation = Animated.parallel([
-  Animated.timing(forwardTransformValue, getAnimationConfig(0)),
-  Animated.timing(reverseTransformValue, getAnimationConfig(0)),
-]);
+export const getForwardTransformAnimation = (frontTransformValue, backTransformValue) =>
+  Animated.parallel([
+    Animated.timing(frontTransformValue, getAnimationConfig(1)),
+    Animated.timing(backTransformValue, getAnimationConfig(1)),
+  ]);
+export const getReverseTransformAnimation = (frontTransformValue, backTransformValue) =>
+  Animated.parallel([
+    Animated.timing(frontTransformValue, getAnimationConfig(0)),
+    Animated.timing(backTransformValue, getAnimationConfig(0)),
+  ]);

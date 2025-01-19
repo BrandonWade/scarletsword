@@ -1,23 +1,28 @@
 import { Entypo } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
 import { Animated, Text, TouchableOpacity, View } from 'react-native';
-import { forwardFlip, forwardFlipAnimation, reverseFlipAnimation } from './animations/flip';
+import { getFlipAmount, getForwardFlipAnimation, getReverseFlipAnimation } from './animations/flip';
 import {
-  forwardRotateCWRotate,
-  forwardRotateCWScale,
-  forwardRotateCWAnimation,
-  reverseRotateCWAnimation,
+  getRotateCWRotateAmount,
+  getRotateCWScaleAmount,
+  getForwardRotateCWAnimation,
+  getReverseRotateCWAnimation,
 } from './animations/rotateCW';
 import {
-  forwardTransform,
-  reverseTransform,
-  forwardTransformAnimation,
-  reverseTransformAnimation,
+  getFrontTransformAmount,
+  getBackTransformAmount,
+  getForwardTransformAnimation,
+  getReverseTransformAnimation,
 } from './animations/transform';
 import styles from './styles';
 import { CardImageProps } from './types';
 
 export default function CardImage({ style, card, onPress, onLongPress }: CardImageProps) {
+  const [flipValue] = useState(new Animated.Value(0));
+  const [rotateCWRotateValue] = useState(new Animated.Value(0));
+  const [rotateCWScaleValue] = useState(new Animated.Value(0));
+  const [frontTransformValue] = useState(new Animated.Value(0));
+  const [backTransformValue] = useState(new Animated.Value(0));
   const [isFlipped, setIsFlipped] = useState(false);
   const [isRotatedCW, setIsRotatedCW] = useState(false);
   const [isTransformed, setIsTransformed] = useState(false);
@@ -28,25 +33,25 @@ export default function CardImage({ style, card, onPress, onLongPress }: CardIma
 
   useEffect(() => {
     if (isFlipped) {
-      forwardFlipAnimation.start();
+      getForwardFlipAnimation(flipValue).start();
     } else {
-      reverseFlipAnimation.start();
+      getReverseFlipAnimation(flipValue).start();
     }
   }, [isFlipped]);
 
   useEffect(() => {
     if (isRotatedCW) {
-      forwardRotateCWAnimation.start();
+      getForwardRotateCWAnimation(rotateCWRotateValue, rotateCWScaleValue).start();
     } else {
-      reverseRotateCWAnimation.start();
+      getReverseRotateCWAnimation(rotateCWRotateValue, rotateCWScaleValue).start();
     }
   }, [isRotatedCW]);
 
   useEffect(() => {
     if (isTransformed) {
-      forwardTransformAnimation.start();
+      getForwardTransformAnimation(frontTransformValue, backTransformValue).start();
     } else {
-      reverseTransformAnimation.start();
+      getReverseTransformAnimation(frontTransformValue, backTransformValue).start();
     }
   }, [isTransformed]);
 
@@ -91,20 +96,20 @@ export default function CardImage({ style, card, onPress, onLongPress }: CardIma
               styles.image,
               canFlip
                 ? {
-                    transform: [{ rotateZ: forwardFlip }],
+                    transform: [{ rotateZ: getFlipAmount(flipValue) }],
                   }
                 : null,
               canRotateCW
                 ? {
                     transform: [
-                      { rotateZ: forwardRotateCWRotate },
-                      { scale: forwardRotateCWScale },
+                      { rotateZ: getRotateCWRotateAmount(rotateCWRotateValue) },
+                      { scale: getRotateCWScaleAmount(rotateCWScaleValue) },
                     ],
                   }
                 : null,
               canTransform
                 ? {
-                    transform: [{ rotateY: forwardTransform }],
+                    transform: [{ rotateY: getFrontTransformAmount(frontTransformValue) }],
                     backfaceVisibility: 'hidden',
                   }
                 : null,
@@ -119,7 +124,7 @@ export default function CardImage({ style, card, onPress, onLongPress }: CardIma
                 styles.image,
                 {
                   position: 'absolute',
-                  transform: [{ rotateY: reverseTransform }],
+                  transform: [{ rotateY: getBackTransformAmount(backTransformValue) }],
                   backfaceVisibility: 'hidden',
                 },
                 style,
