@@ -1,6 +1,5 @@
-import { Entypo } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
-import { Animated, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, TouchableOpacity, View } from 'react-native';
 import { getFlipAmount, getForwardFlipAnimation, getReverseFlipAnimation } from './animations/flip';
 import {
   getRotateCWRotateAmount,
@@ -14,6 +13,7 @@ import {
   getForwardTransformAnimation,
   getReverseTransformAnimation,
 } from './animations/transform';
+import ActionButton from './ActionButton';
 import styles from './styles';
 import { CardImageProps } from './types';
 
@@ -141,34 +141,35 @@ export default function CardImage({
           ) : null}
         </Animated.View>
       )}
-      {canFlip || canRotateCW || canTransform ? (
-        <View style={[styles.actions, shouldOverlayActions ? styles.actionsOverlay : {}]}>
-          {canFlip && (
-            <TouchableOpacity onPress={onPressFlip}>
-              <View style={styles.actionButton}>
-                <Entypo name='cycle' size={16} />
-                {!shouldOverlayActions ? <Text>Flip</Text> : null}
-              </View>
-            </TouchableOpacity>
-          )}
-          {canRotateCW && (
-            <TouchableOpacity onPress={onPressRotateCW}>
-              <View style={styles.actionButton}>
-                <Entypo name='cw' size={16} />
-                {!shouldOverlayActions ? <Text>Rotate</Text> : null}
-              </View>
-            </TouchableOpacity>
-          )}
-          {canTransform && (
-            <TouchableOpacity onPress={onPressTransform}>
-              <View style={styles.actionButton}>
-                <Entypo name='retweet' size={16} />
-                {!shouldOverlayActions ? <Text>Transform</Text> : null}
-              </View>
-            </TouchableOpacity>
-          )}
-        </View>
-      ) : null}
+      <View style={[styles.actions, shouldOverlayActions ? styles.actionsOverlay : {}]}>
+        {canFlip && (
+          <ActionButton
+            iconName='cycle'
+            iconSize={16}
+            isCompact={shouldOverlayActions}
+            text='Flip'
+            onPress={onPressFlip}
+          />
+        )}
+        {canRotateCW && (
+          <ActionButton
+            iconName='cw'
+            iconSize={16}
+            isCompact={shouldOverlayActions}
+            text='Rotate'
+            onPress={onPressRotateCW}
+          />
+        )}
+        {canTransform && (
+          <ActionButton
+            iconName='retweet'
+            iconSize={16}
+            isCompact={shouldOverlayActions}
+            text='Transform'
+            onPress={onPressTransform}
+          />
+        )}
+      </View>
     </View>
   );
 }
