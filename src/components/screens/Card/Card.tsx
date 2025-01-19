@@ -32,7 +32,7 @@ export default function Card() {
       try {
         setFaces(JSON.parse(cardResult.faces));
       } catch (err) {
-        console.error('Error parsing card faces', faces);
+        console.error('Error parsing card faces', err);
       }
 
       navigation.setOptions({
