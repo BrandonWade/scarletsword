@@ -17,7 +17,13 @@ import {
 import styles from './styles';
 import { CardImageProps } from './types';
 
-export default function CardImage({ style, card, onPress, onLongPress }: CardImageProps) {
+export default function CardImage({
+  style,
+  card,
+  shouldOverlayActions = false,
+  onPress,
+  onLongPress,
+}: CardImageProps) {
   const [flipValue] = useState(new Animated.Value(0));
   const [rotateCWRotateValue] = useState(new Animated.Value(0));
   const [rotateCWScaleValue] = useState(new Animated.Value(0));
@@ -135,32 +141,34 @@ export default function CardImage({ style, card, onPress, onLongPress }: CardIma
           ) : null}
         </Animated.View>
       )}
-      <View style={styles.actions}>
-        {canFlip && (
-          <TouchableOpacity onPress={onPressFlip}>
-            <View style={styles.actionButton}>
-              <Entypo name='cycle' size={16} />
-              <Text>Flip</Text>
-            </View>
-          </TouchableOpacity>
-        )}
-        {canRotateCW && (
-          <TouchableOpacity onPress={onPressRotateCW}>
-            <View style={styles.actionButton}>
-              <Entypo name='cw' size={16} />
-              <Text>Rotate</Text>
-            </View>
-          </TouchableOpacity>
-        )}
-        {canTransform && (
-          <TouchableOpacity onPress={onPressTransform}>
-            <View style={styles.actionButton}>
-              <Entypo name='retweet' size={16} />
-              <Text>Transform</Text>
-            </View>
-          </TouchableOpacity>
-        )}
-      </View>
+      {canFlip || canRotateCW || canTransform ? (
+        <View style={[styles.actions, shouldOverlayActions ? styles.actionsOverlay : {}]}>
+          {canFlip && (
+            <TouchableOpacity onPress={onPressFlip}>
+              <View style={styles.actionButton}>
+                <Entypo name='cycle' size={16} />
+                {!shouldOverlayActions ? <Text>Flip</Text> : null}
+              </View>
+            </TouchableOpacity>
+          )}
+          {canRotateCW && (
+            <TouchableOpacity onPress={onPressRotateCW}>
+              <View style={styles.actionButton}>
+                <Entypo name='cw' size={16} />
+                {!shouldOverlayActions ? <Text>Rotate</Text> : null}
+              </View>
+            </TouchableOpacity>
+          )}
+          {canTransform && (
+            <TouchableOpacity onPress={onPressTransform}>
+              <View style={styles.actionButton}>
+                <Entypo name='retweet' size={16} />
+                {!shouldOverlayActions ? <Text>Transform</Text> : null}
+              </View>
+            </TouchableOpacity>
+          )}
+        </View>
+      ) : null}
     </View>
   );
 }

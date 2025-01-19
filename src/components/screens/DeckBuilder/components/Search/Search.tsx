@@ -67,6 +67,7 @@ export default function Search() {
             <CardImage
               key={card.id}
               card={card}
+              shouldOverlayActions={true}
               onPress={onPressResult}
               onLongPress={onLongPressResult}
             />

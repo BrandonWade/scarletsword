@@ -7,7 +7,7 @@ const cardWidth = Math.floor(gridWidth / columns);
 
 export default StyleSheet.create({
   container: {
-    rowGap: 10,
+    position: 'relative',
   },
   image: {
     width: cardWidth - padding * 2,
@@ -17,8 +17,16 @@ export default StyleSheet.create({
   },
   actions: {
     flexDirection: 'row',
-    columnGap: 10,
     justifyContent: 'center',
+    columnGap: 5,
+    marginTop: 10,
+  },
+  actionsOverlay: {
+    position: 'absolute',
+    bottom: 25,
+    left: 0,
+    right: 0,
+    margin: 'auto',
   },
   actionButton: {
     flexDirection: 'row',
@@ -28,5 +36,7 @@ export default StyleSheet.create({
     padding: 8,
     borderColor: '#797e7f44',
     borderWidth: 1,
+    backgroundColor: 'white',
+    opacity: 0.8,
   },
 });
