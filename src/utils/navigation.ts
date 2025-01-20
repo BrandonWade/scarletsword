@@ -20,6 +20,7 @@ export type StackParamsList = {
   [ScreenNames.DeckBuilder]: {
     id: string;
     name: string;
+    size: number;
   };
   [ScreenNames.DeckDetailsEditor]: {
     id: string;
