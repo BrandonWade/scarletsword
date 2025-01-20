@@ -83,7 +83,6 @@ import { X } from '../components/common/Symbols';
 import { Y } from '../components/common/Symbols';
 import { Z } from '../components/common/Symbols';
 import { Zero } from '../components/common/Symbols';
-import styles from '../components/common/Navigator/styles';
 
 const symbolMap = {
   '{T}': Tap,

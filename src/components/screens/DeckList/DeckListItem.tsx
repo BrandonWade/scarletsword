@@ -4,6 +4,7 @@ import { DeckListItemProps } from './types';
 import { ScreenNames } from '../../../utils/enums';
 import { StackNavigation } from '../../../utils/navigation';
 import commonStyles from '../../../utils/styles';
+import { getSymbols } from '../../../utils/symbols';
 import styles from './styles';
 
 export default function DeckListItem({ id, name, notes, colors, size }: DeckListItemProps) {
@@ -23,7 +24,9 @@ export default function DeckListItem({ id, name, notes, colors, size }: DeckList
         <View>
           <Text style={commonStyles.titleMd}>{name}</Text>
           <Text style={styles.size}>{`${size} cards`}</Text>
-          <Text style={styles.colors}>{colors}</Text>
+          <View style={styles.colors}>
+            {getSymbols(colors ?? '', { style: { width: 18, height: 18 } })}
+          </View>
         </View>
         <Button title='Edit' onPress={onPressEdit} />
       </View>

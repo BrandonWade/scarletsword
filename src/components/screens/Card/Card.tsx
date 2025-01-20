@@ -4,7 +4,7 @@ import { RouteProp, useIsFocused, useNavigation, useRoute } from '@react-navigat
 import styles from './styles';
 import CardImage from '../../common/CardImage';
 import { getCard } from '../../../db/cards';
-import { deleteDeckCard, getDeckCard, upsertDeckCardCount } from '../../../db/decks';
+import { deleteDeckCard, getDeckCard, upsertDeckCard } from '../../../db/decks';
 import { CardFace, Card as DBCard, DeckCard } from '../../../db/types';
 import { ScreenNames } from '../../../utils/enums';
 import { StackNavigation, StackParamsList } from '../../../utils/navigation';
@@ -46,7 +46,7 @@ export default function Card() {
     if (count === 0) {
       await deleteDeckCard(deckID, cardID);
     } else {
-      await upsertDeckCardCount(deckID, cardID, count);
+      await upsertDeckCard(deckID, cardID, count);
     }
   };
 

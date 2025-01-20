@@ -1,5 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 import { Deck, DeckCard, DeckListItem } from './types';
+import { getColorString } from '../utils/decks';
 
 export async function listDecks() {
   const db = await SQLite.openDatabaseAsync('scarletsword.db');
@@ -92,7 +93,31 @@ async function updateDeck(deck: Deck) {
       $colors: deck.colors ?? null,
     });
   } catch (err) {
-    console.error('Error creating deck', err);
+    console.error('Error updating deck', err);
+  } finally {
+    await statement.finalizeAsync();
+  }
+}
+
+async function updateDeckColors(deckID: string) {
+  const db = await SQLite.openDatabaseAsync('scarletsword.db');
+  const deckCards = await getDeckCards(deckID);
+  const colors = getColorString(deckCards);
+
+  const statement = await db.prepareAsync(`
+    UPDATE decks
+    SET colors = $colors,
+    updated_at = DATETIME('NOW')
+    WHERE id = $id
+    ;`);
+
+  try {
+    await statement.executeAsync({
+      $id: deckID,
+      $colors: colors,
+    });
+  } catch (err) {
+    console.error('Error updating deck colors', err);
   } finally {
     await statement.finalizeAsync();
   }
@@ -180,7 +205,7 @@ export async function getDeckCard(deckID: string, cardID: string) {
   }
 }
 
-export async function upsertDeckCardCount(deckID: string, cardID: string, count: number) {
+export async function upsertDeckCard(deckID: string, cardID: string, count: number) {
   const db = await SQLite.openDatabaseAsync('scarletsword.db');
   const statement = await db.prepareAsync(`
     INSERT INTO deck_cards (
@@ -202,8 +227,11 @@ export async function upsertDeckCardCount(deckID: string, cardID: string, count:
       $card_id: cardID,
       $count: count,
     });
+
+    // Update deck colors when adding one or more cards
+    await updateDeckColors(deckID);
   } catch (err) {
-    console.error('Error upserting deck card counts', err);
+    console.error('Error upserting deck card', err);
   } finally {
     await statement.finalizeAsync();
   }
@@ -226,6 +254,9 @@ export async function deleteDeckCard(deckID: string, cardID: string) {
         $card_id: cardID,
       }
     );
+
+    // Update deck colors when removing one or more cards
+    await updateDeckColors(deckID);
   } catch (err) {
     console.error('Error getting deck cards', err);
   }

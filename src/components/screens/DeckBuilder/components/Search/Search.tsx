@@ -6,7 +6,7 @@ import styles from '../../styles';
 import CardImage from '../../../../common/CardImage';
 import TextInputField from '../../../../common/TextInputField';
 import { searchCards } from '../../../../../db/cards';
-import { deleteDeckCard, getDeckCards, upsertDeckCardCount } from '../../../../../db/decks';
+import { deleteDeckCard, getDeckCards, upsertDeckCard } from '../../../../../db/decks';
 import { Card } from '../../../../../db/types';
 import { ScreenNames } from '../../../../../utils/enums';
 import { StackNavigation, StackParamsList } from '../../../../../utils/navigation';
@@ -61,7 +61,7 @@ export default function Search() {
 
   const onPressResult = async (cardID) => {
     const count = deckCardToCountMap[cardID] + 1 || 1;
-    await upsertDeckCardCount(deckID, cardID, count);
+    await upsertDeckCard(deckID, cardID, count);
     await refreshDeckCardtoCountMap();
   };
 
@@ -73,7 +73,7 @@ export default function Search() {
     if (count === 0) {
       await deleteDeckCard(deckID, cardID);
     } else {
-      await upsertDeckCardCount(deckID, cardID, count);
+      await upsertDeckCard(deckID, cardID, count);
     }
 
     await refreshDeckCardtoCountMap();
