@@ -1,12 +1,12 @@
 import { Alert, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styles from './styles';
-import { DeckCardListItemProps } from './types';
+import { CardListItemProps } from './types';
 import { ScreenNames } from '../../../../../utils/enums';
 import { StackNavigation } from '../../../../../utils/navigation';
 import { getSymbols } from '../../../../../utils/symbols';
 
-export default function DeckCardListItem({ deckID, card, onRemoveCard }: DeckCardListItemProps) {
+export default function CardListItem({ deckID, card, onRemoveCard }: CardListItemProps) {
   const navigation = useNavigation<StackNavigation>();
   const faces = card?.faces ? JSON.parse(card.faces) : [];
 

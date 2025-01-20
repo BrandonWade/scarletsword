@@ -20,6 +20,6 @@ export enum ScreenNames {
   DeckList = 'My Decks',
   DeckDetailsEditor = 'Deck Details',
   Home = 'Home',
-  Preview = 'Preview',
+  CardList = 'Card List',
   Search = 'Search',
 }

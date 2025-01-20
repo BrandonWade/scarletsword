@@ -1,6 +1,6 @@
 import { DeckListItem } from '../../../../../db/types';
 
-export type DeckCardListItemProps = {
+export type CardListItemProps = {
   deckID: string;
   card: DeckListItem;
   onRemoveCard: (string) => void;

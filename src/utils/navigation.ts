@@ -27,7 +27,7 @@ export type StackParamsList = {
     notes: string;
   };
   [ScreenNames.Home]: undefined;
-  [ScreenNames.Preview]: {
+  [ScreenNames.CardList]: {
     deckID: string;
   };
   [ScreenNames.Search]: {

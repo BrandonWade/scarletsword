@@ -4,10 +4,10 @@ import { RouteProp, useIsFocused, useRoute } from '@react-navigation/native';
 import { deleteDeckCard, getDeckCards } from '../../../../../db/decks';
 import { ScreenNames } from '../../../../../utils/enums';
 import { StackParamsList } from '../../../../../utils/navigation';
-import DeckCardListItem from './DeckCardListItem';
+import CardListItem from './CardListItem';
 
-export default function Preview() {
-  const route = useRoute<RouteProp<StackParamsList, ScreenNames.Preview>>();
+export default function CardList() {
+  const route = useRoute<RouteProp<StackParamsList, ScreenNames.CardList>>();
   const [deckCards, setDeckCards] = useState([]);
   const isFocused = useIsFocused();
   const { deckID } = route.params || {};
@@ -31,7 +31,7 @@ export default function Preview() {
       data={deckCards}
       keyExtractor={(row) => row.card_id}
       renderItem={({ item }) => (
-        <DeckCardListItem deckID={deckID} card={item} onRemoveCard={onRemoveCard} />
+        <CardListItem deckID={deckID} card={item} onRemoveCard={onRemoveCard} />
       )}
     />
   );
