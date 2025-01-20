@@ -27,6 +27,7 @@ export default StyleSheet.create({
     left: 0,
     right: 0,
     margin: 'auto',
+    opacity: 0.8,
   },
   actionButton: {
     flexDirection: 'row',
@@ -37,6 +38,5 @@ export default StyleSheet.create({
     borderColor: '#797e7f44',
     borderWidth: 1,
     backgroundColor: 'white',
-    opacity: 0.8,
   },
 });

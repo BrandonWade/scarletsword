@@ -16,13 +16,16 @@ import {
 import ActionButton from './ActionButton';
 import styles from './styles';
 import { CardImageProps } from './types';
+import NumberInputField from '../NumberInputField';
 
 export default function CardImage({
   style,
   card,
+  count,
   shouldOverlayActions = false,
   onPress,
   onLongPress,
+  onChangeCount,
 }: CardImageProps) {
   const [flipValue] = useState(new Animated.Value(0));
   const [rotateCWRotateValue] = useState(new Animated.Value(0));
@@ -79,6 +82,10 @@ export default function CardImage({
 
   const onLongPressImage = () => {
     onLongPress?.(card.id);
+  };
+
+  const onChangeCardCount = (count) => {
+    onChangeCount(count, card.id);
   };
 
   const withPressHandler = (children) => {
@@ -142,6 +149,7 @@ export default function CardImage({
         </Animated.View>
       )}
       <View style={[styles.actions, shouldOverlayActions ? styles.actionsOverlay : {}]}>
+        {count > 0 && <NumberInputField value={count || 0} onChange={onChangeCardCount} />}
         {canFlip && (
           <ActionButton
             iconName='cycle'

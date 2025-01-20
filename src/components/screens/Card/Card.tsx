@@ -3,7 +3,6 @@ import { ScrollView, Text, View } from 'react-native';
 import { RouteProp, useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 import styles from './styles';
 import CardImage from '../../common/CardImage';
-import NumberInputField from '../../common/NumberInputField';
 import { getCard } from '../../../db/cards';
 import { deleteDeckCard, getDeckCard, upsertDeckCardCount } from '../../../db/decks';
 import { CardFace, Card as DBCard, DeckCard } from '../../../db/types';
@@ -66,8 +65,12 @@ export default function Card() {
     <ScrollView>
       <View style={[commonStyles.screenContainer, styles.modalContent]}>
         <View style={styles.imageContainer}>
-          <CardImage style={styles.image} card={card} />
-          <NumberInputField label='Count' value={deckCard?.count || 0} onChange={onChangeCount} />
+          <CardImage
+            style={styles.image}
+            card={card}
+            count={deckCard?.count || 0}
+            onChangeCount={onChangeCount}
+          />
         </View>
         <View style={styles.sectionContainer}>
           {faces?.map((face) => {

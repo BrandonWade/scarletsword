@@ -1,5 +1,5 @@
 import * as SQLite from 'expo-sqlite';
-import { Card, Deck, DeckCard } from './types';
+import { Deck, DeckCard, DeckListItem } from './types';
 
 export async function listDecks() {
   const db = await SQLite.openDatabaseAsync('scarletsword.db');
@@ -117,40 +117,11 @@ export async function deleteDeck(deckID: string) {
   }
 }
 
-export async function upsertDeckCards(deckID: string, cardID: string) {
-  const db = await SQLite.openDatabaseAsync('scarletsword.db');
-  const statement = await db.prepareAsync(`
-    INSERT INTO deck_cards (
-      deck_id,
-      card_id,
-      count
-    ) VALUES (
-      $deck_id,
-      $card_id,
-      $count
-    ) ON CONFLICT (deck_id, card_id) DO UPDATE SET
-      count = count + 1,
-      updated_at = DATETIME('NOW')
-    ;`);
-
-  try {
-    await statement.executeAsync({
-      $deck_id: deckID,
-      $card_id: cardID,
-      $count: 1,
-    });
-  } catch (err) {
-    console.error('Error upserting deck cards', err);
-  } finally {
-    await statement.finalizeAsync();
-  }
-}
-
 export async function getDeckCards(deckID: string) {
   const db = await SQLite.openDatabaseAsync('scarletsword.db');
 
   try {
-    const result: Card[] = await db.getAllAsync(
+    const result: DeckListItem[] = await db.getAllAsync(
       `
       SELECT
       d.*,
