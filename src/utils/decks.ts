@@ -12,23 +12,23 @@ export function getColorString(cards: DeckListItem[] = []) {
       const faces = typeof card.faces === 'string' ? JSON.parse(card.faces) : card.faces;
 
       faces.forEach((face) => {
-        if (face.mana_cost.indexOf('{W}') !== -1) {
+        if (face.is_white) {
           colors.add('{W}');
         }
 
-        if (face.mana_cost.indexOf('{U}') !== -1) {
+        if (face.is_blue) {
           colors.add('{U}');
         }
 
-        if (face.mana_cost.indexOf('{B}') !== -1) {
+        if (face.is_black) {
           colors.add('{B}');
         }
 
-        if (face.mana_cost.indexOf('{R}') !== -1) {
+        if (face.is_red) {
           colors.add('{R}');
         }
 
-        if (face.mana_cost.indexOf('{G}') !== -1) {
+        if (face.is_green) {
           colors.add('{G}');
         }
 

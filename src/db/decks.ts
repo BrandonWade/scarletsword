@@ -160,7 +160,12 @@ export async function getDeckCards(deckID: string) {
           JSON_OBJECT(
             'face_index', face_index,
             'name', name,
-            'mana_cost', mana_cost
+            'mana_cost', mana_cost,
+            'is_white', is_white,
+            'is_blue', is_blue,
+            'is_black', is_black,
+            'is_red', is_red,
+            'is_green', is_green
           )
         ) faces
         FROM card_faces f
