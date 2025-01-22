@@ -1,9 +1,9 @@
-import * as SQLite from 'expo-sqlite';
-import { Card as ScryfallCard } from '../utils/scryfall/types';
+import { openDatabase } from './connections';
 import { Card, Count } from './types';
+import { Card as ScryfallCard } from '../utils/scryfall/types';
 
 export async function upsertCards(cards: ScryfallCard[] = []) {
-  const db = await SQLite.openDatabaseAsync('scarletsword.db');
+  const db = await openDatabase();
 
   await db.withExclusiveTransactionAsync(async (tx) => {
     const cardStatement = await tx.prepareAsync(`
@@ -189,7 +189,7 @@ export async function upsertCards(cards: ScryfallCard[] = []) {
 }
 
 export async function numberOfCards() {
-  const db = await SQLite.openDatabaseAsync('scarletsword.db', {
+  const db = await openDatabase('scarletsword.db', {
     useNewConnection: true,
   });
 
@@ -234,7 +234,7 @@ function getCardFaces(card: ScryfallCard) {
 }
 
 export async function searchCards(name: string): Promise<Card[]> {
-  const db = await SQLite.openDatabaseAsync('scarletsword.db');
+  const db = await openDatabase();
 
   try {
     return db.getAllAsync(
@@ -277,7 +277,7 @@ export async function searchCards(name: string): Promise<Card[]> {
 }
 
 export async function getCard(cardID: string): Promise<Card> {
-  const db = await SQLite.openDatabaseAsync('scarletsword.db');
+  const db = await openDatabase();
 
   try {
     return db.getFirstAsync(

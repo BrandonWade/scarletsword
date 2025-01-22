@@ -1,8 +1,8 @@
-import * as SQLite from 'expo-sqlite';
+import { openDatabase } from './connections';
 import { cardsTable, cardFacesTable, decksTable, deckCardsTable, dataImportsTable } from './schema';
 
 export async function createTables() {
-  const db = await SQLite.openDatabaseAsync('scarletsword.db');
+  const db = await openDatabase();
 
   try {
     await db.execAsync(cardsTable);
@@ -16,14 +16,14 @@ export async function createTables() {
 }
 
 export async function resetTables() {
-  console.log('Resetting tables');
-  const db = await SQLite.openDatabaseAsync('scarletsword.db');
+  console.info('Resetting tables');
+  const db = await openDatabase();
 
   try {
-    await db.execAsync('DROP TABLE IF EXISTS cards;');
-    await db.execAsync('DROP TABLE IF EXISTS card_faces;');
-    await db.execAsync('DROP TABLE IF EXISTS decks;');
     await db.execAsync('DROP TABLE IF EXISTS deck_cards;');
+    await db.execAsync('DROP TABLE IF EXISTS decks;');
+    await db.execAsync('DROP TABLE IF EXISTS card_faces;');
+    await db.execAsync('DROP TABLE IF EXISTS cards;');
     await db.execAsync('DROP TABLE IF EXISTS data_imports;');
 
     await createTables();

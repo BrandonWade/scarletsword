@@ -1,0 +1,37 @@
+import { updateDeckColors } from './decks';
+import { openDatabase } from './connections';
+
+export async function seedDecks() {
+  console.info('Seeding decks');
+  const db = await openDatabase();
+
+  try {
+    await db.execAsync(`
+        INSERT INTO decks (id, name, notes)
+        VALUES
+        ('f29c3c8a-c770-44da-8cb9-d0bd82552157', 'Annoying Deck', 'Contains a variety of cards with annoying properties.')
+        ON CONFLICT DO NOTHING;
+
+        INSERT INTO deck_cards (deck_id, card_id, count)
+        VALUES
+        ('f29c3c8a-c770-44da-8cb9-d0bd82552157', '00cbe506-7332-4d29-9404-b7c6e1e791d8', '1'),
+        ('f29c3c8a-c770-44da-8cb9-d0bd82552157', 'd15c6375-2e4e-47f7-88e1-d90794e7f724', '1'),
+        ('f29c3c8a-c770-44da-8cb9-d0bd82552157', '80fffad3-2486-4350-8dff-54a215ebfc28', '1'),
+        ('f29c3c8a-c770-44da-8cb9-d0bd82552157', 'a5137c28-632f-40f4-bf9d-877f5f070987', '1'),
+        ('f29c3c8a-c770-44da-8cb9-d0bd82552157', '77fe1662-7927-4909-8d25-6924e6fc27eb', '1'),
+        ('f29c3c8a-c770-44da-8cb9-d0bd82552157', 'e8241a53-8b88-474e-a46c-44b3d1f3b0df', '1'),
+        ('f29c3c8a-c770-44da-8cb9-d0bd82552157', '73636ca0-2309-4bb3-9300-8bd0c0bb5b31', '1'),
+        ('f29c3c8a-c770-44da-8cb9-d0bd82552157', '67f4c93b-080c-4196-b095-6a120a221988', '1'),
+        ('f29c3c8a-c770-44da-8cb9-d0bd82552157', 'fea4a077-718b-44af-87be-90df61aab643', '1'),
+        ('f29c3c8a-c770-44da-8cb9-d0bd82552157', '5c1f3f52-cb9b-4b2a-bb02-6175897ae76e', '1'),
+        ('f29c3c8a-c770-44da-8cb9-d0bd82552157', '8e259868-d29a-4c03-8ec3-49e914f849fb', '1'),
+        ('f29c3c8a-c770-44da-8cb9-d0bd82552157', 'db84415e-048a-4cfc-9121-5ae17a412198', '1'),
+        ('f29c3c8a-c770-44da-8cb9-d0bd82552157', 'c2462fdf-a594-47d0-8e10-b55901e350d9', '1')
+        ON CONFLICT DO NOTHING;
+      `);
+
+    await updateDeckColors('f29c3c8a-c770-44da-8cb9-d0bd82552157');
+  } catch (err) {
+    console.error('Error seeding decks', err);
+  }
+}

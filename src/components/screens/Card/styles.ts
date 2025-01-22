@@ -18,6 +18,7 @@ export default StyleSheet.create({
     rowGap: 10,
   },
   section: {
+    backgroundColor: 'white',
     borderColor: '#797e7f44',
     borderStyle: 'solid',
     borderWidth: 1,

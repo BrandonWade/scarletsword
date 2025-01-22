@@ -1,9 +1,9 @@
-import * as SQLite from 'expo-sqlite';
+import { openDatabase } from './connections';
 import { Deck, DeckCard, DeckListItem } from './types';
 import { getColorString } from '../utils/decks';
 
 export async function listDecks() {
-  const db = await SQLite.openDatabaseAsync('scarletsword.db');
+  const db = await openDatabase();
 
   try {
     const result: Deck[] = await db.getAllAsync(`
@@ -40,7 +40,7 @@ export async function upsertDeck(deck: Deck) {
 }
 
 async function insertDeck(deck: Deck) {
-  const db = await SQLite.openDatabaseAsync('scarletsword.db');
+  const db = await openDatabase();
   const statement = await db.prepareAsync(`
     INSERT INTO decks (
       id,
@@ -66,7 +66,7 @@ async function insertDeck(deck: Deck) {
 }
 
 async function updateDeck(deck: Deck) {
-  const db = await SQLite.openDatabaseAsync('scarletsword.db');
+  const db = await openDatabase();
   const statement = await db.prepareAsync(`
     INSERT INTO decks (
       id,
@@ -99,8 +99,8 @@ async function updateDeck(deck: Deck) {
   }
 }
 
-async function updateDeckColors(deckID: string) {
-  const db = await SQLite.openDatabaseAsync('scarletsword.db');
+export async function updateDeckColors(deckID: string) {
+  const db = await openDatabase();
   const deckCards = await getDeckCards(deckID);
   const colors = getColorString(deckCards);
 
@@ -124,7 +124,7 @@ async function updateDeckColors(deckID: string) {
 }
 
 export async function deleteDeck(deckID: string) {
-  const db = await SQLite.openDatabaseAsync('scarletsword.db');
+  const db = await openDatabase();
 
   try {
     await db.runAsync(
@@ -143,7 +143,7 @@ export async function deleteDeck(deckID: string) {
 }
 
 export async function getDeckCards(deckID: string) {
-  const db = await SQLite.openDatabaseAsync('scarletsword.db');
+  const db = await openDatabase();
 
   try {
     const result: DeckListItem[] = await db.getAllAsync(
@@ -182,7 +182,7 @@ export async function getDeckCards(deckID: string) {
 }
 
 export async function getDeckCard(deckID: string, cardID: string) {
-  const db = await SQLite.openDatabaseAsync('scarletsword.db');
+  const db = await openDatabase();
 
   try {
     const result: DeckCard = await db.getFirstAsync(
@@ -206,7 +206,7 @@ export async function getDeckCard(deckID: string, cardID: string) {
 }
 
 export async function upsertDeckCard(deckID: string, cardID: string, count: number) {
-  const db = await SQLite.openDatabaseAsync('scarletsword.db');
+  const db = await openDatabase();
   const statement = await db.prepareAsync(`
     INSERT INTO deck_cards (
       deck_id,
@@ -238,7 +238,7 @@ export async function upsertDeckCard(deckID: string, cardID: string, count: numb
 }
 
 export async function deleteDeckCard(deckID: string, cardID: string) {
-  const db = await SQLite.openDatabaseAsync('scarletsword.db');
+  const db = await openDatabase();
 
   try {
     await db.runAsync(

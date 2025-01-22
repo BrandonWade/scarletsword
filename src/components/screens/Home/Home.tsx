@@ -4,7 +4,8 @@ import { Button, SafeAreaView, Text, View } from 'react-native';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import styles from './styles';
 import Box from '../../common/Box';
-import { createTables, resetTables } from '../../../db';
+import { seedDecks } from '../../../db/seeds';
+import { createTables, resetTables } from '../../../db/tables';
 import { getMostRecentDataImport } from '../../../db/dataImports';
 import commonStyles from '../../../utils/styles';
 import { ScreenNames } from '../../../utils/enums';
@@ -19,6 +20,7 @@ export default function Home() {
     const init = async () => {
       // await resetTables();
       await createTables();
+      // await seedDecks();
 
       const result = await getMostRecentDataImport();
       setMostRecentImport(result);

@@ -1,9 +1,9 @@
-import * as SQLite from 'expo-sqlite';
-import { BulkDataEnum } from '../utils/enums';
+import { openDatabase } from './connections';
 import { DataImport } from './types';
+import { BulkDataEnum } from '../utils/enums';
 
 export async function getMostRecentDataImport() {
-  const db = await SQLite.openDatabaseAsync('scarletsword.db');
+  const db = await openDatabase();
 
   try {
     const result: DataImport = await db.getFirstAsync(`
@@ -22,7 +22,7 @@ export async function getMostRecentDataImport() {
 }
 
 export async function recordDataImport(type: BulkDataEnum) {
-  const db = await SQLite.openDatabaseAsync('scarletsword.db');
+  const db = await openDatabase();
   const statement = await db.prepareAsync(`
     INSERT INTO data_imports (
       type
