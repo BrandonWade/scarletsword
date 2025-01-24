@@ -24,8 +24,6 @@ export type StackParamsList = {
   };
   [ScreenNames.DeckDetailsEditor]: {
     id: string;
-    name: string;
-    notes: string;
   };
   [ScreenNames.Home]: undefined;
   [ScreenNames.CardList]: {

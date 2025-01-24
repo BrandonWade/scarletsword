@@ -31,6 +31,32 @@ export async function listDecks() {
   return [];
 }
 
+export async function getDeck(deckID: string) {
+  const db = await openDatabase();
+
+  try {
+    const result: Deck = await db.getFirstAsync(
+      `
+      SELECT
+      d.id,
+      d.name,
+      d.notes,
+      d.auto_detect_colors,
+      d.colors
+      FROM decks d
+      WHERE d.id = $deck_id
+      ;`,
+      {
+        $deck_id: deckID,
+      }
+    );
+
+    return result;
+  } catch (err) {
+    console.error('Error getting deck', err);
+  }
+}
+
 export async function upsertDeck(deck: Deck) {
   if (deck?.id) {
     await updateDeck(deck);
@@ -45,11 +71,13 @@ async function insertDeck(deck: Deck) {
     INSERT INTO decks (
       id,
       name,
-      notes
+      notes,
+      auto_detect_colors
     ) VALUES (
       $id,
       $name,
-      $notes
+      $notes,
+      $auto_detect_colors
     );`);
 
   try {
@@ -57,6 +85,7 @@ async function insertDeck(deck: Deck) {
       $id: deck.id,
       $name: deck.name,
       $notes: deck.notes,
+      $auto_detect_colors: deck.auto_detect_colors,
     });
   } catch (err) {
     console.error('Error creating deck', err);
@@ -72,15 +101,18 @@ async function updateDeck(deck: Deck) {
       id,
       name,
       notes,
+      auto_detect_colors,
       colors
     ) VALUES (
       $id,
       $name,
       $notes,
+      $auto_detect_colors,
       $colors
     ) ON CONFLICT (id) DO UPDATE SET
       name = EXCLUDED.name,
       notes = EXCLUDED.notes,
+      auto_detect_colors = EXCLUDED.auto_detect_colors,
       colors = EXCLUDED.colors,
       updated_at = DATETIME('NOW')
     ;`);
@@ -91,6 +123,7 @@ async function updateDeck(deck: Deck) {
       $name: deck.name,
       $notes: deck.notes ?? null,
       $colors: deck.colors ?? null,
+      $auto_detect_colors: deck.auto_detect_colors,
     });
   } catch (err) {
     console.error('Error updating deck', err);

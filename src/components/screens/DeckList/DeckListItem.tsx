@@ -7,11 +7,11 @@ import commonStyles from '../../../utils/styles';
 import { getSymbols } from '../../../utils/symbols';
 import styles from './styles';
 
-export default function DeckListItem({ id, name, notes, colors, size }: DeckListItemProps) {
+export default function DeckListItem({ id, name, colors, size }: DeckListItemProps) {
   const navigation = useNavigation<StackNavigation>();
 
   const onPressEdit = () => {
-    navigation.navigate(ScreenNames.DeckDetailsEditor, { id, name, notes });
+    navigation.navigate(ScreenNames.DeckDetailsEditor, { id });
   };
 
   const onPress = () => {

@@ -14,6 +14,7 @@ export type Deck = {
   id: string;
   name: string;
   notes: string;
+  auto_detect_colors: boolean;
   colors: string;
   created_at?: string;
   updated_at?: string;

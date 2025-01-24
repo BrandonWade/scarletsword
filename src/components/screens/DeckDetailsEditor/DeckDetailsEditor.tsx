@@ -1,41 +1,71 @@
 import * as Crypto from 'expo-crypto';
 import { useFormik } from 'formik';
 import uniq from 'lodash/uniq';
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect } from 'react';
 import { Alert, Button, ScrollView, View } from 'react-native';
 import { ParamListBase, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { validationSchema } from './validation';
 import styles from './styles';
+import SymbolBox from './SymbolBox';
 import SwitchField from '../../common/SwitchField';
 import TextAreaField from '../../common/TextAreaField';
 import TextInputField from '../../common/TextInputField';
-import { upsertDeck, deleteDeck } from '../../../db/decks';
+import { upsertDeck, deleteDeck, getDeck } from '../../../db/decks';
 import { Deck } from '../../../db/types';
 import { ColorSymbol, Navigators, ScreenNames } from '../../../utils/enums';
 import { StackParamsList } from '../../../utils/navigation';
 import commonStyles from '../../../utils/styles';
-import SymbolBox from './SymbolBox';
 
 export default function DeckDetailsEditor() {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const route = useRoute<RouteProp<StackParamsList, ScreenNames.DeckDetailsEditor>>();
-  const { id, name, notes } = route.params || {};
+  const { id } = route.params || {};
   const { values, errors, setFieldValue, handleSubmit, isValid } = useFormik({
     initialValues: {
-      id: id || Crypto.randomUUID(),
-      name: name || 'Untitled Deck',
-      notes: notes || '',
+      id: Crypto.randomUUID(),
+      name: 'Untitled Deck',
+      notes: '',
+      autoDetectColors: true,
+      colors: [],
     },
     validationSchema,
     onSubmit: async () => {
-      await upsertDeck(values as Deck);
+      await upsertDeck({
+        id: values.id,
+        name: values.name,
+        notes: values.notes,
+        auto_detect_colors: values.autoDetectColors,
+        colors: values.colors.join(''),
+      });
       navigation.goBack();
     },
   });
-  const [autoDetectColors, setAutoDetectColors] = useState(true);
-  const [colors, setColors] = useState([]);
   const isEditing = id !== undefined;
+
+  useLayoutEffect(() => {
+    const fetchDeck = async () => {
+      const result: Deck = await getDeck(id);
+      if (!result?.id) {
+        return;
+      }
+
+      setFieldValue('id', result?.id);
+      setFieldValue('name', result?.name);
+      setFieldValue('notes', result?.notes);
+      setFieldValue('autoDetectColors', !!result?.auto_detect_colors);
+
+      if (result?.auto_detect_colors) {
+        setFieldValue('colors', []); // TODO: Parse color string into array
+      } else {
+        setFieldValue('colors', []); // TODO: Retrieve deck cards and call getColorString
+      }
+    };
+
+    if (id) {
+      fetchDeck();
+    }
+  }, [id]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -50,10 +80,13 @@ export default function DeckDetailsEditor() {
   }, [isValid]);
 
   const onPressSymbol = (symbol: ColorSymbol) => {
-    if (colors.includes(symbol)) {
-      setColors(colors.filter((color: ColorSymbol) => color !== symbol));
+    if (values.colors.includes(symbol)) {
+      setFieldValue(
+        'colors',
+        values.colors.filter((color: ColorSymbol) => color !== symbol)
+      );
     } else {
-      setColors(uniq([...colors, symbol]));
+      setFieldValue('colors', uniq([...values.colors, symbol]));
     }
   };
 
@@ -91,15 +124,16 @@ export default function DeckDetailsEditor() {
         />
         <SwitchField
           label='Automatically detect deck colors'
-          value={autoDetectColors}
-          onValueChange={(value: boolean) => setAutoDetectColors(value)}
+          value={values.autoDetectColors}
+          onValueChange={(value: boolean) => setFieldValue('autoDetectColors', value)}
         />
-        {!autoDetectColors ? (
+        {!values.autoDetectColors ? (
           <View style={styles.symbolBoxContainer}>
             {Object.values(ColorSymbol).map((symbol: ColorSymbol) => (
               <SymbolBox
+                key={symbol}
                 symbol={symbol}
-                isActive={colors.includes(symbol)}
+                isActive={values.colors.includes(symbol)}
                 onPressSymbol={onPressSymbol}
               />
             ))}

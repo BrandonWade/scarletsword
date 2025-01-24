@@ -26,13 +26,7 @@ export default function DeckList() {
           data={decks}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <DeckListItem
-              id={item.id}
-              name={item.name}
-              notes={item.notes}
-              colors={item.colors}
-              size={item.size}
-            />
+            <DeckListItem id={item.id} name={item.name} colors={item.colors} size={item.size} />
           )}
         />
       </View>
