@@ -23,3 +23,13 @@ export enum ScreenNames {
   CardList = 'Card List',
   Search = 'Search',
 }
+
+export enum ColorSymbol {
+  White = '{W}',
+  Blue = '{U}',
+  Black = '{B}',
+  Red = '{R}',
+  Green = '{G}',
+  Colorless = '{C}',
+  Snow = '{S}',
+}

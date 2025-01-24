@@ -84,7 +84,7 @@ import { Y } from '../components/common/Symbols';
 import { Z } from '../components/common/Symbols';
 import { Zero } from '../components/common/Symbols';
 
-const symbolMap = {
+export const symbolMap = {
   '{T}': Tap,
   '{Q}': Untap,
   '{E}': Energy,

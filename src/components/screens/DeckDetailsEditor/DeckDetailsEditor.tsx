@@ -1,18 +1,21 @@
 import * as Crypto from 'expo-crypto';
 import { useFormik } from 'formik';
-import React, { useLayoutEffect } from 'react';
-import { Alert, Button, SafeAreaView, View } from 'react-native';
+import uniq from 'lodash/uniq';
+import React, { useLayoutEffect, useState } from 'react';
+import { Alert, Button, ScrollView, View } from 'react-native';
 import { ParamListBase, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { validationSchema } from './validation';
 import styles from './styles';
+import SwitchField from '../../common/SwitchField';
 import TextAreaField from '../../common/TextAreaField';
 import TextInputField from '../../common/TextInputField';
 import { upsertDeck, deleteDeck } from '../../../db/decks';
 import { Deck } from '../../../db/types';
-import { Navigators, ScreenNames } from '../../../utils/enums';
+import { ColorSymbol, Navigators, ScreenNames } from '../../../utils/enums';
 import { StackParamsList } from '../../../utils/navigation';
 import commonStyles from '../../../utils/styles';
+import SymbolBox from './SymbolBox';
 
 export default function DeckDetailsEditor() {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
@@ -30,6 +33,8 @@ export default function DeckDetailsEditor() {
       navigation.goBack();
     },
   });
+  const [autoDetectColors, setAutoDetectColors] = useState(true);
+  const [colors, setColors] = useState([]);
   const isEditing = id !== undefined;
 
   useLayoutEffect(() => {
@@ -43,6 +48,14 @@ export default function DeckDetailsEditor() {
       ),
     });
   }, [isValid]);
+
+  const onPressSymbol = (symbol: ColorSymbol) => {
+    if (colors.includes(symbol)) {
+      setColors(colors.filter((color: ColorSymbol) => color !== symbol));
+    } else {
+      setColors(uniq([...colors, symbol]));
+    }
+  };
 
   const onPressDelete = async () => {
     Alert.alert('Delete Deck', 'Are you sure you want to delete this deck?', [
@@ -62,22 +75,38 @@ export default function DeckDetailsEditor() {
   };
 
   return (
-    <SafeAreaView>
+    <ScrollView>
       <View style={[commonStyles.screenContainer, styles.form]}>
         <TextInputField
           label='Name'
           value={values.name}
           description={errors.name}
-          onChangeText={(value) => setFieldValue('name', value)}
+          onChangeText={(value: string) => setFieldValue('name', value)}
         />
         <TextAreaField
           label='Notes'
           value={values.notes}
           description={errors.notes}
-          onChangeText={(value) => setFieldValue('notes', value)}
+          onChangeText={(value: string) => setFieldValue('notes', value)}
         />
+        <SwitchField
+          label='Automatically detect deck colors'
+          value={autoDetectColors}
+          onValueChange={(value: boolean) => setAutoDetectColors(value)}
+        />
+        {!autoDetectColors ? (
+          <View style={styles.symbolBoxContainer}>
+            {Object.values(ColorSymbol).map((symbol: ColorSymbol) => (
+              <SymbolBox
+                symbol={symbol}
+                isActive={colors.includes(symbol)}
+                onPressSymbol={onPressSymbol}
+              />
+            ))}
+          </View>
+        ) : null}
       </View>
       {isEditing ? <Button title='Delete' onPress={onPressDelete} /> : null}
-    </SafeAreaView>
+    </ScrollView>
   );
 }
