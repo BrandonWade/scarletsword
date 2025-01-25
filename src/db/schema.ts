@@ -57,9 +57,9 @@ export const decksTable = `
 CREATE TABLE IF NOT EXISTS decks (
   id TEXT NOT NULL,
   name TEXT NOT NULL,
-  notes TEXT DEFAULT NULL,
-  auto_detect_colors INTEGER DEFAULT 1,
-  colors TEXT DEFAULT NULL,
+  notes TEXT NOT NULL DEFAULT '',
+  auto_detect_colors INTEGER NOT NULL DEFAULT 1,
+  colors TEXT NOT NULL DEFAULT '',
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TEXT DEFAULT NULL,
   PRIMARY KEY (id)

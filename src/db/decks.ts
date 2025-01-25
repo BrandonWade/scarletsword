@@ -121,9 +121,9 @@ async function updateDeck(deck: Deck) {
     await statement.executeAsync({
       $id: deck.id,
       $name: deck.name,
-      $notes: deck.notes ?? null,
-      $colors: deck.colors ?? null,
+      $notes: deck.notes,
       $auto_detect_colors: deck.auto_detect_colors,
+      $colors: deck.colors,
     });
   } catch (err) {
     console.error('Error updating deck', err);
@@ -267,6 +267,7 @@ export async function upsertDeckCard(deckID: string, cardID: string, count: numb
     });
 
     // Update deck colors when adding one or more cards
+    // TODO: Skip this if autoDetectColors is false
     await updateDeckColors(deckID);
   } catch (err) {
     console.error('Error upserting deck card', err);
@@ -285,7 +286,6 @@ export async function deleteDeckCard(deckID: string, cardID: string) {
       FROM deck_cards
       WHERE deck_id = $deck_id
       AND card_id = $card_id
-      ;
       ;`,
       {
         $deck_id: deckID,
@@ -294,6 +294,7 @@ export async function deleteDeckCard(deckID: string, cardID: string) {
     );
 
     // Update deck colors when removing one or more cards
+    // TODO: Skip this if autoDetectColors is false
     await updateDeckColors(deckID);
   } catch (err) {
     console.error('Error getting deck cards', err);

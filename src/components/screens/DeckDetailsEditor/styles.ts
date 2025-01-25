@@ -4,6 +4,10 @@ export default StyleSheet.create({
   form: {
     gap: 20,
   },
+  symbolBoxLabel: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
   symbolBoxContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',

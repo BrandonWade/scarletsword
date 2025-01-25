@@ -2,7 +2,7 @@ import * as Crypto from 'expo-crypto';
 import { useFormik } from 'formik';
 import uniq from 'lodash/uniq';
 import React, { useLayoutEffect } from 'react';
-import { Alert, Button, ScrollView, View } from 'react-native';
+import { Alert, Button, ScrollView, Text, View } from 'react-native';
 import { ParamListBase, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { validationSchema } from './validation';
@@ -13,9 +13,11 @@ import TextAreaField from '../../common/TextAreaField';
 import TextInputField from '../../common/TextInputField';
 import { upsertDeck, deleteDeck, getDeck } from '../../../db/decks';
 import { Deck } from '../../../db/types';
+import { getColorString } from '../../../utils/decks';
 import { ColorSymbol, Navigators, ScreenNames } from '../../../utils/enums';
 import { StackParamsList } from '../../../utils/navigation';
 import commonStyles from '../../../utils/styles';
+import { parseSymbolText } from '../../../utils/symbols';
 
 export default function DeckDetailsEditor() {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
@@ -31,12 +33,20 @@ export default function DeckDetailsEditor() {
     },
     validationSchema,
     onSubmit: async () => {
+      let colors = '';
+      if (values.autoDetectColors) {
+        const deckCards = []; // TODO: Retrieve deck cards
+        colors = getColorString(deckCards);
+      } else {
+        colors = values.colors.join('');
+      }
+
       await upsertDeck({
         id: values.id,
         name: values.name,
         notes: values.notes,
         auto_detect_colors: values.autoDetectColors,
-        colors: values.colors.join(''),
+        colors,
       });
       navigation.goBack();
     },
@@ -53,13 +63,8 @@ export default function DeckDetailsEditor() {
       setFieldValue('id', result?.id);
       setFieldValue('name', result?.name);
       setFieldValue('notes', result?.notes);
-      setFieldValue('autoDetectColors', !!result?.auto_detect_colors);
-
-      if (result?.auto_detect_colors) {
-        setFieldValue('colors', []); // TODO: Parse color string into array
-      } else {
-        setFieldValue('colors', []); // TODO: Retrieve deck cards and call getColorString
-      }
+      setFieldValue('autoDetectColors', result?.auto_detect_colors);
+      setFieldValue('colors', parseSymbolText(result?.colors));
     };
 
     if (id) {
@@ -128,15 +133,18 @@ export default function DeckDetailsEditor() {
           onValueChange={(value: boolean) => setFieldValue('autoDetectColors', value)}
         />
         {!values.autoDetectColors ? (
-          <View style={styles.symbolBoxContainer}>
-            {Object.values(ColorSymbol).map((symbol: ColorSymbol) => (
-              <SymbolBox
-                key={symbol}
-                symbol={symbol}
-                isActive={values.colors.includes(symbol)}
-                onPressSymbol={onPressSymbol}
-              />
-            ))}
+          <View>
+            <Text style={styles.symbolBoxLabel}>Select colors:</Text>
+            <View style={styles.symbolBoxContainer}>
+              {Object.values(ColorSymbol).map((symbol: ColorSymbol) => (
+                <SymbolBox
+                  key={symbol}
+                  symbol={symbol}
+                  isActive={values.colors.includes(symbol)}
+                  onPressSymbol={onPressSymbol}
+                />
+              ))}
+            </View>
           </View>
         ) : null}
       </View>

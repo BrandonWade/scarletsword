@@ -171,18 +171,22 @@ export const symbolMap = {
   '{D}': Drop,
 };
 
-export function getSymbols(text, symbolProps = {}) {
-  const symbols = text
+export function parseSymbolText(text) {
+  return text
     .split(/(\{(?:\D|[A-Z0-9]+|[A-Z0-9]+\/[A-Z0-9]+)\})/gm)
     .filter((symbol) => symbol.length);
+}
 
-  return symbols.map((text, i) => {
-    const Symbol = symbolMap[text];
+export function getSymbols(text, symbolProps = {}) {
+  const symbols = parseSymbolText(text);
+
+  return symbols.map((symbol, i) => {
+    const Symbol = symbolMap[symbol];
 
     if (Symbol !== undefined) {
       return <Symbol key={i} {...symbolProps} />;
     }
 
-    return <Text key={i}>{text}</Text>;
+    return <Text key={i}>{symbol}</Text>;
   });
 }
