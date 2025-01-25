@@ -132,8 +132,13 @@ async function updateDeck(deck: Deck) {
   }
 }
 
-export async function updateDeckColors(deckID: string) {
+export async function conditionallyUpdateDeckColors(deckID: string) {
   const db = await openDatabase();
+  const deck = await getDeck(deckID);
+  if (!deck?.auto_detect_colors) {
+    return;
+  }
+
   const deckCards = await getDeckCards(deckID);
   const colors = getColorString(deckCards);
 
@@ -266,9 +271,8 @@ export async function upsertDeckCard(deckID: string, cardID: string, count: numb
       $count: count,
     });
 
-    // Update deck colors when adding one or more cards
-    // TODO: Skip this if autoDetectColors is false
-    await updateDeckColors(deckID);
+    // Update deck colors when adding one or more cards, if necessary
+    await conditionallyUpdateDeckColors(deckID);
   } catch (err) {
     console.error('Error upserting deck card', err);
   } finally {
@@ -293,9 +297,8 @@ export async function deleteDeckCard(deckID: string, cardID: string) {
       }
     );
 
-    // Update deck colors when removing one or more cards
-    // TODO: Skip this if autoDetectColors is false
-    await updateDeckColors(deckID);
+    // Update deck colors when removing one or more cards, if necessary
+    await conditionallyUpdateDeckColors(deckID);
   } catch (err) {
     console.error('Error getting deck cards', err);
   }

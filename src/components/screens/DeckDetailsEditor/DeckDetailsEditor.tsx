@@ -11,7 +11,7 @@ import SymbolBox from './SymbolBox';
 import SwitchField from '../../common/SwitchField';
 import TextAreaField from '../../common/TextAreaField';
 import TextInputField from '../../common/TextInputField';
-import { upsertDeck, deleteDeck, getDeck } from '../../../db/decks';
+import { upsertDeck, deleteDeck, getDeck, getDeckCards } from '../../../db/decks';
 import { Deck } from '../../../db/types';
 import { getColorString } from '../../../utils/decks';
 import { ColorSymbol, Navigators, ScreenNames } from '../../../utils/enums';
@@ -35,7 +35,7 @@ export default function DeckDetailsEditor() {
     onSubmit: async () => {
       let colors = '';
       if (values.autoDetectColors) {
-        const deckCards = []; // TODO: Retrieve deck cards
+        const deckCards = await getDeckCards(id);
         colors = getColorString(deckCards);
       } else {
         colors = values.colors.join('');
@@ -63,7 +63,7 @@ export default function DeckDetailsEditor() {
       setFieldValue('id', result?.id);
       setFieldValue('name', result?.name);
       setFieldValue('notes', result?.notes);
-      setFieldValue('autoDetectColors', result?.auto_detect_colors);
+      setFieldValue('autoDetectColors', !!result?.auto_detect_colors);
       setFieldValue('colors', parseSymbolText(result?.colors));
     };
 
