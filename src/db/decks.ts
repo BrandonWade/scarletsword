@@ -259,17 +259,12 @@ export async function updateDeckCardCount(deckID: string, cardID: string, count:
 
   try {
     statement = await db.prepareAsync(`
-      INSERT INTO deck_cards (
-        deck_id,
-        card_id,
-        count
-      ) VALUES (
-        $deck_id,
-        $card_id,
-        $count
-      ) ON CONFLICT (deck_id, card_id) DO UPDATE SET
-        count = $count,
-        updated_at = DATETIME('NOW')
+      UPDATE deck_cards
+      SET
+      count = $count,
+      updated_at = DATETIME('NOW')
+      WHERE deck_id = $deck_id
+      AND card_id = $card_id
       ;`);
     await statement.executeAsync({
       $deck_id: deckID,
