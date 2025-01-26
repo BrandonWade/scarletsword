@@ -33,3 +33,9 @@ export enum ColorSymbol {
   Colorless = '{C}',
   Snow = '{S}',
 }
+
+export enum DeckCardLocation {
+  Creatures = 'creatures',
+  Lands = 'lands',
+  Spells = 'spells',
+}

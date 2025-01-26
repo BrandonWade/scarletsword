@@ -1,4 +1,4 @@
-import { BulkDataEnum } from '../utils/enums';
+import { BulkDataEnum, DeckCardLocation } from '../utils/enums';
 
 export type DataImport = {
   type: BulkDataEnum;
@@ -24,6 +24,8 @@ export type DeckCard = {
   deck_id: string;
   card_id: string;
   count: number;
+  auto_detect_location: boolean;
+  location: DeckCardLocation;
   created_at: string;
   updated_at: string;
 };

@@ -71,6 +71,8 @@ CREATE TABLE IF NOT EXISTS deck_cards (
   deck_id TEXT NOT NULL,
   card_id TEXT NOT NULL,
   count INTEGER NOT NULL DEFAULT 0,
+  auto_detect_location INTEGER NOT NULL DEFAULT 1,
+  location TEXT NOT NULL,
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TEXT DEFAULT NULL,
   UNIQUE (deck_id, card_id),
