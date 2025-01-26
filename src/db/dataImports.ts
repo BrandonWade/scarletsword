@@ -23,14 +23,15 @@ export async function getMostRecentDataImport() {
 
 export async function recordDataImport(type: BulkDataEnum) {
   const db = await openDatabase();
-  const statement = await db.prepareAsync(`
-    INSERT INTO data_imports (
-      type
-    ) VALUES (
-      $type
-    );`);
+  let statement;
 
   try {
+    statement = await db.prepareAsync(`
+      INSERT INTO data_imports (
+        type
+      ) VALUES (
+        $type
+      );`);
     await statement.executeAsync({
       $type: type,
     });

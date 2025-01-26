@@ -1,11 +1,24 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  contentContainer: {
+  headerContentContainer: {
+    paddingVertical: 6,
+    borderBottomWidth: 1,
+    borderColor: '#797e7f44',
+    backgroundColor: '#f3f3f3',
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: 500,
+    textAlign: 'center',
+    textTransform: 'capitalize',
+  },
+  itemContentContainer: {
     flexDirection: 'row',
     columnGap: 10,
     alignItems: 'center',
     padding: 15,
+    backgroundColor: '#ffffff',
     borderBottomColor: '#797e7f44',
     borderBottomWidth: 1,
   },

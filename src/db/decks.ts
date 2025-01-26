@@ -1,6 +1,7 @@
 import { openDatabase } from './connections';
 import { Deck, DeckCard, DeckListItem } from './types';
 import { getColorString } from '../utils/decks';
+import { DeckCardLocation } from '../utils/enums';
 
 export async function listDecks() {
   const db = await openDatabase();
@@ -67,20 +68,21 @@ export async function upsertDeck(deck: Deck) {
 
 async function insertDeck(deck: Deck) {
   const db = await openDatabase();
-  const statement = await db.prepareAsync(`
-    INSERT INTO decks (
-      id,
-      name,
-      notes,
-      auto_detect_colors
-    ) VALUES (
-      $id,
-      $name,
-      $notes,
-      $auto_detect_colors
-    );`);
+  let statement;
 
   try {
+    statement = await db.prepareAsync(`
+      INSERT INTO decks (
+        id,
+        name,
+        notes,
+        auto_detect_colors
+      ) VALUES (
+        $id,
+        $name,
+        $notes,
+        $auto_detect_colors
+      );`);
     await statement.executeAsync({
       $id: deck.id,
       $name: deck.name,
@@ -96,28 +98,29 @@ async function insertDeck(deck: Deck) {
 
 async function updateDeck(deck: Deck) {
   const db = await openDatabase();
-  const statement = await db.prepareAsync(`
-    INSERT INTO decks (
-      id,
-      name,
-      notes,
-      auto_detect_colors,
-      colors
-    ) VALUES (
-      $id,
-      $name,
-      $notes,
-      $auto_detect_colors,
-      $colors
-    ) ON CONFLICT (id) DO UPDATE SET
-      name = EXCLUDED.name,
-      notes = EXCLUDED.notes,
-      auto_detect_colors = EXCLUDED.auto_detect_colors,
-      colors = EXCLUDED.colors,
-      updated_at = DATETIME('NOW')
-    ;`);
+  let statement;
 
   try {
+    statement = await db.prepareAsync(`
+      INSERT INTO decks (
+        id,
+        name,
+        notes,
+        auto_detect_colors,
+        colors
+      ) VALUES (
+        $id,
+        $name,
+        $notes,
+        $auto_detect_colors,
+        $colors
+      ) ON CONFLICT (id) DO UPDATE SET
+        name = EXCLUDED.name,
+        notes = EXCLUDED.notes,
+        auto_detect_colors = EXCLUDED.auto_detect_colors,
+        colors = EXCLUDED.colors,
+        updated_at = DATETIME('NOW')
+      ;`);
     await statement.executeAsync({
       $id: deck.id,
       $name: deck.name,
@@ -141,15 +144,15 @@ export async function conditionallyUpdateDeckColors(deckID: string) {
 
   const deckCards = await getDeckCards(deckID);
   const colors = getColorString(deckCards);
-
-  const statement = await db.prepareAsync(`
-    UPDATE decks
-    SET colors = $colors,
-    updated_at = DATETIME('NOW')
-    WHERE id = $id
-    ;`);
+  let statement;
 
   try {
+    statement = await db.prepareAsync(`
+      UPDATE decks
+      SET colors = $colors,
+      updated_at = DATETIME('NOW')
+      WHERE id = $id
+      ;`);
     await statement.executeAsync({
       $id: deckID,
       $colors: colors,
@@ -203,13 +206,15 @@ export async function getDeckCards(deckID: string) {
             'is_blue', is_blue,
             'is_black', is_black,
             'is_red', is_red,
-            'is_green', is_green
+            'is_green', is_green,
+            'type_line', type_line
           )
         ) faces
         FROM card_faces f
         GROUP BY f.card_id
       ) f ON c.id = f.card_id
       WHERE d.deck_id = $deck_id
+      ORDER BY c.cmc, c.name, c.id
       ;`,
       {
         $deck_id: deckID,
@@ -248,27 +253,70 @@ export async function getDeckCard(deckID: string, cardID: string) {
   }
 }
 
-export async function upsertDeckCard(deckID: string, cardID: string, count: number) {
+export async function updateDeckCardCount(deckID: string, cardID: string, count: number) {
   const db = await openDatabase();
-  const statement = await db.prepareAsync(`
-    INSERT INTO deck_cards (
-      deck_id,
-      card_id,
-      count
-    ) VALUES (
-      $deck_id,
-      $card_id,
-      $count
-    ) ON CONFLICT (deck_id, card_id) DO UPDATE SET
-      count = $count,
-      updated_at = DATETIME('NOW')
-    ;`);
+  let statement;
 
   try {
+    statement = await db.prepareAsync(`
+      INSERT INTO deck_cards (
+        deck_id,
+        card_id,
+        count
+      ) VALUES (
+        $deck_id,
+        $card_id,
+        $count
+      ) ON CONFLICT (deck_id, card_id) DO UPDATE SET
+        count = $count,
+        updated_at = DATETIME('NOW')
+      ;`);
     await statement.executeAsync({
       $deck_id: deckID,
       $card_id: cardID,
       $count: count,
+    });
+
+    // Update deck colors when adding one or more cards, if necessary
+    await conditionallyUpdateDeckColors(deckID);
+  } catch (err) {
+    console.error('Error updating deck card count', err);
+  } finally {
+    await statement.finalizeAsync();
+  }
+}
+
+export async function upsertDeckCard(
+  deckID: string,
+  cardID: string,
+  count: number,
+  location: DeckCardLocation
+) {
+  const db = await openDatabase();
+  let statement;
+
+  try {
+    statement = await db.prepareAsync(`
+      INSERT INTO deck_cards (
+        deck_id,
+        card_id,
+        count,
+        location
+      ) VALUES (
+        $deck_id,
+        $card_id,
+        $count,
+        $location
+      ) ON CONFLICT (deck_id, card_id) DO UPDATE SET
+        count = $count,
+        location = $location,
+        updated_at = DATETIME('NOW')
+      ;`);
+    await statement.executeAsync({
+      $deck_id: deckID,
+      $card_id: cardID,
+      $count: count,
+      $location: location,
     });
 
     // Update deck colors when adding one or more cards, if necessary

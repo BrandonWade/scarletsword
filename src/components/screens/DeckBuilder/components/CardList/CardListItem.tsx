@@ -28,7 +28,7 @@ export default function CardListItem({ deckID, card, onRemoveCard }: CardListIte
     <TouchableOpacity
       onPress={() => navigation.navigate(ScreenNames.Card, { cardID: card.card_id, deckID })}
     >
-      <View style={styles.contentContainer}>
+      <View style={styles.itemContentContainer}>
         <Text style={styles.count}>{card.count}</Text>
         <View style={styles.faceInfoList}>
           {faces.map((face) => {

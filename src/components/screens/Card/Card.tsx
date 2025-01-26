@@ -4,7 +4,7 @@ import { RouteProp, useIsFocused, useNavigation, useRoute } from '@react-navigat
 import styles from './styles';
 import CardImage from '../../common/CardImage';
 import { getCard } from '../../../db/cards';
-import { deleteDeckCard, getDeckCard, upsertDeckCard } from '../../../db/decks';
+import { deleteDeckCard, getDeckCard, updateDeckCardCount } from '../../../db/decks';
 import { CardFace, Card as DBCard, DeckCard } from '../../../db/types';
 import { ScreenNames } from '../../../utils/enums';
 import { StackNavigation, StackParamsList } from '../../../utils/navigation';
@@ -42,18 +42,18 @@ export default function Card() {
     loadCardInfo();
   }, [isFocused]);
 
-  const onChangeCount = async (count) => {
+  const onChangeCount = async (count: number) => {
     if (count === 0) {
       await deleteDeckCard(deckID, cardID);
     } else {
-      await upsertDeckCard(deckID, cardID, count);
+      await updateDeckCardCount(deckID, cardID, count);
     }
   };
 
-  const renderText = (text) => {
+  const renderText = (text: string) => {
     return text
       .split('\n')
-      .map((line, i) => (
+      .map((line: string, i: number) => (
         <Text key={i} style={styles.text}>
           {getSymbols(line)}
         </Text>
@@ -73,7 +73,7 @@ export default function Card() {
           />
         </View>
         <View style={styles.sectionContainer}>
-          {faces?.map((face) => {
+          {faces?.map((face: CardFace) => {
             return (
               <View key={face.face_index} style={styles.section}>
                 <View style={styles.nameRow}>

@@ -5,10 +5,15 @@ import { RouteProp, useIsFocused, useNavigation, useRoute } from '@react-navigat
 import styles from '../../styles';
 import CardImage from '../../../../common/CardImage';
 import TextInputField from '../../../../common/TextInputField';
-import { searchCards } from '../../../../../db/cards';
-import { deleteDeckCard, getDeckCards, upsertDeckCard } from '../../../../../db/decks';
-import { Card } from '../../../../../db/types';
-import { ScreenNames } from '../../../../../utils/enums';
+import { getCard, searchCards } from '../../../../../db/cards';
+import {
+  deleteDeckCard,
+  getDeckCards,
+  updateDeckCardCount,
+  upsertDeckCard,
+} from '../../../../../db/decks';
+import { Card, CardFace, DeckListItem } from '../../../../../db/types';
+import { DeckCardLocation, ScreenNames } from '../../../../../utils/enums';
 import { StackNavigation, StackParamsList } from '../../../../../utils/navigation';
 import commonStyles from '../../../../../utils/styles';
 
@@ -38,7 +43,7 @@ export default function Search() {
     const result = await getDeckCards(deckID);
 
     setDeckCardToCountMap(
-      (result || [])?.reduce((map, curr) => {
+      (result || [])?.reduce((map: { string?: number }, curr: DeckListItem) => {
         map[curr.card_id] = curr.count;
         return map;
       }, {})
@@ -59,21 +64,37 @@ export default function Search() {
     (async () => await refreshDeckCardtoCountMap())();
   }, [isFocused]);
 
-  const onPressResult = async (cardID) => {
+  const onPressResult = async (cardID: string) => {
+    const card = await getCard(cardID);
+    const faces = JSON.parse(card.faces);
+    let location;
+
+    faces.forEach((face: CardFace) => {
+      const typeLine = face.type_line.toLowerCase();
+
+      if (typeLine.includes('creature')) {
+        location = DeckCardLocation.Creatures;
+      } else if (typeLine.includes('land')) {
+        location = DeckCardLocation.Lands;
+      } else {
+        location = DeckCardLocation.Spells;
+      }
+    });
+
     const count = deckCardToCountMap[cardID] + 1 || 1;
-    await upsertDeckCard(deckID, cardID, count);
+    await upsertDeckCard(deckID, cardID, count, location);
     await refreshDeckCardtoCountMap();
   };
 
-  const onLongPressResult = (cardID) => {
+  const onLongPressResult = (cardID: string) => {
     navigation.navigate(ScreenNames.Card, { cardID, deckID });
   };
 
-  const onChangeCount = async (count, cardID) => {
+  const onChangeCount = async (count: number, cardID: string) => {
     if (count === 0) {
       await deleteDeckCard(deckID, cardID);
     } else {
-      await upsertDeckCard(deckID, cardID, count);
+      await updateDeckCardCount(deckID, cardID, count);
     }
 
     await refreshDeckCardtoCountMap();
@@ -90,11 +111,11 @@ export default function Search() {
             autoCorrect={false}
             value={values.name}
             description='Any words that appear in the name of the card.'
-            onChangeText={(value) => setFieldValue('name', value)}
+            onChangeText={(value: string) => setFieldValue('name', value)}
           />
         </View>
         <View style={[styles.resultsContainer, styles.cardGrid]}>
-          {results.map((card) => (
+          {results.map((card: Card) => (
             <CardImage
               key={card.id}
               card={card}
