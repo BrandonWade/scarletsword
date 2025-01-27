@@ -16,6 +16,7 @@ export type Deck = {
   notes: string;
   auto_detect_colors: boolean;
   colors: string;
+  size?: number;
   created_at?: string;
   updated_at?: string;
 };

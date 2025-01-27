@@ -27,14 +27,14 @@ export default function CardImage({
   onLongPress,
   onChangeCount,
 }: CardImageProps) {
-  const [flipValue] = useState(new Animated.Value(0));
-  const [rotateCWRotateValue] = useState(new Animated.Value(0));
-  const [rotateCWScaleValue] = useState(new Animated.Value(0));
-  const [frontTransformValue] = useState(new Animated.Value(0));
-  const [backTransformValue] = useState(new Animated.Value(0));
-  const [isFlipped, setIsFlipped] = useState(false);
-  const [isRotatedCW, setIsRotatedCW] = useState(false);
-  const [isTransformed, setIsTransformed] = useState(false);
+  const [flipValue] = useState<Animated.Value>(new Animated.Value(0));
+  const [rotateCWRotateValue] = useState<Animated.Value>(new Animated.Value(0));
+  const [rotateCWScaleValue] = useState<Animated.Value>(new Animated.Value(0));
+  const [frontTransformValue] = useState<Animated.Value>(new Animated.Value(0));
+  const [backTransformValue] = useState<Animated.Value>(new Animated.Value(0));
+  const [isFlipped, setIsFlipped] = useState<boolean>(false);
+  const [isRotatedCW, setIsRotatedCW] = useState<boolean>(false);
+  const [isTransformed, setIsTransformed] = useState<boolean>(false);
   const [front, back] = card?.faces ? JSON.parse(card.faces) : [];
   const canFlip = ['flip'].includes(card?.layout);
   const canRotateCW = ['split'].includes(card?.layout);
@@ -84,11 +84,11 @@ export default function CardImage({
     onLongPress?.(card.id);
   };
 
-  const onChangeCardCount = (count) => {
+  const onChangeCardCount = (count: number) => {
     onChangeCount(count, card.id);
   };
 
-  const withPressHandler = (children) => {
+  const withPressHandler = (children: React.JSX.Element) => {
     if (!onPress && !onLongPress) {
       return children;
     }

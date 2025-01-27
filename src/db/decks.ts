@@ -137,13 +137,13 @@ async function updateDeck(deck: Deck) {
 
 export async function conditionallyUpdateDeckColors(deckID: string) {
   const db = await openDatabase();
-  const deck = await getDeck(deckID);
+  const deck: Deck = await getDeck(deckID);
   if (!deck?.auto_detect_colors) {
     return;
   }
 
-  const deckCards = await getDeckCards(deckID);
-  const colors = getColorString(deckCards);
+  const deckCards: DeckListItem[] = await getDeckCards(deckID);
+  const colors: string = getColorString(deckCards);
   let statement;
 
   try {

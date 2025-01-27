@@ -1,9 +1,9 @@
 import { DeckListItem } from '../db/types';
 
 export function getColorString(cards: DeckListItem[] = []) {
-  const colors = new Set();
+  const colors = new Set<string>();
 
-  cards.forEach((card) => {
+  cards.forEach((card: DeckListItem) => {
     if (!card?.faces) {
       return;
     }

@@ -1,8 +1,16 @@
 import { TextInput } from 'react-native';
 import withFormField from '../../../utils/hocs/withFormField';
 import styles from './styles';
+import { TextAreaFieldProps } from './types';
 
-function TextAreaField({ style, keyboardType, placeholder, value, onBlur, onChangeText }) {
+function TextAreaField({
+  style,
+  keyboardType,
+  placeholder,
+  value,
+  onBlur,
+  onChangeText,
+}: TextAreaFieldProps) {
   return (
     <TextInput
       style={[styles.input, style]}

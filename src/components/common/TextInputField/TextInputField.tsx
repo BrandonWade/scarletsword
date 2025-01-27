@@ -1,5 +1,6 @@
 import { TextInput } from 'react-native';
 import styles from './styles';
+import { TextInputFieldProps } from './types';
 import withFormField from '../../../utils/hocs/withFormField';
 
 function TextInputField({
@@ -12,7 +13,7 @@ function TextInputField({
   value,
   onBlur,
   onChangeText,
-}) {
+}: TextInputFieldProps) {
   return (
     <TextInput
       style={[styles.input, style]}

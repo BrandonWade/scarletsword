@@ -5,14 +5,15 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
 import styles from './styles';
 import Box from '../../common/Box';
 import { seedDecks } from '../../../db/seeds';
-import { createTables, resetTables } from '../../../db/tables';
 import { getMostRecentDataImport } from '../../../db/dataImports';
+import { createTables, resetTables } from '../../../db/tables';
+import { DataImport } from '../../../db/types';
 import commonStyles from '../../../utils/styles';
 import { ScreenNames } from '../../../utils/enums';
 import { StackNavigation } from '../../../utils/navigation';
 
 export default function Home() {
-  const [mostRecentImport, setMostRecentImport] = useState(null);
+  const [mostRecentImport, setMostRecentImport] = useState<DataImport>(null);
   const navigation = useNavigation<StackNavigation>();
   const isFocused = useIsFocused();
 
@@ -22,7 +23,7 @@ export default function Home() {
       await createTables();
       // await seedDecks();
 
-      const result = await getMostRecentDataImport();
+      const result: DataImport = await getMostRecentDataImport();
       setMostRecentImport(result);
     };
 

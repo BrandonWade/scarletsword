@@ -10,7 +10,7 @@ function NumberInputField({
   max = 999,
   onChange,
 }: NumberInputFieldProps) {
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState<number>(0);
 
   useLayoutEffect(() => {
     setValue(valueProp);

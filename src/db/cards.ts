@@ -1,6 +1,6 @@
 import { openDatabase } from './connections';
 import { Card, Count } from './types';
-import { Card as ScryfallCard } from '../utils/scryfall/types';
+import { CardFace as ScryfallCardFace, Card as ScryfallCard } from '../utils/scryfall/types';
 
 export async function upsertCards(cards: ScryfallCard[] = []) {
   const db = await openDatabase();
@@ -130,7 +130,7 @@ export async function upsertCards(cards: ScryfallCard[] = []) {
         updated_at = DATETIME('NOW')
       ;`);
 
-    cards.forEach(async (card) => {
+    cards.forEach(async (card: ScryfallCard) => {
       try {
         await cardStatement.executeAsync({
           $id: card.id,
@@ -153,7 +153,7 @@ export async function upsertCards(cards: ScryfallCard[] = []) {
           $cardhoarder_uri: card?.cardhoarder_uri ?? null,
         });
 
-        const cardFaces = getCardFaces(card);
+        const cardFaces: ScryfallCardFace[] = getCardFaces(card);
         cardFaces.forEach(async (cardFace, faceIndex) => {
           await cardFaceStatement.executeAsync({
             $card_id: card.id,

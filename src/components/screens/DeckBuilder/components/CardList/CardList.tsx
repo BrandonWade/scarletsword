@@ -7,16 +7,17 @@ import { DeckCardLocation, ScreenNames } from '../../../../../utils/enums';
 import { StackParamsList } from '../../../../../utils/navigation';
 import CardListItem from './CardListItem';
 import CardListSectionHeader from './CardListSectionHeader';
+import { DeckListSection } from './types';
 
 export default function CardList() {
   const route = useRoute<RouteProp<StackParamsList, ScreenNames.CardList>>();
-  const [deckCards, setDeckCards] = useState([]);
-  const [sectionedDeckCards, setSectionedDeckCards] = useState([]);
+  const [deckCards, setDeckCards] = useState<DeckListItem[]>([]);
+  const [sectionedDeckCards, setSectionedDeckCards] = useState<DeckListSection[]>([]);
   const isFocused = useIsFocused();
   const { deckID } = route.params || {};
 
   const getCards = async () => {
-    const result = await getDeckCards(deckID);
+    const result: DeckListItem[] = await getDeckCards(deckID);
     setDeckCards(result);
   };
 
@@ -49,7 +50,7 @@ export default function CardList() {
     );
   }, [deckCards]);
 
-  const onRemoveCard = async (cardID) => {
+  const onRemoveCard = async (cardID: string) => {
     await deleteDeckCard(deckID, cardID);
     await getCards();
   };
@@ -57,9 +58,11 @@ export default function CardList() {
   return (
     <SectionList
       sections={sectionedDeckCards}
-      keyExtractor={(row) => row.card_id}
-      renderSectionHeader={({ section: { title } }) => <CardListSectionHeader title={title} />}
-      renderItem={({ item }) => (
+      keyExtractor={(row: DeckListItem) => row.card_id}
+      renderSectionHeader={({ section: { title } }: { section: DeckListSection }) => (
+        <CardListSectionHeader title={title} />
+      )}
+      renderItem={({ item }: { item: DeckListItem }) => (
         <CardListItem deckID={deckID} card={item} onRemoveCard={onRemoveCard} />
       )}
     />

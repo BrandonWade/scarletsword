@@ -2,16 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { FlatList, SafeAreaView, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { listDecks } from '../../../db/decks';
+import { Deck } from '../../../db/types';
 import DeckListItem from './DeckListItem';
 import styles from './styles';
 
 export default function DeckList() {
   const isFocused = useIsFocused();
-  const [decks, setDecks] = useState([]);
+  const [decks, setDecks] = useState<Deck[]>([]);
 
   useEffect(() => {
     const getDecks = async () => {
-      const result = await listDecks();
+      const result: Deck[] = await listDecks();
       setDecks(result);
     };
 

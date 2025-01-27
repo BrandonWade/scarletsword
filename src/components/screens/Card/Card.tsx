@@ -22,10 +22,10 @@ export default function Card() {
 
   useLayoutEffect(() => {
     const loadCardInfo = async () => {
-      const deckCardResult = await getDeckCard(deckID, cardID);
+      const deckCardResult: DeckCard = await getDeckCard(deckID, cardID);
       setDeckCard(deckCardResult);
 
-      const cardResult = await getCard(cardID);
+      const cardResult: DBCard = await getCard(cardID);
       setCard(cardResult);
 
       try {

@@ -1,3 +1,4 @@
+import { File } from 'expo-file-system/next';
 import React, { useState } from 'react';
 import { Button, SafeAreaView, Text, View } from 'react-native';
 import { RouteProp, useRoute } from '@react-navigation/native';
@@ -9,12 +10,12 @@ import { StackParamsList } from '../../../utils/navigation';
 import commonStyles from '../../../utils/styles';
 
 export default function BulkDataDownload() {
-  const [loading, setLoading] = useState(false);
-  const [details, setDetails] = useState('');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [details, setDetails] = useState<string>('');
   const route = useRoute<RouteProp<StackParamsList, ScreenNames.BulkDataDownload>>();
   const { type, name, size, description, updatedAt, downloadUri } = route.params;
 
-  const onUpdateDetails = (newDetails) => {
+  const onUpdateDetails = (newDetails: string) => {
     setDetails(newDetails);
   };
 
@@ -24,7 +25,7 @@ export default function BulkDataDownload() {
 
     setDetails('Downloading file');
     await recordDataImport(type);
-    const downloadedFile = await downloadFile(downloadUri, onUpdateDetails);
+    const downloadedFile: File = await downloadFile(downloadUri, onUpdateDetails);
     await importFile(downloadedFile, onUpdateDetails);
 
     setLoading(false);

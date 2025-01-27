@@ -22,8 +22,8 @@ export default function Search() {
   const isFocused = useIsFocused();
   const route = useRoute<RouteProp<StackParamsList, ScreenNames.Search>>();
   const { deckID } = route.params || {};
-  const [results, setResults] = useState([]);
-  const [deckCardToCountMap, setDeckCardToCountMap] = useState({});
+  const [results, setResults] = useState<Card[]>([]);
+  const [deckCardToCountMap, setDeckCardToCountMap] = useState<{ string?: number }>({});
   const { values, setFieldValue, handleSubmit } = useFormik({
     initialValues: {
       name: '',

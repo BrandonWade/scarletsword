@@ -171,16 +171,16 @@ export const symbolMap = {
   '{D}': Drop,
 };
 
-export function parseSymbolText(text) {
+export function parseSymbolText(text: string) {
   return text
     .split(/(\{(?:\D|[A-Z0-9]+|[A-Z0-9]+\/[A-Z0-9]+)\})/gm)
     .filter((symbol) => symbol.length);
 }
 
-export function getSymbols(text, symbolProps = {}) {
+export function getSymbols(text: string, symbolProps = {}) {
   const symbols = parseSymbolText(text);
 
-  return symbols.map((symbol, i) => {
+  return symbols.map((symbol: string, i: number) => {
     const Symbol = symbolMap[symbol];
 
     if (Symbol !== undefined) {
