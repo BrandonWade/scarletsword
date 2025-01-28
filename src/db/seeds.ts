@@ -1,7 +1,12 @@
 import { conditionallyUpdateDeckColors } from './decks';
 import { openDatabase } from './connections';
 
-export async function seedDecks() {
+export async function seedTables() {
+  await seedDecks();
+  await seedBookmarks();
+}
+
+async function seedDecks() {
   console.info('Seeding decks');
   const db = await openDatabase();
 
@@ -33,5 +38,26 @@ export async function seedDecks() {
     await conditionallyUpdateDeckColors('f29c3c8a-c770-44da-8cb9-d0bd82552157');
   } catch (err) {
     console.error('Error seeding decks', err);
+  }
+}
+
+async function seedBookmarks() {
+  console.info('Seeding bookmarks');
+  const db = await openDatabase();
+
+  try {
+    await db.execAsync(`
+        INSERT INTO bookmarks (card_id)
+        VALUES
+        ('0b61d772-2d8b-4acf-9dd2-b2e8b03538c8'),
+        ('45b090c7-f1ba-4656-8b51-915fc1876922'),
+        ('5fbc6091-a161-45b0-9932-543b569caaee'),
+        ('d15c6375-2e4e-47f7-88e1-d90794e7f724'),
+        ('80fffad3-2486-4350-8dff-54a215ebfc28'),
+        ('a5137c28-632f-40f4-bf9d-877f5f070987')
+        ON CONFLICT DO NOTHING;
+      `);
+  } catch (err) {
+    console.error('Error seeding bookmarks', err);
   }
 }

@@ -42,7 +42,7 @@ export default function Card() {
     loadCardInfo();
   }, [isFocused]);
 
-  const onChangeCount = async (count: number) => {
+  const onChangeCount = async (deckID: string, cardID: string, count: number) => {
     if (count === 0) {
       await deleteDeckCard(deckID, cardID);
     } else {
@@ -68,6 +68,7 @@ export default function Card() {
           <CardImage
             style={styles.image}
             card={card}
+            deckID={deckID}
             count={deckCard?.count || 0}
             onChangeCount={onChangeCount}
           />

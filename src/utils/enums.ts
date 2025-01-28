@@ -13,6 +13,7 @@ export enum Navigators {
 }
 
 export enum ScreenNames {
+  BookmarkList = 'My Bookmarks',
   BulkDataList = 'Data Files',
   BulkDataDownload = 'Download',
   Card = 'Card',

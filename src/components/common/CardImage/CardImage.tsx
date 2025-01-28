@@ -21,6 +21,7 @@ import NumberInputField from '../NumberInputField';
 export default function CardImage({
   style,
   card,
+  deckID,
   count,
   shouldOverlayActions = false,
   onPress,
@@ -85,9 +86,10 @@ export default function CardImage({
   };
 
   const onChangeCardCount = (count: number) => {
-    onChangeCount(count, card.id);
+    onChangeCount(deckID, card.id, count);
   };
 
+  // TODO: Move to separate file
   const withPressHandler = (children: React.JSX.Element) => {
     if (!onPress && !onLongPress) {
       return children;
@@ -149,7 +151,9 @@ export default function CardImage({
         </Animated.View>
       )}
       <View style={[styles.actions, shouldOverlayActions ? styles.actionsOverlay : {}]}>
-        {count > 0 && <NumberInputField value={count || 0} onChange={onChangeCardCount} />}
+        {deckID && count > 0 && (
+          <NumberInputField value={count || 0} onChange={onChangeCardCount} />
+        )}
         {canFlip && (
           <ActionButton
             iconName='cycle'

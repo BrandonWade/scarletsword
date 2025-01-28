@@ -1,9 +1,10 @@
 import { useFormik } from 'formik';
 import { useLayoutEffect, useState } from 'react';
-import { Button, ScrollView, View } from 'react-native';
+import { Button, ImageStyle, ScrollView, StyleProp, View } from 'react-native';
 import { RouteProp, useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 import styles from '../../styles';
 import CardImage from '../../../../common/CardImage';
+import CardImageGrid from '../../../../common/CardImageGrid';
 import TextInputField from '../../../../common/TextInputField';
 import { getCard, searchCards } from '../../../../../db/cards';
 import {
@@ -90,7 +91,7 @@ export default function Search() {
     navigation.navigate(ScreenNames.Card, { cardID, deckID });
   };
 
-  const onChangeCount = async (count: number, cardID: string) => {
+  const onChangeCount = async (deckID: string, cardID: string, count: number) => {
     if (count === 0) {
       await deleteDeckCard(deckID, cardID);
     } else {
@@ -114,10 +115,12 @@ export default function Search() {
             onChangeText={(value: string) => setFieldValue('name', value)}
           />
         </View>
-        <View style={[styles.resultsContainer, styles.cardGrid]}>
-          {results.map((card: Card) => (
+        <CardImageGrid
+          cards={results}
+          renderCard={(card: Card, style: StyleProp<ImageStyle>) => (
             <CardImage
               key={card.id}
+              style={style}
               card={card}
               count={deckCardToCountMap[card.id] || 0}
               shouldOverlayActions={true}
@@ -125,8 +128,8 @@ export default function Search() {
               onLongPress={onLongPressResult}
               onChangeCount={onChangeCount}
             />
-          ))}
-        </View>
+          )}
+        />
       </ScrollView>
     </View>
   );

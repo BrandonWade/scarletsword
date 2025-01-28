@@ -3,6 +3,7 @@ import { BulkDataEnum, Navigators, ScreenNames } from './enums';
 
 export type StackParamsList = {
   [Navigators.DrawerStack]: undefined;
+  [ScreenNames.BookmarkList]: undefined;
   [ScreenNames.BulkDataDownload]: {
     type: BulkDataEnum;
     name: string;
@@ -14,7 +15,7 @@ export type StackParamsList = {
   [ScreenNames.BulkDataList]: undefined;
   [ScreenNames.Card]: {
     cardID: string;
-    deckID: string;
+    deckID?: string;
   };
   [ScreenNames.DeckList]: undefined;
   [ScreenNames.DeckBuilder]: {

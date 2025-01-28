@@ -4,14 +4,4 @@ export default StyleSheet.create({
   searchContainer: {
     rowGap: 15,
   },
-  resultsContainer: {
-    padding: 5,
-  },
-  cardGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    width: '100%',
-    columnGap: 5,
-    rowGap: 5,
-  },
 });

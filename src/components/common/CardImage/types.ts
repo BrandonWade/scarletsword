@@ -13,9 +13,10 @@ export type ActionButtonProps = {
 export type CardImageProps = {
   style?: StyleProp<ImageStyle>;
   card: Card;
+  deckID?: string;
   count?: number;
   shouldOverlayActions?: boolean;
   onPress?: (cardID: string) => void;
   onLongPress?: (cardID: string) => void;
-  onChangeCount?: (count: number, cardID?: string) => void;
+  onChangeCount?: (deckID: string, cardID: string, count: number) => void;
 };

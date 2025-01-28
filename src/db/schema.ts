@@ -1,3 +1,13 @@
+export const bookmarksTable = `
+CREATE TABLE IF NOT EXISTS bookmarks (
+  card_id TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT DEFAULT NULL,
+  UNIQUE (card_id),
+  FOREIGN KEY (card_id) REFERENCES cards(id) ON DELETE CASCADE
+);
+`;
+
 export const cardsTable = `
 CREATE TABLE IF NOT EXISTS cards (
   id TEXT NOT NULL,
@@ -53,6 +63,14 @@ CREATE TABLE IF NOT EXISTS card_faces (
 );
 `;
 
+export const dataImportsTable = `
+CREATE TABLE IF NOT EXISTS data_imports (
+  type TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT DEFAULT NULL
+);
+`;
+
 export const decksTable = `
 CREATE TABLE IF NOT EXISTS decks (
   id TEXT NOT NULL,
@@ -78,13 +96,5 @@ CREATE TABLE IF NOT EXISTS deck_cards (
   UNIQUE (deck_id, card_id),
   FOREIGN KEY (deck_id) REFERENCES decks(id) ON DELETE CASCADE,
   FOREIGN KEY (card_id) REFERENCES cards(id) ON DELETE CASCADE
-);
-`;
-
-export const dataImportsTable = `
-CREATE TABLE IF NOT EXISTS data_imports (
-  type TEXT NOT NULL,
-  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at TEXT DEFAULT NULL
 );
 `;

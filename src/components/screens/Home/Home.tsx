@@ -4,7 +4,7 @@ import { Button, SafeAreaView, Text, View } from 'react-native';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import styles from './styles';
 import Box from '../../common/Box';
-import { seedDecks } from '../../../db/seeds';
+import { seedTables } from '../../../db/seeds';
 import { getMostRecentDataImport } from '../../../db/dataImports';
 import { createTables, resetTables } from '../../../db/tables';
 import { DataImport } from '../../../db/types';

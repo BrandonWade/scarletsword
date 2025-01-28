@@ -9,9 +9,7 @@ export async function listDecks() {
   try {
     const result: Deck[] = await db.getAllAsync(`
       SELECT
-      d.id,
-      d.name,
-      d.colors,
+      d.*,
       COALESCE(c.size, 0) size
       FROM decks d
       LEFT JOIN (
@@ -39,11 +37,7 @@ export async function getDeck(deckID: string) {
     const result: Deck = await db.getFirstAsync(
       `
       SELECT
-      d.id,
-      d.name,
-      d.notes,
-      d.auto_detect_colors,
-      d.colors
+      d.*
       FROM decks d
       WHERE d.id = $deck_id
       ;`,

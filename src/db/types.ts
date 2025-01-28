@@ -77,3 +77,11 @@ export type Card = {
   created_at: string;
   updated_at: string;
 };
+
+export type Bookmark = {
+  card_id: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type BookmarkListItem = Bookmark & Card;
