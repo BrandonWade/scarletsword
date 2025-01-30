@@ -21,7 +21,7 @@ export default function Home() {
     const init = async () => {
       // await resetTables();
       await createTables();
-      // await seedDecks();
+      // await seedTables();
 
       const result: DataImport = await getMostRecentDataImport();
       setMostRecentImport(result);

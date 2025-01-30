@@ -1,17 +1,16 @@
-import { Dimensions, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 
-const columns = 2;
-const padding = 5;
-const gridWidth = Dimensions.get('window').width;
-const cardWidth = Math.floor(gridWidth / columns);
+const width = 488;
+const height = 680;
 
 export default StyleSheet.create({
   container: {
     position: 'relative',
   },
   image: {
-    width: cardWidth - padding * 2,
-    height: 255,
+    width,
+    height,
+    aspectRatio: width / height,
     borderRadius: 8,
     overflow: 'hidden',
   },
