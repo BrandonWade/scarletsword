@@ -26,6 +26,8 @@ export default function CardImage({
   shouldOverlayActions = false,
   onPress,
   onLongPress,
+  onAddBookmark,
+  onRemoveBookmark,
   onChangeCount,
 }: CardImageProps) {
   const [flipValue] = useState<Animated.Value>(new Animated.Value(0));
@@ -40,6 +42,7 @@ export default function CardImage({
   const canFlip = ['flip'].includes(card?.layout);
   const canRotateCW = ['split'].includes(card?.layout);
   const canTransform = ['transform', 'double_faced_token', 'modal_dfc'].includes(card?.layout);
+  const isBookmarked = card?.is_bookmarked;
 
   useEffect(() => {
     if (isFlipped) {
@@ -83,6 +86,14 @@ export default function CardImage({
 
   const onLongPressImage = () => {
     onLongPress?.(card.id);
+  };
+
+  const onPressAddBookmark = () => {
+    onAddBookmark(card?.id);
+  };
+
+  const onPressRemoveBookmark = () => {
+    onRemoveBookmark(card?.id);
   };
 
   const onChangeCardCount = (count: number) => {
@@ -151,36 +162,57 @@ export default function CardImage({
         </Animated.View>
       )}
       <View style={[styles.actions, shouldOverlayActions ? styles.actionsOverlay : {}]}>
-        {deckID && count > 0 && (
-          <NumberInputField value={count || 0} onChange={onChangeCardCount} />
-        )}
-        {canFlip && (
-          <ActionButton
-            iconName='cycle'
-            iconSize={16}
-            isCompact={shouldOverlayActions}
-            text='Flip'
-            onPress={onPressFlip}
-          />
-        )}
-        {canRotateCW && (
-          <ActionButton
-            iconName='cw'
-            iconSize={16}
-            isCompact={shouldOverlayActions}
-            text='Rotate'
-            onPress={onPressRotateCW}
-          />
-        )}
-        {canTransform && (
-          <ActionButton
-            iconName='retweet'
-            iconSize={16}
-            isCompact={shouldOverlayActions}
-            text='Transform'
-            onPress={onPressTransform}
-          />
-        )}
+        <View style={styles.actionRow}>
+          {canFlip && (
+            <ActionButton
+              iconName='cycle'
+              iconSize={16}
+              isCompact={shouldOverlayActions}
+              text='Flip'
+              onPress={onPressFlip}
+            />
+          )}
+          {canRotateCW && (
+            <ActionButton
+              iconName='cw'
+              iconSize={16}
+              isCompact={shouldOverlayActions}
+              text='Rotate'
+              onPress={onPressRotateCW}
+            />
+          )}
+          {canTransform && (
+            <ActionButton
+              iconName='retweet'
+              iconSize={16}
+              isCompact={shouldOverlayActions}
+              text='Transform'
+              onPress={onPressTransform}
+            />
+          )}
+          {isBookmarked ? (
+            <ActionButton
+              iconName='star'
+              iconSize={16}
+              isCompact={shouldOverlayActions}
+              text='Remove Bookmark'
+              onPress={onPressRemoveBookmark}
+            />
+          ) : (
+            <ActionButton
+              iconName='star-outlined'
+              iconSize={16}
+              isCompact={shouldOverlayActions}
+              text='Add Bookmark'
+              onPress={onPressAddBookmark}
+            />
+          )}
+        </View>
+        <View style={styles.actionRow}>
+          {deckID && count > 0 && (
+            <NumberInputField value={count || 0} onChange={onChangeCardCount} />
+          )}
+        </View>
       </View>
     </View>
   );

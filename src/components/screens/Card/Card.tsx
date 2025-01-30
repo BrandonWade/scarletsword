@@ -3,9 +3,10 @@ import { ScrollView, Text, View } from 'react-native';
 import { RouteProp, useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 import styles from './styles';
 import CardImage from '../../common/CardImage';
+import { createBookmark, deleteBookmark } from '../../../db/bookmarks';
 import { getCard } from '../../../db/cards';
 import { deleteDeckCard, getDeckCard, updateDeckCardCount } from '../../../db/decks';
-import { CardFace, Card as DBCard, DeckCard } from '../../../db/types';
+import { BookmarkCard, CardFace, DeckCard } from '../../../db/types';
 import { ScreenNames } from '../../../utils/enums';
 import { StackNavigation, StackParamsList } from '../../../utils/navigation';
 import commonStyles from '../../../utils/styles';
@@ -14,7 +15,7 @@ import { getSymbols } from '../../../utils/symbols';
 export default function Card() {
   const navigation = useNavigation<StackNavigation>();
   const [deckCard, setDeckCard] = useState<DeckCard>();
-  const [card, setCard] = useState<DBCard>();
+  const [card, setCard] = useState<BookmarkCard>();
   const [faces, setFaces] = useState<CardFace[]>([]);
   const isFocused = useIsFocused();
   const route = useRoute<RouteProp<StackParamsList, ScreenNames.Card>>();
@@ -25,7 +26,7 @@ export default function Card() {
       const deckCardResult: DeckCard = await getDeckCard(deckID, cardID);
       setDeckCard(deckCardResult);
 
-      const cardResult: DBCard = await getCard(cardID);
+      const cardResult: BookmarkCard = await getCard(cardID);
       setCard(cardResult);
 
       try {
@@ -41,6 +42,16 @@ export default function Card() {
 
     loadCardInfo();
   }, [isFocused]);
+
+  const onAddBookmark = async (cardID: string) => {
+    await createBookmark(cardID);
+    // TODO: Update card data
+  };
+
+  const onRemoveBookmark = async (cardID: string) => {
+    await deleteBookmark(cardID);
+    // TODO: Update card data
+  };
 
   const onChangeCount = async (deckID: string, cardID: string, count: number) => {
     if (count === 0) {
@@ -70,6 +81,8 @@ export default function Card() {
             card={card}
             deckID={deckID}
             count={deckCard?.count || 0}
+            onAddBookmark={onAddBookmark}
+            onRemoveBookmark={onRemoveBookmark}
             onChangeCount={onChangeCount}
           />
         </View>

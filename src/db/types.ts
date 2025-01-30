@@ -84,4 +84,7 @@ export type Bookmark = {
   updated_at: string;
 };
 
-export type BookmarkListItem = Bookmark & Card;
+export type BookmarkCard = Bookmark &
+  Card & {
+    is_bookmarked?: boolean;
+  };

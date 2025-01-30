@@ -5,7 +5,6 @@ export default StyleSheet.create({
     marginBottom: 40,
   },
   imageContainer: {
-    alignItems: 'center',
     rowGap: 15,
     marginBottom: 15,
   },

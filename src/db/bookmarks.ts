@@ -1,13 +1,17 @@
 import { openDatabase } from './connections';
-import { BookmarkListItem } from './types';
+import { BookmarkCard } from './types';
 
 export async function listBookmarks() {
   const db = await openDatabase();
 
   try {
-    const result: BookmarkListItem[] = await db.getAllAsync(`
+    const result: BookmarkCard[] = await db.getAllAsync(`
       SELECT
       b.*,
+      CASE
+        WHEN b.card_id IS NOT NULL THEN 1
+        ELSE 0
+      END is_bookmarked,
       c.*,
       f.faces
       FROM bookmarks b

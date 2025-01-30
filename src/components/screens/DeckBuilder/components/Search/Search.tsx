@@ -6,6 +6,7 @@ import styles from '../../styles';
 import CardImage from '../../../../common/CardImage';
 import CardImageGrid from '../../../../common/CardImageGrid';
 import TextInputField from '../../../../common/TextInputField';
+import { createBookmark, deleteBookmark } from '../../../../../db/bookmarks';
 import { getCard, searchCards } from '../../../../../db/cards';
 import {
   deleteDeckCard,
@@ -13,7 +14,7 @@ import {
   updateDeckCardCount,
   upsertDeckCard,
 } from '../../../../../db/decks';
-import { Card, CardFace, DeckListItem } from '../../../../../db/types';
+import { BookmarkCard, CardFace, DeckListItem } from '../../../../../db/types';
 import { DeckCardLocation, ScreenNames } from '../../../../../utils/enums';
 import { StackNavigation, StackParamsList } from '../../../../../utils/navigation';
 import commonStyles from '../../../../../utils/styles';
@@ -23,14 +24,14 @@ export default function Search() {
   const isFocused = useIsFocused();
   const route = useRoute<RouteProp<StackParamsList, ScreenNames.Search>>();
   const { deckID } = route.params || {};
-  const [results, setResults] = useState<Card[]>([]);
+  const [results, setResults] = useState<BookmarkCard[]>([]);
   const [deckCardToCountMap, setDeckCardToCountMap] = useState<{ string?: number }>({});
   const { values, setFieldValue, handleSubmit } = useFormik({
     initialValues: {
       name: '',
     },
     onSubmit: async () => {
-      const searchResults: Card[] = await searchCards(values.name);
+      const searchResults: BookmarkCard[] = await searchCards(values.name);
       setResults(searchResults);
       await refreshDeckCardtoCountMap();
     },
@@ -91,6 +92,16 @@ export default function Search() {
     navigation.navigate(ScreenNames.Card, { cardID, deckID });
   };
 
+  const onAddBookmark = async (cardID: string) => {
+    await createBookmark(cardID);
+    // TODO: Update card data
+  };
+
+  const onRemoveBookmark = async (cardID: string) => {
+    await deleteBookmark(cardID);
+    // TODO: Update card data
+  };
+
   const onChangeCount = async (deckID: string, cardID: string, count: number) => {
     if (count === 0) {
       await deleteDeckCard(deckID, cardID);
@@ -117,15 +128,18 @@ export default function Search() {
         </View>
         <CardImageGrid
           cards={results}
-          renderCard={(card: Card, style: StyleProp<ImageStyle>) => (
+          renderCard={(card: BookmarkCard, style: StyleProp<ImageStyle>) => (
             <CardImage
               key={card.id}
               style={style}
               card={card}
+              deckID={deckID}
               count={deckCardToCountMap[card.id] || 0}
               shouldOverlayActions={true}
               onPress={onPressResult}
               onLongPress={onLongPressResult}
+              onAddBookmark={onAddBookmark}
+              onRemoveBookmark={onRemoveBookmark}
               onChangeCount={onChangeCount}
             />
           )}

@@ -6,6 +6,7 @@ const height = 680;
 export default StyleSheet.create({
   container: {
     position: 'relative',
+    alignItems: 'center',
   },
   image: {
     width,
@@ -15,10 +16,13 @@ export default StyleSheet.create({
     overflow: 'hidden',
   },
   actions: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    columnGap: 5,
+    alignItems: 'center',
+    rowGap: 5,
     marginTop: 10,
+  },
+  actionRow: {
+    flexDirection: 'row',
+    columnGap: 5,
   },
   actionsOverlay: {
     position: 'absolute',
