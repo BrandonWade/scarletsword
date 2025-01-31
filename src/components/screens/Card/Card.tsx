@@ -21,36 +21,36 @@ export default function Card() {
   const route = useRoute<RouteProp<StackParamsList, ScreenNames.Card>>();
   const { deckID, cardID } = route.params || {};
 
+  const loadCardInfo = async () => {
+    const deckCardResult: DeckCard = await getDeckCard(deckID, cardID);
+    setDeckCard(deckCardResult);
+
+    const cardResult: BookmarkCard = await getCard(cardID);
+    setCard(cardResult);
+
+    try {
+      setFaces(JSON.parse(cardResult.faces));
+    } catch (err) {
+      console.error('Error parsing card faces', err);
+    }
+
+    navigation.setOptions({
+      title: cardResult.name,
+    });
+  };
+
   useLayoutEffect(() => {
-    const loadCardInfo = async () => {
-      const deckCardResult: DeckCard = await getDeckCard(deckID, cardID);
-      setDeckCard(deckCardResult);
-
-      const cardResult: BookmarkCard = await getCard(cardID);
-      setCard(cardResult);
-
-      try {
-        setFaces(JSON.parse(cardResult.faces));
-      } catch (err) {
-        console.error('Error parsing card faces', err);
-      }
-
-      navigation.setOptions({
-        title: cardResult.name,
-      });
-    };
-
     loadCardInfo();
   }, [isFocused]);
 
   const onAddBookmark = async (cardID: string) => {
     await createBookmark(cardID);
-    // TODO: Update card data
+    await loadCardInfo();
   };
 
   const onRemoveBookmark = async (cardID: string) => {
     await deleteBookmark(cardID);
-    // TODO: Update card data
+    await loadCardInfo();
   };
 
   const onChangeCount = async (deckID: string, cardID: string, count: number) => {

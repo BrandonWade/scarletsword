@@ -29,12 +29,12 @@ export default function BookmarkList() {
 
   const onAddBookmark = async (cardID: string) => {
     await createBookmark(cardID);
-    // TODO: Update card data
+    await fetchBookmarks();
   };
 
   const onRemoveBookmark = async (cardID: string) => {
     await deleteBookmark(cardID);
-    // TODO: Update card data
+    await fetchBookmarks();
   };
 
   return (

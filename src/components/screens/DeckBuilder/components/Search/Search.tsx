@@ -26,16 +26,6 @@ export default function Search() {
   const { deckID } = route.params || {};
   const [results, setResults] = useState<BookmarkCard[]>([]);
   const [deckCardToCountMap, setDeckCardToCountMap] = useState<{ string?: number }>({});
-  const { values, setFieldValue, handleSubmit } = useFormik({
-    initialValues: {
-      name: '',
-    },
-    onSubmit: async () => {
-      const searchResults: BookmarkCard[] = await searchCards(values.name);
-      setResults(searchResults);
-      await refreshDeckCardtoCountMap();
-    },
-  });
 
   const refreshDeckCardtoCountMap = async () => {
     if (!deckID) {
@@ -43,7 +33,6 @@ export default function Search() {
     }
 
     const result = await getDeckCards(deckID);
-
     setDeckCardToCountMap(
       (result || [])?.reduce((map: { string?: number }, curr: DeckListItem) => {
         map[curr.card_id] = curr.count;
@@ -51,6 +40,19 @@ export default function Search() {
       }, {})
     );
   };
+
+  const fetchCards = async () => {
+    const searchResults: BookmarkCard[] = await searchCards(values.name);
+    setResults(searchResults);
+    await refreshDeckCardtoCountMap();
+  };
+
+  const { values, setFieldValue, handleSubmit } = useFormik({
+    initialValues: {
+      name: '',
+    },
+    onSubmit: fetchCards,
+  });
 
   useLayoutEffect(() => {
     navigation.getParent().setOptions({
@@ -63,7 +65,7 @@ export default function Search() {
       },
     });
 
-    (async () => await refreshDeckCardtoCountMap())();
+    (async () => await fetchCards())();
   }, [isFocused]);
 
   const onPressResult = async (cardID: string) => {
@@ -85,7 +87,7 @@ export default function Search() {
 
     const count = deckCardToCountMap[cardID] + 1 || 1;
     await upsertDeckCard(deckID, cardID, count, location);
-    await refreshDeckCardtoCountMap();
+    await fetchCards();
   };
 
   const onLongPressResult = (cardID: string) => {
@@ -94,12 +96,12 @@ export default function Search() {
 
   const onAddBookmark = async (cardID: string) => {
     await createBookmark(cardID);
-    // TODO: Update card data
+    await fetchCards();
   };
 
   const onRemoveBookmark = async (cardID: string) => {
     await deleteBookmark(cardID);
-    // TODO: Update card data
+    await fetchCards();
   };
 
   const onChangeCount = async (deckID: string, cardID: string, count: number) => {
