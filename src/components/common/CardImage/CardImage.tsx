@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Animated, TouchableOpacity, View } from 'react-native';
+import { Animated, View } from 'react-native';
 import { getFlipAmount, getForwardFlipAnimation, getReverseFlipAnimation } from './animations/flip';
 import {
   getRotateCWRotateAmount,
@@ -17,6 +17,7 @@ import ActionButton from './ActionButton';
 import styles from './styles';
 import { CardImageProps } from './types';
 import NumberInputField from '../NumberInputField';
+import withPressHandler from '../../../utils/hocs/withPressHandler';
 
 export default function CardImage({
   style,
@@ -80,14 +81,6 @@ export default function CardImage({
     setIsTransformed(!isTransformed);
   };
 
-  const onPressImage = () => {
-    onPress?.(card.id);
-  };
-
-  const onLongPressImage = () => {
-    onLongPress?.(card.id);
-  };
-
   const onPressAddBookmark = () => {
     onAddBookmark(card?.id);
   };
@@ -98,19 +91,6 @@ export default function CardImage({
 
   const onChangeCardCount = (count: number) => {
     onChangeCount(deckID, card.id, count);
-  };
-
-  // TODO: Move to separate file
-  const withPressHandler = (children: React.JSX.Element) => {
-    if (!onPress && !onLongPress) {
-      return children;
-    }
-
-    return (
-      <TouchableOpacity onPress={onPressImage} onLongPress={onLongPressImage}>
-        {children}
-      </TouchableOpacity>
-    );
   };
 
   return (
@@ -159,7 +139,11 @@ export default function CardImage({
               resizeMode='stretch'
             />
           ) : null}
-        </Animated.View>
+        </Animated.View>,
+        {
+          onPress: onPress ? () => onPress?.(card.id) : undefined,
+          onLongPress: onLongPress ? () => onLongPress?.(card.id) : undefined,
+        }
       )}
       <View style={[styles.actions, shouldOverlayActions ? styles.actionsOverlay : {}]}>
         <View style={styles.actionRow}>
