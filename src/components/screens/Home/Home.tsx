@@ -1,20 +1,11 @@
-import dayjs from 'dayjs';
-import React, { useLayoutEffect, useState } from 'react';
-import { Button, SafeAreaView, Text, View } from 'react-native';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
-import styles from './styles';
-import Box from '../../common/Box';
-import { seedTables } from '../../../db/seeds';
-import { getMostRecentDataImport } from '../../../db/dataImports';
-import { createTables, resetTables } from '../../../db/tables';
-import { DataImport } from '../../../db/types';
+import React, { useLayoutEffect } from 'react';
+import { SafeAreaView, View } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
+import DataNotice from './components/DataNotice';
+import { createTables } from '../../../db/tables';
 import commonStyles from '../../../utils/styles';
-import { ScreenNames } from '../../../utils/enums';
-import { StackNavigation } from '../../../utils/navigation';
 
 export default function Home() {
-  const [mostRecentImport, setMostRecentImport] = useState<DataImport>(null);
-  const navigation = useNavigation<StackNavigation>();
   const isFocused = useIsFocused();
 
   useLayoutEffect(() => {
@@ -22,49 +13,16 @@ export default function Home() {
       // await resetTables();
       await createTables();
       // await seedTables();
-
-      const result: DataImport = await getMostRecentDataImport();
-      setMostRecentImport(result);
     };
 
     init();
   }, [isFocused]);
 
-  const onPressViewDataFilePress = () => {
-    navigation.navigate(ScreenNames.BulkDataList);
-  };
-
-  const renderDataNotice = () => {
-    if (!mostRecentImport) {
-      return (
-        <Box style={styles.dataNotice}>
-          <Text style={styles.message}>
-            To get started, you'll need to download a data file with card data.
-          </Text>
-          <Button title='View Options' onPress={onPressViewDataFilePress} />
-        </Box>
-      );
-    }
-
-    const createdAt = dayjs(mostRecentImport.created_at);
-    const daysSinceLastImport = dayjs().diff(createdAt, 'days');
-    if (daysSinceLastImport > 30) {
-      return (
-        <Box style={styles.dataNotice}>
-          <Text style={styles.message}>
-            {`It's been ${daysSinceLastImport} days since your last data file import. Consider downloading a recent file and updating your data.`}
-          </Text>
-          <Button title='View Data Files' onPress={onPressViewDataFilePress} />
-        </Box>
-      );
-    }
-
-    return null;
-  };
-
   return (
     <SafeAreaView>
-      <View style={commonStyles.screenContainer}>{renderDataNotice()}</View>
+      <View style={commonStyles.screenContainer}>
+        <DataNotice />
+      </View>
     </SafeAreaView>
   );
 }
