@@ -1,7 +1,7 @@
 import { ImageStyle, StyleProp } from 'react-native';
-import { BookmarkCard, Card } from '../../../db/types';
+import { Card } from '../../../db/types';
 
 export type CardImageGridProps = {
-  cards: BookmarkCard[];
+  cards: Card[];
   renderCard: (card: Card, style: StyleProp<ImageStyle>) => React.JSX.Element;
 };

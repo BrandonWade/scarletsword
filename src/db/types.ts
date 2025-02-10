@@ -83,8 +83,3 @@ export type Bookmark = {
   created_at: string;
   updated_at: string;
 };
-
-export type BookmarkCard = Bookmark &
-  Card & {
-    is_bookmarked?: boolean;
-  };

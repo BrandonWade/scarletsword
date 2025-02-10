@@ -22,6 +22,7 @@ import withPressHandler from '../../../utils/hocs/withPressHandler';
 export default function CardImage({
   style,
   card,
+  isBookmarked,
   deckID,
   count,
   shouldOverlayActions = false,
@@ -43,7 +44,6 @@ export default function CardImage({
   const canFlip = ['flip'].includes(card?.layout);
   const canRotateCW = ['split'].includes(card?.layout);
   const canTransform = ['transform', 'double_faced_token', 'modal_dfc'].includes(card?.layout);
-  const isBookmarked = card?.is_bookmarked;
 
   useEffect(() => {
     if (isFlipped) {

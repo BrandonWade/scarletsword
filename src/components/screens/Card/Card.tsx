@@ -3,10 +3,10 @@ import { ScrollView, Text, View } from 'react-native';
 import { RouteProp, useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 import styles from './styles';
 import CardImage from '../../common/CardImage';
-import { createBookmark, deleteBookmark } from '../../../db/bookmarks';
+import { createBookmark, deleteBookmark, getBookmark } from '../../../db/bookmarks';
 import { getCard } from '../../../db/cards';
 import { deleteDeckCard, getDeckCard, updateDeckCardCount } from '../../../db/decks';
-import { BookmarkCard, CardFace, DeckCard } from '../../../db/types';
+import { Card as DBCard, CardFace, DeckCard } from '../../../db/types';
 import { ScreenNames } from '../../../utils/enums';
 import { StackNavigation, StackParamsList } from '../../../utils/navigation';
 import commonStyles from '../../../utils/styles';
@@ -15,8 +15,9 @@ import { getSymbols } from '../../../utils/symbols';
 export default function Card() {
   const navigation = useNavigation<StackNavigation>();
   const [deckCard, setDeckCard] = useState<DeckCard>();
-  const [card, setCard] = useState<BookmarkCard>();
+  const [card, setCard] = useState<DBCard>();
   const [faces, setFaces] = useState<CardFace[]>([]);
+  const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
   const isFocused = useIsFocused();
   const route = useRoute<RouteProp<StackParamsList, ScreenNames.Card>>();
   const { deckID, cardID } = route.params || {};
@@ -25,8 +26,11 @@ export default function Card() {
     const deckCardResult: DeckCard = await getDeckCard(deckID, cardID);
     setDeckCard(deckCardResult);
 
-    const cardResult: BookmarkCard = await getCard(cardID);
+    const cardResult: DBCard = await getCard(cardID);
     setCard(cardResult);
+
+    const bookmarkResult: DBCard = await getBookmark(cardID);
+    setIsBookmarked(cardID === bookmarkResult?.id);
 
     try {
       setFaces(JSON.parse(cardResult.faces));
@@ -40,7 +44,7 @@ export default function Card() {
   };
 
   useLayoutEffect(() => {
-    loadCardInfo();
+    (async () => await loadCardInfo())();
   }, [isFocused]);
 
   const onAddBookmark = async (cardID: string) => {
@@ -79,6 +83,7 @@ export default function Card() {
           <CardImage
             style={styles.image}
             card={card}
+            isBookmarked={isBookmarked}
             deckID={deckID}
             count={deckCard?.count || 0}
             onAddBookmark={onAddBookmark}

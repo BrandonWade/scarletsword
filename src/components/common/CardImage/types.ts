@@ -1,6 +1,6 @@
 import { Entypo } from '@expo/vector-icons';
 import { ImageStyle, StyleProp } from 'react-native';
-import { BookmarkCard } from '../../../db/types';
+import { Card } from '../../../db/types';
 
 export type ActionButtonProps = {
   iconName: keyof typeof Entypo.glyphMap;
@@ -12,7 +12,8 @@ export type ActionButtonProps = {
 
 export type CardImageProps = {
   style?: StyleProp<ImageStyle>;
-  card: BookmarkCard;
+  card: Card;
+  isBookmarked?: boolean;
   deckID?: string;
   count?: number;
   shouldOverlayActions?: boolean;

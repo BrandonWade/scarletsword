@@ -1,21 +1,15 @@
 import { openDatabase } from './connections';
-import { BookmarkCard } from './types';
+import { Card } from './types';
 
 export async function listBookmarks() {
   const db = await openDatabase();
 
   try {
-    const result: BookmarkCard[] = await db.getAllAsync(`
+    const result: Card[] = await db.getAllAsync(`
       SELECT
-      b.*,
-      CASE
-        WHEN b.card_id IS NOT NULL THEN 1
-        ELSE 0
-      END is_bookmarked,
       c.*,
       f.faces
-      FROM bookmarks b
-      INNER JOIN cards c ON c.id = b.card_id
+      FROM cards c
       INNER JOIN (
         SELECT
         f.card_id,
@@ -42,7 +36,11 @@ export async function listBookmarks() {
         FROM card_faces f
         GROUP BY f.card_id
       ) f ON c.id = f.card_id
-      ;`);
+      WHERE c.id IN (
+        SELECT
+        b.card_id
+        FROM bookmarks b
+      );`);
 
     return result;
   } catch (err) {
@@ -50,6 +48,28 @@ export async function listBookmarks() {
   }
 
   return [];
+}
+
+export async function getBookmark(cardID: string) {
+  const db = await openDatabase();
+
+  try {
+    const result: Card = await db.getFirstAsync(
+      `
+      SELECT
+      c.*
+      FROM cards c
+      INNER JOIN bookmarks b ON b.card_id = c.id AND b.card_id = $card_id
+      ;`,
+      {
+        $card_id: cardID,
+      }
+    );
+
+    return result;
+  } catch (err) {
+    console.error('Error getting bookmark', err);
+  }
 }
 
 export async function createBookmark(cardID: string) {

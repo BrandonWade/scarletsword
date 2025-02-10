@@ -5,18 +5,21 @@ import styles from './styles';
 import CardImage from '../../common/CardImage';
 import CardImageGrid from '../../common/CardImageGrid';
 import { createBookmark, deleteBookmark, listBookmarks } from '../../../db/bookmarks';
-import { BookmarkCard } from '../../../db/types';
+import { Card } from '../../../db/types';
 import { ScreenNames } from '../../../utils/enums';
 import { StackNavigation } from '../../../utils/navigation';
 
 export default function BookmarkList() {
   const navigation = useNavigation<StackNavigation>();
   const isFocused = useIsFocused();
-  const [bookmarks, setBookmarks] = useState<BookmarkCard[]>([]);
+  const [bookmarks, setBookmarks] = useState<Card[]>([]);
+  const [bookmarkIDs, setBookmarkIDs] = useState(new Set());
 
   const fetchBookmarks = async () => {
     const result = await listBookmarks();
     setBookmarks(result);
+
+    setBookmarkIDs(new Set(result.map((bookmark) => bookmark.id)));
   };
 
   useLayoutEffect(() => {
@@ -41,11 +44,12 @@ export default function BookmarkList() {
     <ScrollView>
       <CardImageGrid
         cards={bookmarks}
-        renderCard={(card: BookmarkCard, style: StyleProp<ImageStyle>) => (
+        renderCard={(card: Card, style: StyleProp<ImageStyle>) => (
           <CardImage
             key={card.id}
             style={style}
             card={card}
+            isBookmarked={bookmarkIDs.has(card.id)}
             shouldOverlayActions={true}
             onPress={onPressResult}
             onAddBookmark={onAddBookmark}

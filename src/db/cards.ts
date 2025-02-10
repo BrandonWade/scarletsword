@@ -1,5 +1,5 @@
 import { openDatabase } from './connections';
-import { BookmarkCard, Card, Count } from './types';
+import { Card, Count } from './types';
 import { CardFace as ScryfallCardFace, Card as ScryfallCard } from '../utils/scryfall/types';
 
 export async function upsertCards(cards: ScryfallCard[] = []) {
@@ -233,7 +233,7 @@ function getCardFaces(card: ScryfallCard) {
   ];
 }
 
-export async function searchCards(name: string): Promise<BookmarkCard[]> {
+export async function searchCards(name: string): Promise<Card[]> {
   const db = await openDatabase();
 
   try {
@@ -260,14 +260,9 @@ export async function searchCards(name: string): Promise<BookmarkCard[]> {
           'loyalty', f.loyalty
         )
       ) faces,
-      c.*,
-      CASE
-        WHEN b.card_id IS NOT NULL THEN 1
-        ELSE 0
-      END is_bookmarked
+      c.*
       FROM cards c
       INNER JOIN card_faces f ON f.card_id = c.id
-      LEFT JOIN bookmarks b ON b.card_id = c.id
       WHERE c.name LIKE $name
       GROUP BY c.id
       ORDER BY c.name
@@ -281,7 +276,7 @@ export async function searchCards(name: string): Promise<BookmarkCard[]> {
   }
 }
 
-export async function getCard(cardID: string): Promise<BookmarkCard> {
+export async function getCard(cardID: string): Promise<Card> {
   const db = await openDatabase();
 
   try {
@@ -308,14 +303,9 @@ export async function getCard(cardID: string): Promise<BookmarkCard> {
           'loyalty', f.loyalty
         )
       ) faces,
-      c.*,
-      CASE
-        WHEN b.card_id IS NOT NULL THEN 1
-        ELSE 0
-      END is_bookmarked
+      c.*
       FROM cards c
       INNER JOIN card_faces f ON f.card_id = c.id
-      LEFT JOIN bookmarks b ON b.card_id = c.id
       WHERE c.id = $id
       GROUP BY c.id
       ;`,
