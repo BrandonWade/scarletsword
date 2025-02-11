@@ -16,7 +16,8 @@ export type CardImageProps = {
   isBookmarked?: boolean;
   deckID?: string;
   count?: number;
-  shouldOverlayActions?: boolean;
+  overlayActions?: boolean;
+  hideActions?: boolean;
   onPress?: (cardID: string) => void;
   onLongPress?: (cardID: string) => void;
   onAddBookmark?: (cardID: string) => void;

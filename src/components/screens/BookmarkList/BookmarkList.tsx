@@ -50,7 +50,7 @@ export default function BookmarkList() {
             style={style}
             card={card}
             isBookmarked={bookmarkIDs.has(card.id)}
-            shouldOverlayActions={true}
+            overlayActions={true}
             onPress={onPressResult}
             onAddBookmark={onAddBookmark}
             onRemoveBookmark={onRemoveBookmark}

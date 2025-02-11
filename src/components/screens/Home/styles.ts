@@ -1,11 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  dataNotice: {
+  container: {
     rowGap: 20,
-  },
-  message: {
-    fontSize: 16,
-    textAlign: 'center',
   },
 });

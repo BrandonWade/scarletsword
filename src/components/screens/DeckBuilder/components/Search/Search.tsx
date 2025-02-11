@@ -155,7 +155,7 @@ export default function Search() {
               isBookmarked={bookmarkIDs.has(card.id)}
               deckID={deckID}
               count={deckCardToCountMap[card.id] || 0}
-              shouldOverlayActions={true}
+              overlayActions={true}
               onPress={onPressResult}
               onLongPress={onLongPressResult}
               onAddBookmark={onAddBookmark}

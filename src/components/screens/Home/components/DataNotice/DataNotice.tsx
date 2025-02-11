@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { useLayoutEffect, useState } from 'react';
 import { Button, Text } from 'react-native';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
-import styles from '../../styles';
+import styles from './styles';
 import Box from '../../../../common/Box';
 import { getMostRecentDataImport } from '../../../../../db/dataImports';
 import { DataImport } from '../../../../../db/types';

@@ -25,7 +25,8 @@ export default function CardImage({
   isBookmarked,
   deckID,
   count,
-  shouldOverlayActions = false,
+  overlayActions = false,
+  hideActions = false,
   onPress,
   onLongPress,
   onAddBookmark,
@@ -145,59 +146,61 @@ export default function CardImage({
           onLongPress: onLongPress ? () => onLongPress?.(card.id) : undefined,
         }
       )}
-      <View style={[styles.actions, shouldOverlayActions ? styles.actionsOverlay : {}]}>
-        <View style={styles.actionRow}>
-          {canFlip && (
-            <ActionButton
-              iconName='cycle'
-              iconSize={16}
-              isCompact={shouldOverlayActions}
-              text='Flip'
-              onPress={onPressFlip}
-            />
-          )}
-          {canRotateCW && (
-            <ActionButton
-              iconName='cw'
-              iconSize={16}
-              isCompact={shouldOverlayActions}
-              text='Rotate'
-              onPress={onPressRotateCW}
-            />
-          )}
-          {canTransform && (
-            <ActionButton
-              iconName='retweet'
-              iconSize={16}
-              isCompact={shouldOverlayActions}
-              text='Transform'
-              onPress={onPressTransform}
-            />
-          )}
-          {isBookmarked ? (
-            <ActionButton
-              iconName='star'
-              iconSize={16}
-              isCompact={shouldOverlayActions}
-              text='Remove Bookmark'
-              onPress={onPressRemoveBookmark}
-            />
-          ) : (
-            <ActionButton
-              iconName='star-outlined'
-              iconSize={16}
-              isCompact={shouldOverlayActions}
-              text='Add Bookmark'
-              onPress={onPressAddBookmark}
-            />
-          )}
+      {hideActions ? null : (
+        <View style={[styles.actions, overlayActions ? styles.actionsOverlay : {}]}>
+          <View style={styles.actionRow}>
+            {canFlip && (
+              <ActionButton
+                iconName='cycle'
+                iconSize={16}
+                isCompact={overlayActions}
+                text='Flip'
+                onPress={onPressFlip}
+              />
+            )}
+            {canRotateCW && (
+              <ActionButton
+                iconName='cw'
+                iconSize={16}
+                isCompact={overlayActions}
+                text='Rotate'
+                onPress={onPressRotateCW}
+              />
+            )}
+            {canTransform && (
+              <ActionButton
+                iconName='retweet'
+                iconSize={16}
+                isCompact={overlayActions}
+                text='Transform'
+                onPress={onPressTransform}
+              />
+            )}
+            {isBookmarked ? (
+              <ActionButton
+                iconName='star'
+                iconSize={16}
+                isCompact={overlayActions}
+                text='Remove Bookmark'
+                onPress={onPressRemoveBookmark}
+              />
+            ) : (
+              <ActionButton
+                iconName='star-outlined'
+                iconSize={16}
+                isCompact={overlayActions}
+                text='Add Bookmark'
+                onPress={onPressAddBookmark}
+              />
+            )}
+          </View>
+          <View style={styles.actionRow}>
+            {deckID && count > 0 && (
+              <NumberInputField value={count || 0} onChange={onChangeCardCount} />
+            )}
+          </View>
         </View>
-        <View style={styles.actionRow}>
-          {deckID && count > 0 && (
-            <NumberInputField value={count || 0} onChange={onChangeCardCount} />
-          )}
-        </View>
-      </View>
+      )}
     </View>
   );
 }
