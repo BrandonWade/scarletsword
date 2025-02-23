@@ -1,4 +1,4 @@
-import { DeckListItem } from '../../../../../db/types';
+import { DeckItem } from '../../../../../db/types';
 import { DeckCardLocation } from '../../../../../utils/enums';
 
 export type CardListSectionHeaderProps = {
@@ -7,11 +7,11 @@ export type CardListSectionHeaderProps = {
 
 export type CardListItemProps = {
   deckID: string;
-  card: DeckListItem;
+  card: DeckItem;
   onRemoveCard: (string) => void;
 };
 
 export type DeckListSection = {
   title: DeckCardLocation;
-  data: DeckListItem[];
+  data: DeckItem[];
 };

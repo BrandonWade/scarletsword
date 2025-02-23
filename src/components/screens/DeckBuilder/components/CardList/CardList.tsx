@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useState } from 'react';
 import { SectionList } from 'react-native';
 import { RouteProp, useIsFocused, useRoute } from '@react-navigation/native';
 import { deleteDeckCard, getDeckCards } from '../../../../../db/decks';
-import { DeckListItem } from '../../../../../db/types';
+import { DeckItem } from '../../../../../db/types';
 import { DeckCardLocation, ScreenNames } from '../../../../../utils/enums';
 import { StackParamsList } from '../../../../../utils/navigation';
 import CardListItem from './CardListItem';
@@ -11,13 +11,13 @@ import { DeckListSection } from './types';
 
 export default function CardList() {
   const route = useRoute<RouteProp<StackParamsList, ScreenNames.CardList>>();
-  const [deckCards, setDeckCards] = useState<DeckListItem[]>([]);
+  const [deckCards, setDeckCards] = useState<DeckItem[]>([]);
   const [sectionedDeckCards, setSectionedDeckCards] = useState<DeckListSection[]>([]);
   const isFocused = useIsFocused();
   const { deckID } = route.params || {};
 
   const getCards = async () => {
-    const result: DeckListItem[] = await getDeckCards(deckID);
+    const result: DeckItem[] = await getDeckCards(deckID);
     setDeckCards(result);
   };
 
@@ -32,7 +32,7 @@ export default function CardList() {
       [DeckCardLocation.Spells]: [],
     };
 
-    deckCards.forEach((deckCard: DeckListItem) => {
+    deckCards.forEach((deckCard: DeckItem) => {
       if (deckCard.location === DeckCardLocation.Creatures) {
         sectionLists[DeckCardLocation.Creatures].push(deckCard);
       } else if (deckCard.location === DeckCardLocation.Lands) {
@@ -58,11 +58,11 @@ export default function CardList() {
   return (
     <SectionList
       sections={sectionedDeckCards}
-      keyExtractor={(row: DeckListItem) => row.card_id}
+      keyExtractor={(row: DeckItem) => row.card_id}
       renderSectionHeader={({ section: { title } }: { section: DeckListSection }) => (
         <CardListSectionHeader title={title} />
       )}
-      renderItem={({ item }: { item: DeckListItem }) => (
+      renderItem={({ item }: { item: DeckItem }) => (
         <CardListItem deckID={deckID} card={item} onRemoveCard={onRemoveCard} />
       )}
     />

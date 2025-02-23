@@ -1,8 +1,9 @@
 import React, { useLayoutEffect } from 'react';
-import { SafeAreaView, View } from 'react-native';
+import { SafeAreaView, ScrollView, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import DataNotice from './components/DataNotice';
 import RecentBookmarks from './components/RecentBookmarks';
+import RecentDecks from './components/RecentDecks';
 import styles from './styles';
 import { createTables } from '../../../db/tables';
 import commonStyles from '../../../utils/styles';
@@ -21,11 +22,14 @@ export default function Home() {
   }, [isFocused]);
 
   return (
-    <SafeAreaView>
-      <View style={[commonStyles.screenContainer, styles.container]}>
-        <DataNotice />
-        <RecentBookmarks />
-      </View>
+    <SafeAreaView style={styles.container}>
+      <ScrollView>
+        <View style={[commonStyles.screenContainer, styles.content]}>
+          <DataNotice />
+          <RecentBookmarks />
+          <RecentDecks />
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }

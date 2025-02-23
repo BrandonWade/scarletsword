@@ -31,7 +31,7 @@ export type DeckCard = {
   updated_at: string;
 };
 
-export type DeckListItem = DeckCard & {
+export type DeckItem = DeckCard & {
   faces: string;
 };
 

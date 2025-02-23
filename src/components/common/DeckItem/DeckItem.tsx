@@ -1,13 +1,13 @@
 import { Button, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { DeckListItemProps } from './types';
+import styles from './styles';
+import { DeckItemProps } from './types';
 import { ScreenNames } from '../../../utils/enums';
 import { StackNavigation } from '../../../utils/navigation';
 import commonStyles from '../../../utils/styles';
 import { getSymbols } from '../../../utils/symbols';
-import styles from './styles';
 
-export default function DeckListItem({ id, name, colors, size }: DeckListItemProps) {
+export default function DeckItem({ style, id, name, colors, size }: DeckItemProps) {
   const navigation = useNavigation<StackNavigation>();
 
   const onPressEdit = () => {
@@ -20,7 +20,7 @@ export default function DeckListItem({ id, name, colors, size }: DeckListItemPro
 
   return (
     <TouchableOpacity onPress={onPress}>
-      <View style={styles.deckListItem}>
+      <View style={[styles.deckItem, style]}>
         <View>
           <Text style={commonStyles.titleMd}>{name}</Text>
           <Text style={styles.size}>{`${size} cards`}</Text>

@@ -14,7 +14,7 @@ import {
   updateDeckCardCount,
   upsertDeckCard,
 } from '../../../../../db/decks';
-import { Card, CardFace, DeckListItem } from '../../../../../db/types';
+import { Card, CardFace, DeckItem } from '../../../../../db/types';
 import { DeckCardLocation, ScreenNames } from '../../../../../utils/enums';
 import { StackNavigation, StackParamsList } from '../../../../../utils/navigation';
 import commonStyles from '../../../../../utils/styles';
@@ -36,7 +36,7 @@ export default function Search() {
 
     const result = await getDeckCards(deckID);
     setDeckCardToCountMap(
-      (result || [])?.reduce((map: CardIDToCountMap, curr: DeckListItem) => {
+      (result || [])?.reduce((map: CardIDToCountMap, curr: DeckItem) => {
         map[curr.card_id] = curr.count;
         return map;
       }, {})

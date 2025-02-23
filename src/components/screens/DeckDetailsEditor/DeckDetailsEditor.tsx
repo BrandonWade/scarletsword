@@ -12,7 +12,7 @@ import SwitchField from '../../common/SwitchField';
 import TextAreaField from '../../common/TextAreaField';
 import TextInputField from '../../common/TextInputField';
 import { upsertDeck, deleteDeck, getDeck, getDeckCards } from '../../../db/decks';
-import { Deck, DeckListItem } from '../../../db/types';
+import { Deck, DeckItem } from '../../../db/types';
 import { getColorString } from '../../../utils/decks';
 import { ColorSymbol, Navigators, ScreenNames } from '../../../utils/enums';
 import { StackParamsList } from '../../../utils/navigation';
@@ -35,7 +35,7 @@ export default function DeckDetailsEditor() {
     onSubmit: async () => {
       let colors = '';
       if (values.autoDetectColors) {
-        const deckCards: DeckListItem[] = await getDeckCards(id);
+        const deckCards: DeckItem[] = await getDeckCards(id);
         colors = getColorString(deckCards);
       } else {
         colors = values.colors.join('');

@@ -1,9 +1,9 @@
 import { openDatabase } from './connections';
-import { Deck, DeckCard, DeckListItem } from './types';
+import { Deck, DeckCard, DeckItem } from './types';
 import { getColorString } from '../utils/decks';
 import { DeckCardLocation } from '../utils/enums';
 
-export async function listDecks() {
+export async function listDecks(limit: number) {
   const db = await openDatabase();
 
   try {
@@ -20,6 +20,7 @@ export async function listDecks() {
         GROUP BY c.deck_id
       ) c ON d.id = c.deck_id
       ORDER BY d.updated_at DESC, d.created_at DESC
+      ${limit ? `LIMIT ${limit}` : ''}
       ;`);
 
     return result;
@@ -136,7 +137,7 @@ export async function conditionallyUpdateDeckColors(deckID: string) {
     return;
   }
 
-  const deckCards: DeckListItem[] = await getDeckCards(deckID);
+  const deckCards: DeckItem[] = await getDeckCards(deckID);
   const colors: string = getColorString(deckCards);
   let statement;
 
@@ -181,7 +182,7 @@ export async function getDeckCards(deckID: string) {
   const db = await openDatabase();
 
   try {
-    const result: DeckListItem[] = await db.getAllAsync(
+    const result: DeckItem[] = await db.getAllAsync(
       `
       SELECT
       d.*,

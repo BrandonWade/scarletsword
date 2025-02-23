@@ -3,7 +3,7 @@ import { FlatList, SafeAreaView, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { listDecks } from '../../../db/decks';
 import { Deck } from '../../../db/types';
-import DeckListItem from './DeckListItem';
+import DeckItem from '../../common/DeckItem/DeckItem';
 import styles from './styles';
 
 export default function DeckList() {
@@ -27,7 +27,7 @@ export default function DeckList() {
           data={decks}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <DeckListItem id={item.id} name={item.name} colors={item.colors} size={item.size} />
+            <DeckItem id={item.id} name={item.name} colors={item.colors} size={item.size} />
           )}
         />
       </View>
