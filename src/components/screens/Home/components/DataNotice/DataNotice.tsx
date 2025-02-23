@@ -23,7 +23,7 @@ export default function DataNotice() {
     fetchMostRecentDataImport();
   }, [isFocused]);
 
-  const onPressViewDataFilePress = () => {
+  const onPressViewDataFile = () => {
     navigation.navigate(ScreenNames.BulkDataList);
   };
 
@@ -31,9 +31,9 @@ export default function DataNotice() {
     return (
       <Box style={styles.dataNotice}>
         <Text style={styles.message}>
-          To get started, you'll need to download a data file with card data.
+          To get started, you'll need to download a file with card data.
         </Text>
-        <Button title='View Options' onPress={onPressViewDataFilePress} />
+        <Button title='View Options' onPress={onPressViewDataFile} />
       </Box>
     );
   }
@@ -44,9 +44,9 @@ export default function DataNotice() {
     return (
       <Box style={styles.dataNotice}>
         <Text style={styles.message}>
-          {`It's been ${daysSinceLastImport} days since your last data file import. Consider downloading a recent file and updating your data.`}
+          {`It's been ${daysSinceLastImport} days since your last card data import. Consider downloading a recent file and updating your data.`}
         </Text>
-        <Button title='View Data Files' onPress={onPressViewDataFilePress} />
+        <Button title='View Data Files' onPress={onPressViewDataFile} />
       </Box>
     );
   }
