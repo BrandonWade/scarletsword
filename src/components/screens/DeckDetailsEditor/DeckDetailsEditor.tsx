@@ -14,7 +14,7 @@ import TextInputField from '../../common/TextInputField';
 import { upsertDeck, deleteDeck, getDeck, getDeckCards } from '../../../db/decks';
 import { Deck, DeckItem } from '../../../db/types';
 import { getColorString } from '../../../utils/decks';
-import { ColorSymbol, Navigators, ScreenNames } from '../../../utils/enums';
+import { ColorSymbol, ScreenNames } from '../../../utils/enums';
 import { StackParamsList } from '../../../utils/navigation';
 import commonStyles from '../../../utils/styles';
 import { parseSymbolText } from '../../../utils/symbols';
@@ -105,7 +105,7 @@ export default function DeckDetailsEditor() {
         text: 'Delete',
         onPress: async () => {
           await deleteDeck(values.id);
-          navigation.replace(Navigators.DrawerStack, { screen: ScreenNames.DeckList });
+          navigation.goBack();
         },
         style: 'destructive',
       },
