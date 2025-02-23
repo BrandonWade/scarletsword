@@ -3,7 +3,7 @@ import { Deck, DeckCard, DeckItem } from './types';
 import { getColorString } from '../utils/decks';
 import { DeckCardLocation } from '../utils/enums';
 
-export async function listDecks(limit: number) {
+export async function listDecks(limit?: number) {
   const db = await openDatabase();
 
   try {
