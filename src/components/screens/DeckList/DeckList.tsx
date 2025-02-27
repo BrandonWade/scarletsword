@@ -10,12 +10,12 @@ export default function DeckList() {
   const isFocused = useIsFocused();
   const [decks, setDecks] = useState<Deck[]>([]);
 
-  useEffect(() => {
-    const getDecks = async () => {
-      const result: Deck[] = await listDecks();
-      setDecks(result);
-    };
+  const getDecks = async () => {
+    const result: Deck[] = await listDecks();
+    setDecks(result);
+  };
 
+  useEffect(() => {
     getDecks();
   }, [isFocused]);
 
@@ -27,7 +27,13 @@ export default function DeckList() {
           data={decks}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <DeckItem id={item.id} name={item.name} colors={item.colors} size={item.size} />
+            <DeckItem
+              id={item.id}
+              name={item.name}
+              colors={item.colors}
+              size={item.size}
+              onRefreshDecks={getDecks}
+            />
           )}
         />
       </View>

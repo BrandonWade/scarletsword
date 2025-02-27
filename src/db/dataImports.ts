@@ -15,7 +15,7 @@ export async function getMostRecentDataImport() {
 
     return result;
   } catch (err) {
-    console.error('Error fetching number of cards', err);
+    console.error('Error fetching data imports', err);
   }
 
   return null;

@@ -11,14 +11,18 @@ export default function RecentDecks({ numberOfDecks = 3 }: RecentDecksProps) {
   const isFocused = useIsFocused();
   const [decks, setDecks] = useState<Deck[]>([]);
 
-  useEffect(() => {
-    const getDecks = async () => {
-      const result: Deck[] = await listDecks(numberOfDecks);
-      setDecks(result);
-    };
+  const getDecks = async () => {
+    const result: Deck[] = await listDecks(numberOfDecks);
+    setDecks(result);
+  };
 
+  useEffect(() => {
     getDecks();
   }, [isFocused]);
+
+  if (!decks.length) {
+    return null;
+  }
 
   return (
     <View style={styles.container}>
@@ -32,6 +36,7 @@ export default function RecentDecks({ numberOfDecks = 3 }: RecentDecksProps) {
             name={deck.name}
             colors={deck.colors}
             size={deck.size}
+            onRefreshDecks={getDecks}
           />
         ))}
       </View>

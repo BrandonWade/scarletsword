@@ -5,7 +5,8 @@ import DataNotice from './components/DataNotice';
 import RecentBookmarks from './components/RecentBookmarks';
 import RecentDecks from './components/RecentDecks';
 import styles from './styles';
-import { createTables } from '../../../db/tables';
+import { seedTables } from '../../../db/seeds';
+import { createTables, resetTables } from '../../../db/tables';
 import commonStyles from '../../../utils/styles';
 
 export default function Home() {

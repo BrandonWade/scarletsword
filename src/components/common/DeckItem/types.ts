@@ -6,4 +6,5 @@ export type DeckItemProps = {
   name: string;
   colors: string;
   size: number;
+  onRefreshDecks: () => void;
 };
