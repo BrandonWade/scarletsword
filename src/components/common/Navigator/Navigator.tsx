@@ -1,7 +1,7 @@
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Drawer from './Drawer';
-import BulkDataDownload from '../../screens/BulkDataDownload';
+import CardData from '../../screens/CardData';
 import DeckBuilder from '../../screens/DeckBuilder';
 import Card from '../../screens/Card';
 import DeckDetailsEditor from '../../screens/DeckDetailsEditor';
@@ -22,7 +22,6 @@ export default function Navigator() {
         })}
         component={Drawer}
       />
-      <RootStack.Screen name={ScreenNames.BulkDataDownload} component={BulkDataDownload} />
       <RootStack.Screen
         name={ScreenNames.Card}
         options={{ presentation: 'modal' }}
@@ -30,6 +29,7 @@ export default function Navigator() {
       />
       <RootStack.Screen name={ScreenNames.DeckDetailsEditor} component={DeckDetailsEditor} />
       <RootStack.Screen name={ScreenNames.DeckBuilder} component={DeckBuilder} />
+      <RootStack.Screen name={ScreenNames.CardData} component={CardData} />
     </RootStack.Navigator>
   );
 }

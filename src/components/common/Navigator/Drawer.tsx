@@ -4,7 +4,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { useNavigation } from '@react-navigation/native';
 import styles from './styles';
 import BookmarkList from '../../screens/BookmarkList';
-import BulkDataList from '../../screens/BulkDataList';
+import CardData from '../../screens/CardData';
 import DeckList from '../../screens/DeckList';
 import Home from '../../screens/Home';
 import { Navigators, ScreenNames } from '../../../utils/enums';
@@ -34,7 +34,7 @@ export default function Drawer() {
         component={DeckList}
       />
       <DrawerStack.Screen name={ScreenNames.BookmarkList} component={BookmarkList} />
-      <DrawerStack.Screen name={ScreenNames.BulkDataList} component={BulkDataList} />
+      <DrawerStack.Screen name={ScreenNames.CardData} component={CardData} />
     </DrawerStack.Navigator>
   );
 }

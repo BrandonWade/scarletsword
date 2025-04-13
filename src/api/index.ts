@@ -13,6 +13,6 @@ export const scryfallApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ['BulkDataList'],
+  tagTypes: ['BulkData'],
   endpoints: () => ({}),
 });

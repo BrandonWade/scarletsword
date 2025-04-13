@@ -14,8 +14,7 @@ export enum Navigators {
 
 export enum ScreenNames {
   BookmarkList = 'My Bookmarks',
-  BulkDataList = 'Data Files',
-  BulkDataDownload = 'Download',
+  CardData = 'Card Data',
   Card = 'Card',
   DeckBuilder = 'Deck Builder',
   DeckList = 'My Decks',

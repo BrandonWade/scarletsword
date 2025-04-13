@@ -24,7 +24,7 @@ export default function DataNotice() {
   }, [isFocused]);
 
   const onPressViewDataFile = () => {
-    navigation.navigate(ScreenNames.BulkDataList);
+    navigation.navigate(ScreenNames.CardData);
   };
 
   if (!mostRecentImport) {

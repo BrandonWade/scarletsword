@@ -2,13 +2,13 @@ import { scryfallApi } from '../index';
 
 export const bulkData = scryfallApi.injectEndpoints({
   endpoints: (builder) => ({
-    listBulkData: builder.query({
-      query: () => ({
-        url: '/bulk-data',
+    getBulkData: builder.query({
+      query: (type) => ({
+        url: `/bulk-data/${type}`,
       }),
-      providesTags: () => [{ type: 'BulkDataList' }],
+      providesTags: ({ type }) => [{ type: 'BulkData', id: type }],
     }),
   }),
 });
 
-export const { useListBulkDataQuery } = bulkData;
+export const { useGetBulkDataQuery } = bulkData;
