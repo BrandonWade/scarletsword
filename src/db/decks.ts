@@ -1,5 +1,5 @@
 import { openDatabase } from './connections';
-import { Deck, DeckCard, DeckItem } from './types';
+import { Deck, DeckCard, DeckItem, ExportResult } from './types';
 import { getColorString } from '../utils/decks';
 import { DeckCardLocation } from '../utils/enums';
 
@@ -339,5 +339,27 @@ export async function deleteDeckCard(deckID: string, cardID: string) {
     await conditionallyUpdateDeckColors(deckID);
   } catch (err) {
     console.error('Error getting deck cards', err);
+  }
+}
+
+export async function exportDeckCards(deckID: string) {
+  const db = await openDatabase();
+
+  try {
+    const result: ExportResult = await db.getFirstAsync(
+      `
+      SELECT
+      GROUP_CONCAT(d.count || ':' || d.card_id) export
+      FROM deck_cards d
+      WHERE d.deck_id = $deck_id
+      ;`,
+      {
+        $deck_id: deckID,
+      }
+    );
+
+    return result;
+  } catch (err) {
+    console.error('Error exporting deck cards', err);
   }
 }

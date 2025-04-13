@@ -14,6 +14,10 @@ export default function DeckItem({ style, id, name, colors, size, onRefreshDecks
   const navigation = useNavigation<StackNavigation>();
   const { showActionSheetWithOptions } = useActionSheet();
 
+  const onPressShare = () => {
+    navigation.navigate(ScreenNames.ShareDeck, { id, name });
+  };
+
   const onPressEdit = () => {
     navigation.navigate(ScreenNames.DeckDetailsEditor, { id });
   };
@@ -40,7 +44,12 @@ export default function DeckItem({ style, id, name, colors, size, onRefreshDecks
   };
 
   const onLongPress = () => {
-    const options = Object.values(DeckActions);
+    const options = [DeckActions.Edit, DeckActions.Delete, DeckActions.Cancel];
+    if (size > 0) {
+      options.unshift(DeckActions.Share);
+    }
+
+    const shareButtonIndex = options.findIndex((option) => option === DeckActions.Share);
     const editButtonIndex = options.findIndex((option) => option === DeckActions.Edit);
     const destructiveButtonIndex = options.findIndex((option) => option === DeckActions.Delete);
     const cancelButtonIndex = options.findIndex((option) => option === DeckActions.Cancel);
@@ -54,6 +63,9 @@ export default function DeckItem({ style, id, name, colors, size, onRefreshDecks
       },
       async (selectedIndex: number) => {
         switch (selectedIndex) {
+          case shareButtonIndex:
+            onPressShare();
+            break;
           case editButtonIndex:
             onPressEdit();
             break;

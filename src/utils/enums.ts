@@ -22,6 +22,7 @@ export enum ScreenNames {
   Home = 'Home',
   CardList = 'Card List',
   Search = 'Search',
+  ShareDeck = 'Share Deck',
 }
 
 export enum ColorSymbol {

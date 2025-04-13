@@ -4,10 +4,13 @@ import { Navigators, ScreenNames } from './enums';
 export type StackParamsList = {
   [Navigators.DrawerStack]: undefined;
   [ScreenNames.BookmarkList]: undefined;
-  [ScreenNames.CardData]: undefined;
   [ScreenNames.Card]: {
     cardID: string;
     deckID?: string;
+  };
+  [ScreenNames.CardData]: undefined;
+  [ScreenNames.CardList]: {
+    deckID: string;
   };
   [ScreenNames.DeckList]: undefined;
   [ScreenNames.DeckBuilder]: {
@@ -19,11 +22,12 @@ export type StackParamsList = {
     id: string;
   };
   [ScreenNames.Home]: undefined;
-  [ScreenNames.CardList]: {
-    deckID: string;
-  };
   [ScreenNames.Search]: {
     deckID: string;
+  };
+  [ScreenNames.ShareDeck]: {
+    id: string;
+    name: string;
   };
 };
 

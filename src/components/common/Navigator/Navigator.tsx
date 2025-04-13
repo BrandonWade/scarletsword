@@ -7,6 +7,7 @@ import Card from '../../screens/Card';
 import DeckDetailsEditor from '../../screens/DeckDetailsEditor';
 import { Navigators, ScreenNames } from '../../../utils/enums';
 import { StackParamsList } from '../../../utils/navigation';
+import ShareDeck from '../../screens/ShareDeck';
 
 const RootStack = createNativeStackNavigator<StackParamsList, Navigators.RootStack>();
 
@@ -27,9 +28,14 @@ export default function Navigator() {
         options={{ presentation: 'modal' }}
         component={Card}
       />
+      <RootStack.Screen name={ScreenNames.CardData} component={CardData} />
       <RootStack.Screen name={ScreenNames.DeckDetailsEditor} component={DeckDetailsEditor} />
       <RootStack.Screen name={ScreenNames.DeckBuilder} component={DeckBuilder} />
-      <RootStack.Screen name={ScreenNames.CardData} component={CardData} />
+      <RootStack.Screen
+        name={ScreenNames.ShareDeck}
+        options={{ presentation: 'modal' }}
+        component={ShareDeck}
+      />
     </RootStack.Navigator>
   );
 }
