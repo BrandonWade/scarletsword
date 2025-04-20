@@ -41,20 +41,18 @@ export default function ScanDeck() {
       ) : (
         <View>
           <Text style={commonStyles.titleLg}>Camera not found</Text>
-          {sampleDecks.map((deck) => {
-            return (
-              <Button
-                key={deck.id}
-                title={deck.name}
-                onPress={async () => {
-                  const deckData = await exportDeck(deck.id);
-                  navigation.navigate(ScreenNames.PreviewDeck, {
-                    deckData: JSON.stringify(deckData),
-                  });
-                }}
-              />
-            );
-          })}
+          {sampleDecks.map((deck) => (
+            <Button
+              key={deck.id}
+              title={deck.name}
+              onPress={async () => {
+                const deckData = await exportDeck(deck.id);
+                navigation.navigate(ScreenNames.PreviewDeck, {
+                  deckData: JSON.stringify(deckData),
+                });
+              }}
+            />
+          ))}
         </View>
       )}
     </View>

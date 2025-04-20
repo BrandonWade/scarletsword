@@ -6,9 +6,9 @@ export type CardListSectionHeaderProps = {
 };
 
 export type CardListItemProps = {
-  deckID: string;
   card: DeckItem;
-  onRemoveCard: (string) => void;
+  onPress?: (cardID: string) => void;
+  onRemoveCard?: (cardID: string) => void;
 };
 
 export type DeckListSection = {

@@ -1,16 +1,18 @@
 import { Alert, Text, TouchableOpacity, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import styles from './styles';
 import { CardListItemProps } from './types';
-import { ScreenNames } from '../../../../../utils/enums';
-import { StackNavigation } from '../../../../../utils/navigation';
 import { getSymbols } from '../../../../../utils/symbols';
 
-export default function CardListItem({ deckID, card, onRemoveCard }: CardListItemProps) {
-  const navigation = useNavigation<StackNavigation>();
+export default function CardListItem({ card, onPress, onRemoveCard }: CardListItemProps) {
   const faces = card?.faces ? JSON.parse(card.faces) : [];
 
+  const onPressItem = () => {
+    onPress(card.card_id);
+  };
+
   const onPressRemoveCard = () => {
+    if (!onRemoveCard) return;
+
     Alert.alert('Remove Card', 'Are you sure you want to remove this card?', [
       {
         text: 'Cancel',
@@ -25,9 +27,7 @@ export default function CardListItem({ deckID, card, onRemoveCard }: CardListIte
   };
 
   return (
-    <TouchableOpacity
-      onPress={() => navigation.navigate(ScreenNames.Card, { cardID: card.card_id, deckID })}
-    >
+    <TouchableOpacity onPress={onPressItem}>
       <View style={styles.itemContentContainer}>
         <Text style={styles.count}>{card.count}</Text>
         <View style={styles.faceInfoList}>
