@@ -27,7 +27,7 @@ export default function CardData() {
     setDetails('');
 
     setDetails('Downloading file');
-    await recordDataImport(BulkDataEnum.OracleCards);
+    await recordDataImport(BulkDataEnum.OracleCards, updatedAt);
     const downloadedFile: File = await downloadFile(downloadUri, onUpdateDetails);
     await importFile(downloadedFile, onUpdateDetails);
 

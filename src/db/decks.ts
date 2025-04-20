@@ -1,7 +1,9 @@
+import dayjs from 'dayjs';
 import { openDatabase } from './connections';
-import { Deck, DeckCard, DeckItem, ExportResult } from './types';
+import { Deck, DeckCard, DeckItem, CardExportResult, ScannedCard } from './types';
 import { getColorString } from '../utils/decks';
 import { DeckCardLocation } from '../utils/enums';
+import { getMostRecentDataImport } from './dataImports';
 
 export async function listDecks(limit?: number) {
   const db = await openDatabase();
@@ -342,14 +344,20 @@ export async function deleteDeckCard(deckID: string, cardID: string) {
   }
 }
 
-export async function exportDeckCards(deckID: string) {
+export async function exportDeck(deckID: string) {
   const db = await openDatabase();
 
   try {
-    const result: ExportResult = await db.getFirstAsync(
+    const deckResult = await getDeck(deckID);
+
+    const dataImportResult = await getMostRecentDataImport();
+    const { type, data_file_updated_at: dataFileUpdatedAt } = dataImportResult;
+    const date = dataFileUpdatedAt ? dayjs(dataFileUpdatedAt).unix() : dayjs().unix();
+
+    const cardsResult: CardExportResult = await db.getFirstAsync(
       `
       SELECT
-      GROUP_CONCAT(d.count || ':' || d.card_id) export
+      GROUP_CONCAT(d.count || ':' || d.card_id || ':' || substr(d.location, 1, 1)) export
       FROM deck_cards d
       WHERE d.deck_id = $deck_id
       ;`,
@@ -358,8 +366,62 @@ export async function exportDeckCards(deckID: string) {
       }
     );
 
-    return result;
+    return {
+      name: deckResult.name,
+      version: `${type}:${date}`,
+      cards: cardsResult.export,
+    };
   } catch (err) {
     console.error('Error exporting deck cards', err);
+  }
+}
+
+export async function getCardsFromScannedDeckCards(scannedCards: ScannedCard[]) {
+  const db = await openDatabase();
+
+  try {
+    const result: DeckItem[] = await db.getAllAsync(
+      `
+      SELECT
+      d.count,
+      d.card_id,
+      d.location,
+      f.faces
+      FROM (
+        SELECT
+        JSON_EXTRACT(j.value, '$.count') count,
+        JSON_EXTRACT(j.value, '$.card_id') card_id,
+        JSON_EXTRACT(j.value, '$.location') location
+        FROM JSON_EACH($scanned_cards) AS j
+      ) d
+      LEFT JOIN cards c ON c.id = d.card_id
+      LEFT JOIN (
+        SELECT
+        f.card_id,
+        JSON_GROUP_ARRAY(
+          JSON_OBJECT(
+            'face_index', face_index,
+            'name', name,
+            'mana_cost', mana_cost,
+            'is_white', is_white,
+            'is_blue', is_blue,
+            'is_black', is_black,
+            'is_red', is_red,
+            'is_green', is_green,
+            'type_line', type_line
+          )
+        ) faces
+        FROM card_faces f
+        GROUP BY f.card_id
+      ) f ON c.id = f.card_id
+      ORDER BY c.cmc, c.name, c.id
+      ;`,
+      {
+        $scanned_cards: JSON.stringify(scannedCards),
+      }
+    );
+    return result;
+  } catch (err) {
+    console.error('Error getting cards from scanned deck', err);
   }
 }

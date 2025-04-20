@@ -15,6 +15,7 @@ async function seedDecks() {
         INSERT INTO decks (id, name, notes)
         VALUES
         ('f29c3c8a-c770-44da-8cb9-d0bd82552157', 'Annoying Deck', 'Contains a variety of cards with annoying properties.')
+        ('967c407a-b56b-4908-a048-e2f45b6ab034', 'Zombie', 'Contains various zombie cards.');
         ON CONFLICT DO NOTHING;
 
         INSERT INTO deck_cards (deck_id, card_id, count, location)
@@ -31,7 +32,11 @@ async function seedDecks() {
         ('f29c3c8a-c770-44da-8cb9-d0bd82552157', '5c1f3f52-cb9b-4b2a-bb02-6175897ae76e', 1, 'creatures'),
         ('f29c3c8a-c770-44da-8cb9-d0bd82552157', '8e259868-d29a-4c03-8ec3-49e914f849fb', 1, 'spells'),
         ('f29c3c8a-c770-44da-8cb9-d0bd82552157', 'db84415e-048a-4cfc-9121-5ae17a412198', 1, 'spells'),
-        ('f29c3c8a-c770-44da-8cb9-d0bd82552157', 'c2462fdf-a594-47d0-8e10-b55901e350d9', 1, 'spells')
+        ('f29c3c8a-c770-44da-8cb9-d0bd82552157', 'c2462fdf-a594-47d0-8e10-b55901e350d9', 1, 'spells'),
+        ('967c407a-b56b-4908-a048-e2f45b6ab034', '6987d609-ba0f-42bf-9b61-bdfb943c03b5', 4, 'creatures'),
+        ('967c407a-b56b-4908-a048-e2f45b6ab034', '2a0d7998-2f3d-43b8-a0be-6ff7e5c83223', 4, 'creatures'),
+        ('967c407a-b56b-4908-a048-e2f45b6ab034', 'f0bfdb9e-318f-4acd-9fbd-41b98a8875d6', 20, 'lands'),
+        ('967c407a-b56b-4908-a048-e2f45b6ab034', '32f1f022-da7f-49a4-881d-b3a2c54c38eb', 2, 'creatures');
         ON CONFLICT DO NOTHING;
       `);
 

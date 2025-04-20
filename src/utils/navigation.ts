@@ -22,9 +22,13 @@ export type StackParamsList = {
     id: string;
   };
   [ScreenNames.Home]: undefined;
+  [ScreenNames.PreviewDeck]: {
+    deckData: string;
+  };
   [ScreenNames.Search]: {
     deckID: string;
   };
+  [ScreenNames.ScanDeck]: undefined;
   [ScreenNames.ShareDeck]: {
     id: string;
     name: string;

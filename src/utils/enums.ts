@@ -14,14 +14,16 @@ export enum Navigators {
 
 export enum ScreenNames {
   BookmarkList = 'My Bookmarks',
-  CardData = 'Card Data',
   Card = 'Card',
+  CardData = 'Card Data',
+  CardList = 'Card List',
   DeckBuilder = 'Deck Builder',
   DeckList = 'My Decks',
   DeckDetailsEditor = 'Deck Details',
   Home = 'Home',
-  CardList = 'Card List',
+  PreviewDeck = 'Preview Deck',
   Search = 'Search',
+  ScanDeck = 'Scan Deck',
   ShareDeck = 'Share Deck',
 }
 

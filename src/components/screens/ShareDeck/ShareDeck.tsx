@@ -2,8 +2,8 @@ import { useLayoutEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import { RouteProp, useRoute } from '@react-navigation/native';
-import { exportDeckCards } from '../../../db/decks';
-import { ExportResult } from '../../../db/types';
+import { exportDeck } from '../../../db/decks';
+import { DeckExport } from '../../../db/types';
 import { ScreenNames } from '../../../utils/enums';
 import { StackParamsList } from '../../../utils/navigation';
 import commonStyles from '../../../utils/styles';
@@ -16,17 +16,12 @@ export default function ShareDeck() {
 
   useLayoutEffect(() => {
     const fetchDeckCards = async () => {
-      const result: ExportResult = await exportDeckCards(id);
-      if (!result?.export) {
+      const result: DeckExport = await exportDeck(id);
+      if (!result) {
         return;
       }
 
-      setExportValue(
-        JSON.stringify({
-          name,
-          cards: result.export,
-        })
-      );
+      setExportValue(JSON.stringify(result));
     };
 
     if (id) {

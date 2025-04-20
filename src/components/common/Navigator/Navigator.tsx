@@ -1,13 +1,14 @@
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Drawer from './Drawer';
+import Card from '../../screens/Card';
 import CardData from '../../screens/CardData';
 import DeckBuilder from '../../screens/DeckBuilder';
-import Card from '../../screens/Card';
 import DeckDetailsEditor from '../../screens/DeckDetailsEditor';
+import PreviewDeck from '../../screens/PreviewDeck';
+import ShareDeck from '../../screens/ShareDeck';
 import { Navigators, ScreenNames } from '../../../utils/enums';
 import { StackParamsList } from '../../../utils/navigation';
-import ShareDeck from '../../screens/ShareDeck';
 
 const RootStack = createNativeStackNavigator<StackParamsList, Navigators.RootStack>();
 
@@ -31,6 +32,7 @@ export default function Navigator() {
       <RootStack.Screen name={ScreenNames.CardData} component={CardData} />
       <RootStack.Screen name={ScreenNames.DeckDetailsEditor} component={DeckDetailsEditor} />
       <RootStack.Screen name={ScreenNames.DeckBuilder} component={DeckBuilder} />
+      <RootStack.Screen name={ScreenNames.PreviewDeck} component={PreviewDeck} />
       <RootStack.Screen
         name={ScreenNames.ShareDeck}
         options={{ presentation: 'modal' }}

@@ -21,19 +21,22 @@ export async function getMostRecentDataImport() {
   return null;
 }
 
-export async function recordDataImport(type: BulkDataEnum) {
+export async function recordDataImport(type: BulkDataEnum, dataFileUpdatedAt: string) {
   const db = await openDatabase();
   let statement;
 
   try {
     statement = await db.prepareAsync(`
       INSERT INTO data_imports (
-        type
+        type,
+        data_file_updated_at
       ) VALUES (
-        $type
+        $type,
+        $data_file_updated_at
       );`);
     await statement.executeAsync({
       $type: type,
+      $data_file_updated_at: dataFileUpdatedAt,
     });
   } catch (err) {
     console.error('Error recording data import', err);

@@ -2,6 +2,7 @@ import { BulkDataEnum, DeckCardLocation } from '../utils/enums';
 
 export type DataImport = {
   type: BulkDataEnum;
+  data_file_updated_at: string;
   created_at: string;
   updated_at: string;
 };
@@ -84,6 +85,24 @@ export type Bookmark = {
   updated_at: string;
 };
 
-export type ExportResult = {
+export type CardExportResult = {
   export: string;
+};
+
+export type DeckExport = {
+  name: string;
+  version: string;
+  cards: string;
+};
+
+export type ScannedCard = {
+  count: number;
+  card_id: string;
+};
+
+export type ScannedDeck = {
+  name?: string;
+  data_file?: BulkDataEnum;
+  data_file_updated_at?: number;
+  cards?: ScannedCard[];
 };

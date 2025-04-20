@@ -66,6 +66,7 @@ CREATE TABLE IF NOT EXISTS card_faces (
 export const dataImportsTable = `
 CREATE TABLE IF NOT EXISTS data_imports (
   type TEXT NOT NULL,
+  data_file_updated_at TEXT NOT NULL,
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TEXT DEFAULT NULL
 );

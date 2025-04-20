@@ -7,6 +7,7 @@ import BookmarkList from '../../screens/BookmarkList';
 import CardData from '../../screens/CardData';
 import DeckList from '../../screens/DeckList';
 import Home from '../../screens/Home';
+import ScanDeck from '../../screens/ScanDeck';
 import { Navigators, ScreenNames } from '../../../utils/enums';
 import { StackNavigation, StackParamsList } from '../../../utils/navigation';
 
@@ -35,6 +36,7 @@ export default function Drawer() {
       />
       <DrawerStack.Screen name={ScreenNames.BookmarkList} component={BookmarkList} />
       <DrawerStack.Screen name={ScreenNames.CardData} component={CardData} />
+      <DrawerStack.Screen name={ScreenNames.ScanDeck} component={ScanDeck} />
     </DrawerStack.Navigator>
   );
 }
