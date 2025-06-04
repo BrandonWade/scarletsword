@@ -1,18 +1,27 @@
 import { ParamListBase, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { ScrollView, Text } from 'react-native';
+import { SafeAreaView, ScrollView, Text } from 'react-native';
 import { StackParamsList } from '../../../utils/navigation';
 import { ScreenNames } from '../../../utils/enums';
 import { parseExportedDeck } from '../../../utils/decks';
 import { useEffect, useLayoutEffect, useState } from 'react';
 import { getCardsFromScannedDeckCards } from '../../../db/decks';
+import { ScannedDeck } from '../../../db/types';
 
 export default function PreviewDeck() {
   const route = useRoute<RouteProp<StackParamsList, ScreenNames.PreviewDeck>>();
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const { deckData } = route.params || {};
-  const parsedDeck = parseExportedDeck(deckData);
+  const [parsedDeck, setParsedDeck] = useState<ScannedDeck>({});
   const [deckCards, setDeckCards] = useState([]);
+
+  useEffect(() => {
+    if (!deckData) {
+      return;
+    }
+
+    setParsedDeck(parseExportedDeck(deckData));
+  }, [deckData]);
 
   useEffect(() => {
     if (!parsedDeck?.cards) {
@@ -29,7 +38,7 @@ export default function PreviewDeck() {
     }
 
     fetchDeckCards();
-  }, [parsedDeck?.cards]);
+  }, [parsedDeck]);
 
   useLayoutEffect(() => {
     if (!parsedDeck?.name) {
@@ -46,8 +55,10 @@ export default function PreviewDeck() {
   }
 
   return (
-    <ScrollView>
-      <Text>{JSON.stringify(deckCards, null, 2)}</Text>
-    </ScrollView>
+    <SafeAreaView>
+      <ScrollView>
+        <Text>{JSON.stringify(deckCards, null, 2)}</Text>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
