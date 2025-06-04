@@ -1,5 +1,5 @@
 import { useLayoutEffect, useState } from 'react';
-import { ImageStyle, ScrollView, StyleProp } from 'react-native';
+import { ImageStyle, SafeAreaView, ScrollView, StyleProp } from 'react-native';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import styles from './styles';
 import CardImage from '../../common/CardImage';
@@ -41,22 +41,24 @@ export default function BookmarkList() {
   };
 
   return (
-    <ScrollView>
-      <CardImageGrid
-        cards={bookmarks}
-        renderCard={(card: Card, style: StyleProp<ImageStyle>) => (
-          <CardImage
-            key={card.id}
-            style={style}
-            card={card}
-            isBookmarked={bookmarkIDs.has(card.id)}
-            overlayActions={true}
-            onPress={onPressResult}
-            onAddBookmark={onAddBookmark}
-            onRemoveBookmark={onRemoveBookmark}
-          />
-        )}
-      />
-    </ScrollView>
+    <SafeAreaView>
+      <ScrollView>
+        <CardImageGrid
+          cards={bookmarks}
+          renderCard={(card: Card, style: StyleProp<ImageStyle>) => (
+            <CardImage
+              key={card.id}
+              style={style}
+              card={card}
+              isBookmarked={bookmarkIDs.has(card.id)}
+              overlayActions={true}
+              onPress={onPressResult}
+              onAddBookmark={onAddBookmark}
+              onRemoveBookmark={onRemoveBookmark}
+            />
+          )}
+        />
+      </ScrollView>
+    </SafeAreaView>
   );
 }
