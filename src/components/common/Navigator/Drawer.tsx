@@ -36,7 +36,7 @@ export default function Drawer() {
       />
       <DrawerStack.Screen name={ScreenNames.BookmarkList} component={BookmarkList} />
       <DrawerStack.Screen name={ScreenNames.CardData} component={CardData} />
-      <DrawerStack.Screen name={ScreenNames.ScanDeck} component={ScanDeck} />
+      {/* <DrawerStack.Screen name={ScreenNames.ScanDeck} component={ScanDeck} /> */}
     </DrawerStack.Navigator>
   );
 }

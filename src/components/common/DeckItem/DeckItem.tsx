@@ -46,7 +46,7 @@ export default function DeckItem({ style, id, name, colors, size, onRefreshDecks
   const onLongPress = () => {
     const options = [DeckActions.Edit, DeckActions.Delete, DeckActions.Cancel];
     if (size > 0) {
-      options.unshift(DeckActions.Share);
+      // options.unshift(DeckActions.Share);
     }
 
     const shareButtonIndex = options.findIndex((option) => option === DeckActions.Share);
